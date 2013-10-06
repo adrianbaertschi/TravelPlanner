@@ -1,6 +1,8 @@
 package control;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -24,6 +26,7 @@ public class MapEditorController {
 
 	private void addListener() {
 		view.getMapArea().addMouseListener(new MapMouseListener());
+//		view.getBtnRemove().addActionListener(new BtnRemoveActionListener());
 	}
 
 	public Component showView() {
@@ -38,13 +41,24 @@ public class MapEditorController {
 		public void mouseClicked(MouseEvent e) {
 			Knot point = new Knot(e.getX(), e.getY());
 
-			Knot clickResult = clickedOnEdge(point);
+			Knot selectedKnot = clickedOnEdge(point);
 
 			// CASE 1: New Street
-			if(clickResult == null) {
+			if(selectedKnot == null) {
 				// First click
 				if(s == null) {
-					s = new Street(point);				
+					s = new Street(point);
+					
+					Street selectedStreet = clickedOnStreet(point);
+					view.displayStreetInfo(selectedStreet);
+					model.setSelectedStreet(selectedStreet);
+					view.updateModel(model);
+					
+					if(selectedStreet != null) {
+						s = null;
+					}
+					
+					
 					// Second click
 				} else if (s.getStart() != null && s.getEnd() == null) {
 					s.setEnd(point);
@@ -57,10 +71,10 @@ public class MapEditorController {
 			} else {
 				// CASE 2: append to existing
 				if(s == null) {
-					s = new Street(clickResult);
+					s = new Street(selectedKnot);
 				} else {
 					// TODO: CASE 3: connet two existing
-					s.setEnd(clickResult);
+					s.setEnd(selectedKnot);
 					model.addStreet(s);
 					view.updateModel(model);
 					
@@ -68,46 +82,61 @@ public class MapEditorController {
 					s = null;
 				}
 			}
-			
-			
-			
-			
+		}
 
+		private Street clickedOnStreet(Knot point) {
+			for(Street street : model.getStreets()) {
+				if(street.isPointOnStreet(point.getX(), point.getY())) {
+					return street;
+				}
+			}
+			return null;
 		}
 
 		public void mouseEntered(MouseEvent e) {	}
 		public void mouseExited(MouseEvent e) 	{	}
 		public void mousePressed(MouseEvent e) {	}
 		public void mouseReleased(MouseEvent e) {	}
+		
+		private Knot clickedOnEdge(Knot k) {
+			
+			int x = k.getX();
+			int y = k.getY();
+			int toleranz = 5;
+			
+			for(Street street : model.getStreets()) {
+				// TODO: Refactor
+				
+				// On Start Knoten?
+				int xdiff = Math.abs(street.getStart().getX() - x);
+				int ydiff = Math.abs(street.getStart().getY() - y);
+				
+				if(xdiff <= toleranz && ydiff <= toleranz) {
+					return street.getStart();
+				}
+				
+				// On End?
+				xdiff = Math.abs(street.getEnd().getX() - x);
+				ydiff = Math.abs(street.getEnd().getY() - y);
+				
+				if(xdiff <= toleranz && ydiff <= toleranz) {
+					return street.getEnd();
+				}
+				
+			}
+			
+			return null;
+		}
 	}
 	
-	public Knot clickedOnEdge(Knot k) {
-		
-		int x = k.getX();
-		int y = k.getY();
-		int toleranz = 5;
-		
-		for(Street street : model.getStreets()) {
-			// TODO: Refactor
+	class BtnRemoveActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
 			
-			// On Start Knoten?
-			int xdiff = Math.abs(street.getStart().getX() - x);
-			int ydiff = Math.abs(street.getStart().getY() - y);
-			
-			if(xdiff <= toleranz && ydiff <= toleranz) {
-				return street.getStart();
-			}
-			
-			// On End?
-			xdiff = Math.abs(street.getEnd().getX() - x);
-			ydiff = Math.abs(street.getEnd().getY() - y);
-			
-			if(xdiff <= toleranz && ydiff <= toleranz) {
-				return street.getEnd();
-			}
 			
 		}
 		
-		return null;
 	}
+	
+
 }
