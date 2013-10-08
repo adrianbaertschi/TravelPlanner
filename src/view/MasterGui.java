@@ -5,6 +5,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import model.MapEditorModel;
 import control.FleetEditorController;
 import control.MapEditorController;
 
@@ -32,6 +33,9 @@ public class MasterGui extends JFrame {
 		
 		
 		JTabbedPane tabPane = new JTabbedPane();
+		
+		MapEditorController mapEditorController = new MapEditorController(new MapEditor(), new MapEditorModel());
+
 		tabPane.addTab("Map Editor", new MapEditorController().showView());
 		tabPane.addTab("Fleet Editor", new FleetEditorController().showView());
 		tabPane.addTab("Simulation", new Simulation());
