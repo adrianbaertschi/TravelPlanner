@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,11 +15,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import control.MapEditorController;
 import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 
-public class MapEditor extends JPanel {
+public class MapEditor extends JPanel implements Observer{
 	
 	private MapEditorModel model = new MapEditorModel();
 	
@@ -54,6 +57,7 @@ public class MapEditor extends JPanel {
 	}
 	
 	private void draw(Graphics g) {
+		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D)g;
 		
 		// antialiasing ON
@@ -74,21 +78,27 @@ public class MapEditor extends JPanel {
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
 		}
 		
+		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
+		
 	}
 	
-	public void updateModel(MapEditorModel model) {
-		this.model = model;
-		
-		repaint();
-	}
-		
 
-	public void displayStreetInfo(Street selectedStreet) {
+	private void displayStreetInfo(Street selectedStreet) {
 		if(selectedStreet == null)  {
 			streetInfo.setText("Click on street to view info.");
 		} else {
 			streetInfo.setText("Lenth: " + selectedStreet.getLenth());
 		}
 		
+	}
+
+	public void update(Observable model, Object value) {
+		if(model instanceof MapEditorModel) {
+			this.model = (MapEditorModel) model;
+			repaint();
+		}
+		if(value instanceof Street) {
+			displayStreetInfo((Street)value);
+		}
 	}
 }

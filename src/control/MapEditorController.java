@@ -17,16 +17,15 @@ public class MapEditorController {
 	private MapEditorModel model;
 	
 
-	public MapEditorController() {
-		this.view = new MapEditor();
-		this.model = new MapEditorModel();
-
+	public MapEditorController(MapEditor view, MapEditorModel model) {
+		this.view = view;
+		this.model = model;
+		this.model.addObserver(view);
 		addListener();
 	}
 
 	private void addListener() {
 		view.getMapArea().addMouseListener(new MapMouseListener());
-//		view.getBtnRemove().addActionListener(new BtnRemoveActionListener());
 	}
 
 	public Component showView() {
@@ -50,9 +49,7 @@ public class MapEditorController {
 					s = new Street(point);
 					
 					Street selectedStreet = clickedOnStreet(point);
-					view.displayStreetInfo(selectedStreet);
 					model.setSelectedStreet(selectedStreet);
-					view.updateModel(model);
 					
 					if(selectedStreet != null) {
 						s = null;
@@ -63,7 +60,6 @@ public class MapEditorController {
 				} else if (s.getStart() != null && s.getEnd() == null) {
 					s.setEnd(point);
 					model.addStreet(s);
-					view.updateModel(model);
 					
 					// reset Street
 					s = null;
@@ -73,10 +69,9 @@ public class MapEditorController {
 				if(s == null) {
 					s = new Street(selectedKnot);
 				} else {
-					// TODO: CASE 3: connet two existing
+					// TODO: CASE 3: connect two existing
 					s.setEnd(selectedKnot);
 					model.addStreet(s);
-					view.updateModel(model);
 					
 					// reset Street
 					s = null;
@@ -122,7 +117,6 @@ public class MapEditorController {
 				if(xdiff <= toleranz && ydiff <= toleranz) {
 					return street.getEnd();
 				}
-				
 			}
 			
 			return null;
