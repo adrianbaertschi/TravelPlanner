@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.BellmanFordShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.AsUndirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -20,7 +22,7 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class SolverMapGraph{
 	
-	DirectedGraph<Knot, DefaultEdge> g =
+	DirectedGraph<Knot, DefaultEdge> dg =
             new DefaultDirectedGraph<Knot, DefaultEdge>(DefaultEdge.class);
 	List<Knot> knots = new ArrayList<Knot>();
 	
@@ -35,15 +37,15 @@ public class SolverMapGraph{
 	    for(Street s :streets){
 	    	
 			// add the vertices
-	    	if(!g.containsVertex(s.getStart())){
-			    g.addVertex(s.getStart());}
-			if(!g.containsVertex(s.getEnd())){
-			    g.addVertex(s.getEnd());}
+	    	if(!dg.containsVertex(s.getStart())){
+			    dg.addVertex(s.getStart());}
+			if(!dg.containsVertex(s.getEnd())){
+			    dg.addVertex(s.getEnd());}
 
 
 			// add edges to create linking structure
-			if(!g.containsEdge(s.getStart(), s.getEnd()))
-				g.addEdge(s.getStart(), s.getEnd());
+			if(!dg.containsEdge(s.getStart(), s.getEnd()))
+				dg.addEdge(s.getStart(), s.getEnd());
 
 			System.out.println(s.getStart().getX() + " " + s.getStart().getY());
 			System.out.println(s.getEnd().getX() + " " +  s.getEnd().getY());
@@ -58,7 +60,7 @@ public class SolverMapGraph{
 	    }
 		System.out.println(startPosition.getX() + " " + startPosition.getY());
 		System.out.println(endPosition.getX() + " " + endPosition.getY());
-		System.out.println(g.containsVertex(endPosition));
+		System.out.println(dg.containsVertex(endPosition));
 //		if(counter >= 2)
 			shortestPathDijkstra();
 //		counter++;
@@ -66,8 +68,10 @@ public class SolverMapGraph{
 
 	public void shortestPathDijkstra(){
 		
-		DijkstraShortestPath<Knot, DefaultEdge> dsp = new DijkstraShortestPath<Knot, DefaultEdge>(g, startPosition, endPosition);
-		BellmanFordShortestPath<Knot, DefaultEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultEdge>(g, startPosition);
+		UndirectedGraph<Knot, DefaultEdge> ug =
+	            new AsUndirectedGraph<Knot, DefaultEdge>(dg);
+		DijkstraShortestPath<Knot, DefaultEdge> dsp = new DijkstraShortestPath<Knot, DefaultEdge>(ug, startPosition, endPosition);
+		BellmanFordShortestPath<Knot, DefaultEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultEdge>(ug, startPosition);
 		System.out.println(bfsp.getCost(endPosition));
 		System.out.println(dsp.getPathEdgeList());
 		
