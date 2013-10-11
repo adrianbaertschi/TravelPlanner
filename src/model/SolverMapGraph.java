@@ -3,144 +3,75 @@
  */
 package model;
 
-import java.util.Collection;
-import java.util.Set;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jgrapht.EdgeFactory;
-import org.jgrapht.Graph;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.alg.BellmanFordShortestPath;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * @author dimitri.haemmerli
  *
  */
-public class SolverMapGraph implements Graph{
+public class SolverMapGraph{
 	
+	DirectedGraph<Knot, DefaultEdge> g =
+            new DefaultDirectedGraph<Knot, DefaultEdge>(DefaultEdge.class);
+	List<Knot> knots = new ArrayList<Knot>();
+	
+	Knot startPosition = null;
+	Knot endPosition = null;
+	int counter = 0;
+
+	
+	public void addStreets(List<Street> streets){
+			
 		
+	    for(Street s :streets){
+	    	
+			// add the vertices
+	    	if(!g.containsVertex(s.getStart())){
+			    g.addVertex(s.getStart());}
+			if(!g.containsVertex(s.getEnd())){
+			    g.addVertex(s.getEnd());}
 
-	@Override
-	public Object addEdge(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
+
+			// add edges to create linking structure
+			if(!g.containsEdge(s.getStart(), s.getEnd()))
+				g.addEdge(s.getStart(), s.getEnd());
+
+			System.out.println(s.getStart().getX() + " " + s.getStart().getY());
+			System.out.println(s.getEnd().getX() + " " +  s.getEnd().getY());
+	    	
+			if(s.getStart().isStartingPosition()){
+				startPosition = s.getStart();
+			}
+			if(s.getEnd().isEndPosition()){
+				endPosition = s.getEnd();
+			}
+				
+	    }
+		System.out.println(startPosition.getX() + " " + startPosition.getY());
+		System.out.println(endPosition.getX() + " " + endPosition.getY());
+		System.out.println(g.containsVertex(endPosition));
+//		if(counter >= 2)
+			shortestPathDijkstra();
+//		counter++;
 	}
 
-	@Override
-	public boolean addEdge(Object arg0, Object arg1, Object arg2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean containsEdge(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean containsEdge(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean containsVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Set edgeSet() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set edgesOf(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set getAllEdges(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getEdge(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public EdgeFactory getEdgeFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getEdgeSource(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getEdgeTarget(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double getEdgeWeight(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean removeAllEdges(Collection arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Set removeAllEdges(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean removeAllVertices(Collection arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeEdge(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Object removeEdge(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean removeVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Set vertexSet() {
-		// TODO Auto-generated method stub
-		return null;
+	public void shortestPathDijkstra(){
+		
+		DijkstraShortestPath<Knot, DefaultEdge> dsp = new DijkstraShortestPath<Knot, DefaultEdge>(g, startPosition, endPosition);
+		BellmanFordShortestPath<Knot, DefaultEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultEdge>(g, startPosition);
+		System.out.println(bfsp.getCost(endPosition));
+		System.out.println(dsp.getPathEdgeList());
+		
+		System.out.println("pathlength " + dsp.getPathLength());
 	}
 
 }
