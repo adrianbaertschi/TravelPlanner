@@ -12,7 +12,7 @@ import model.Car;
 import model.FleetEditorModel;
 import model.MapEditorModel;
 import view.FleetEditorView;
-import view.MapEditor;
+import view.MapEditorView;
 
 /**
  * @author dimitri.haemmerli

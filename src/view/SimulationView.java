@@ -2,6 +2,6 @@ package view;
 
 import javax.swing.JPanel;
 
-public class Simulation extends JPanel {
+public class SimulationView extends JPanel {
 
 }

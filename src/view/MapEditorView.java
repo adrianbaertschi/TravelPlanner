@@ -20,14 +20,14 @@ import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 
-public class MapEditor extends JPanel implements Observer{
+public class MapEditorView extends JPanel implements Observer{
 	
 	private MapEditorModel model = new MapEditorModel();
 	
 	private JPanel mapArea;
 	private JLabel streetInfo;
 
-	public MapEditor() {
+	public MapEditorView() {
 		
 		// Map Area
 		mapArea = new JPanel() {
