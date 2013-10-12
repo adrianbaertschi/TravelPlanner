@@ -33,6 +33,21 @@
 		<artifactId>jgraph</artifactId>
 		<version>5.13.0.0</version>
 	</dependency>
-                    
+
+    <dependency>
+    	<groupId>org.eclipse.persistence</groupId>
+    	<artifactId>javax.persistence</artifactId>
+    	<version>2.1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.persistence</groupId>
+    	<artifactId>eclipselink</artifactId>
+    	<version>2.5.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.hsqldb</groupId>
+    	<artifactId>hsqldb</artifactId>
+    	<version>2.3.0</version>
+    </dependency>
   </dependencies>
 </project>

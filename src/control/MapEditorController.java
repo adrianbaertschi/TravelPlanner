@@ -26,6 +26,8 @@ public class MapEditorController {
 
 	private void addListener() {
 		view.getMapArea().addMouseListener(new MapMouseListener());
+		view.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
+		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 	}
 
 	public Component showView() {
@@ -123,14 +125,21 @@ public class MapEditorController {
 		}
 	}
 	
-	class BtnRemoveActionListener implements ActionListener {
+	class BtnSaveMapActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("save");
 			
+		}
+	}
+	
+	class BtnLoadMapActioListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("load");
 			
 		}
 		
 	}
-	
 
 }

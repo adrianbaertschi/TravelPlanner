@@ -26,6 +26,9 @@ public class MapEditor extends JPanel implements Observer{
 	
 	private JPanel mapArea;
 	private JLabel streetInfo;
+	
+	private JButton btnSaveMap;
+	private JButton btnLoadMap;
 
 	public MapEditor() {
 		
@@ -50,10 +53,28 @@ public class MapEditor extends JPanel implements Observer{
 		
 		this.add(streetInfo);
 		
+		// Save Button
+		btnSaveMap = new JButton("Save Map");
+		btnSaveMap.setBounds(520, 480, 100, 30);
+		this.add(btnSaveMap);
+		
+		// Load Button
+		btnLoadMap = new JButton("Load Map");
+		btnLoadMap.setBounds(630, 480, 100, 30);
+		this.add(btnLoadMap);
+		
 	}
 	
 	public JPanel getMapArea() {
 		return this.mapArea;
+	}
+	
+	public JButton getBtnSaveMap() {
+		return btnSaveMap;
+	}
+	
+	public JButton getBtnLoadMap() {
+		return btnLoadMap;
 	}
 	
 	private void draw(Graphics g) {
