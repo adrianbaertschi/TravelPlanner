@@ -20,7 +20,7 @@ import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 
-public class MapEditor extends JPanel implements Observer{
+public class MapEditorView extends JPanel implements Observer{
 	
 	private MapEditorModel model = new MapEditorModel();
 	
@@ -30,7 +30,7 @@ public class MapEditor extends JPanel implements Observer{
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
 
-	public MapEditor() {
+	public MapEditorView() {
 		
 		// Map Area
 		mapArea = new JPanel() {

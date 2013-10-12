@@ -37,12 +37,12 @@ public class MasterGui extends JFrame {
 		
 		JTabbedPane tabPane = new JTabbedPane();
 		
-		MapEditorController mapEditorController = new MapEditorController(new MapEditor(), new MapEditorModel());
+		MapEditorController mapEditorController = new MapEditorController(new MapEditorView(), new MapEditorModel());
 
 		tabPane.addTab("Fleet Editor", new FleetEditorController().showView());
 		
 		tabPane.addTab("Map Editor", mapEditorController.showView());
-		tabPane.addTab("Simulation", new Simulation());
+		tabPane.addTab("Simulation", new SimulationView());
 		
 		this.setContentPane(tabPane);
 	}

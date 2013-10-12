@@ -9,15 +9,15 @@ import java.awt.event.MouseListener;
 import model.Knot;
 import model.MapEditorModel;
 import model.Street;
-import view.MapEditor;
+import view.MapEditorView;
 
 public class MapEditorController {
 
-	private MapEditor view;
+	private MapEditorView view;
 	private MapEditorModel model;
 	
 
-	public MapEditorController(MapEditor view, MapEditorModel model) {
+	public MapEditorController(MapEditorView view, MapEditorModel model) {
 		this.view = view;
 		this.model = model;
 		this.model.addObserver(view);

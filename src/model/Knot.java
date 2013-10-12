@@ -10,8 +10,10 @@ public class Knot {
 	private long id;
 	private int x;
 	private int y;
+	private boolean isStartingPosition;
+	private boolean isEndPosition;
 	
-	public Knot() {};
+	public Knot() {}
 	
 	public Knot(int x, int y) {
 		this.setX(x);
@@ -36,6 +38,34 @@ public class Knot {
 	
 	public String toString() {
 		return "(" + x + "/" + y + ")";
+	}
+
+	/**
+	 * @return the isStartingPosition
+	 */
+	public boolean isStartingPosition() {
+		return isStartingPosition;
+	}
+
+	/**
+	 * @param isStartingPosition the isStartingPosition to set
+	 */
+	public void setStartingPosition(boolean isStartingPosition) {
+		this.isStartingPosition = isStartingPosition;
+	}
+
+	/**
+	 * @return the isFinalPosition
+	 */
+	public boolean isEndPosition() {
+		return isEndPosition;
+	}
+
+	/**
+	 * @param isFinalPosition the isFinalPosition to set
+	 */
+	public void setEndPosition(boolean isEndPosition) {
+		this.isEndPosition = isEndPosition;
 	}
 
 }
