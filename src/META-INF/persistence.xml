@@ -9,7 +9,7 @@
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:TravelPlanner/db/db;shutdown=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:db/db;shutdown=true" />
 			<property name="javax.persistence.jdbc.user" value="sa" />
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
