@@ -32,12 +32,12 @@ public class MapEditorModel extends Observable {
 	public MapEditorModel(){
 		
 	//for test use only
-//		Knot k1= new Knot(1, 1);
-//		k1.setStartingPosition(true);
-//		Knot k2= new Knot(400, 400);
-//		k2.setEndPosition(true);		
-//		streets.add(new Street(k1, new Knot(100, 100)));
-//		streets.add(new Street(new Knot(300, 300), k2));
+		Knot k1= new Knot(1, 1);
+		k1.setStartingPosition(true);
+		Knot k2= new Knot(400, 400);
+		k2.setEndPosition(true);		
+		streets.add(new Street(k1, new Knot(100, 100)));
+		streets.add(new Street(new Knot(300, 300), k2));
 	//
 		
 	}
