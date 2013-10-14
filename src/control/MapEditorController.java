@@ -6,10 +6,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
+
 import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 import view.MapEditorView;
+import dao.Database;
 
 public class MapEditorController {
 
@@ -128,8 +131,11 @@ public class MapEditorController {
 	class BtnSaveMapActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("save");
+			String name = JOptionPane.showInputDialog("Enter name");
 			
+			model.setName(name);
+			
+			Database.getInstance().saveMap(model);
 		}
 	}
 	
