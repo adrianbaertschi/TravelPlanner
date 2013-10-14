@@ -1,10 +1,17 @@
 package model;
 
+import java.awt.Color;
 import java.awt.geom.Line2D;
 
-public class Street {
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+
+
+@SuppressWarnings("serial")
+public class Street{
 	private Knot start;
 	private Knot end;
+	private Color streetColor = Color.BLUE;
 	
 	public Street(Knot start) {
 		this.start = start;
@@ -27,6 +34,7 @@ public class Street {
 	public void setEnd(Knot end) {
 		this.end = end;
 	}
+	
 	
 	/**
 	 * Calculate length of street based on start and end
@@ -53,6 +61,20 @@ public class Street {
 		int toleance = 3; //TODO: define constants somewhere
 		return distance <= toleance;
 		
+	}
+
+	/**
+	 * @return the streetColor
+	 */
+	public Color getStreetColor() {
+		return streetColor;
+	}
+
+	/**
+	 * @param streetColor the streetColor to set
+	 */
+	public void setStreetColor(Color streetColor) {
+		this.streetColor = streetColor;
 	}
 	
 }

@@ -93,7 +93,7 @@ public class MapEditorView extends JPanel implements Observer{
 			if(street == model.getSelectedStreet()) {
 				g2d.setColor(Color.CYAN);
 			} else {
-				g2d.setColor(Color.BLACK);
+				g2d.setColor(street.getStreetColor());
 			}
 			g2d.setStroke(new BasicStroke(2));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());

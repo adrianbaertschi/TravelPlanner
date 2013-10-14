@@ -38,8 +38,8 @@ public class MapEditorModel extends Observable {
 		streets.add(street);
 		super.setChanged();
 		super.notifyObservers(street);
-		if(streets.size()>5){
-			smg.addStreets(streets);
+		if(streets.size()>3){
+			smg.getShortestPath(this);
 		}
 	}
 
