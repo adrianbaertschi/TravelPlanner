@@ -1,28 +1,12 @@
 package model;
 
+import java.awt.Color;
 import java.awt.geom.Line2D;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-@Entity
 public class Street {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Knot start;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Knot end;
-	
-	public Street() {}
+	private Color streetColor = Color.BLUE;
 	
 	public Street(Knot start) {
 		this.start = start;
@@ -71,6 +55,20 @@ public class Street {
 		int toleance = 3; //TODO: define constants somewhere
 		return distance <= toleance;
 		
+	}
+
+	/**
+	 * @return the streetColor
+	 */
+	public Color getStreetColor() {
+		return streetColor;
+	}
+
+	/**
+	 * @param streetColor the streetColor to set
+	 */
+	public void setStreetColor(Color streetColor) {
+		this.streetColor = streetColor;
 	}
 	
 }

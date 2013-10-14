@@ -3,18 +3,15 @@
  */
 package model;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.UndirectedGraph;
+import org.jgrapht.Graph;
 import org.jgrapht.alg.BellmanFordShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.AsUndirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 /**
  * @author dimitri.haemmerli
@@ -22,30 +19,37 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class SolverMapGraph{
 	
-	DirectedGraph<Knot, DefaultEdge> dg =
-            new DefaultDirectedGraph<Knot, DefaultEdge>(DefaultEdge.class);
+//	SimpleWeightedGraph<Knot, Street> swg = new SimpleWeightedGraph<Knot, Street>(Street.class);
+	SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+	SimpleWeightedGraph<Knot, Street> swgTest = new SimpleWeightedGraph<Knot, Street>(Street.class);
 	List<Knot> knots = new ArrayList<Knot>();
 	
 	Knot startPosition = null;
 	Knot endPosition = null;
 	int counter = 0;
+	List<Street> streets;
 
 	
-	public void addStreets(List<Street> streets){
+	public void getShortestPath(MapEditorModel model){
 			
+		streets = model.getStreets();
 		
 	    for(Street s :streets){
 	    	
 			// add the vertices
-	    	if(!dg.containsVertex(s.getStart())){
-			    dg.addVertex(s.getStart());}
-			if(!dg.containsVertex(s.getEnd())){
-			    dg.addVertex(s.getEnd());}
+	    	if(!swg.containsVertex(s.getStart())){
+	    		swg.addVertex(s.getStart());}
+			if(!swg.containsVertex(s.getEnd())){
+				swg.addVertex(s.getEnd());}
 
 
 			// add edges to create linking structure
-			if(!dg.containsEdge(s.getStart(), s.getEnd()))
-				dg.addEdge(s.getStart(), s.getEnd());
+			if(!swg.containsEdge(s.getStart(), s.getEnd())){
+				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(), s.getEnd());			
+				swg.setEdgeWeight(dwg, s.getLenth());
+//				swg.addEdge(s.getStart(), s.getEnd());
+				
+			}
 
 			System.out.println(s.getStart().getX() + " " + s.getStart().getY());
 			System.out.println(s.getEnd().getX() + " " +  s.getEnd().getY());
@@ -60,7 +64,7 @@ public class SolverMapGraph{
 	    }
 		System.out.println(startPosition.getX() + " " + startPosition.getY());
 		System.out.println(endPosition.getX() + " " + endPosition.getY());
-		System.out.println(dg.containsVertex(endPosition));
+		System.out.println(swg.containsVertex(endPosition));
 //		if(counter >= 2)
 			shortestPathDijkstra();
 //		counter++;
@@ -68,12 +72,36 @@ public class SolverMapGraph{
 
 	public void shortestPathDijkstra(){
 		
-		UndirectedGraph<Knot, DefaultEdge> ug =
-	            new AsUndirectedGraph<Knot, DefaultEdge>(dg);
-		DijkstraShortestPath<Knot, DefaultEdge> dsp = new DijkstraShortestPath<Knot, DefaultEdge>(ug, startPosition, endPosition);
-		BellmanFordShortestPath<Knot, DefaultEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultEdge>(ug, startPosition);
+//		UndirectedGraph<Knot, DefaultWeightedEdge> ug =
+//	            new AsUndirectedGraph<Knot, DefaultWeightedEdge>(dg);
+		DijkstraShortestPath<Knot, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition, endPosition);
+		BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
 		System.out.println(bfsp.getCost(endPosition));
 		System.out.println(dsp.getPathEdgeList());
+
+		List<DefaultWeightedEdge> shortestPath = dsp.getPathEdgeList();
+
+		int i = 0;
+		
+		for(Street s1 : streets){
+			
+			s1.setStreetColor(Color.BLUE);
+
+			
+		}
+		if (shortestPath != null) {
+			for (DefaultWeightedEdge d1 : shortestPath) {
+
+				for (Street s1 : streets) {
+
+					if (swg.getEdgeSource(d1).equals(s1.getStart())
+							&& swg.getEdgeTarget(d1).equals(s1.getEnd())) {
+						s1.setStreetColor(Color.PINK);
+					}
+				}
+
+			}
+		}
 		
 		System.out.println("pathlength " + dsp.getPathLength());
 	}
