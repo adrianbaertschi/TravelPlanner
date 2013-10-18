@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,7 +28,7 @@ public class FleetEditorView extends JPanel {
 
 	private void initComponents() {
 		
-		this.setLayout(new FlowLayout());
+		this.setLayout(new GridBagLayout());
         this.add(new JLabel("Hello, world!"));
         this.add(carNameJTF);
         this.add(addCarJB);
