@@ -12,6 +12,8 @@ import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 import view.MapEditorView;
+import view.MapLoaderDialog;
+import view.MasterGui;
 import dao.Database;
 
 public class MapEditorController {
@@ -31,6 +33,7 @@ public class MapEditorController {
 		view.getMapArea().addMouseListener(new MapMouseListener());
 		view.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
 		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
+		view.getBtnReset().addActionListener(new BtnResetActionListener());
 	}
 
 	public Component showView() {
@@ -142,7 +145,16 @@ public class MapEditorController {
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("load");
+			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0]);
+			d.setVisible(true);
+		}
+		
+	}
+	
+	class BtnResetActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			model.reset();
 			
 		}
 		

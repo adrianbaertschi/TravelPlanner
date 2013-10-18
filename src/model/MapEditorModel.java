@@ -7,6 +7,8 @@ import java.util.Observable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -15,8 +17,13 @@ import javax.persistence.Transient;
 public class MapEditorModel extends Observable {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	public long getId() {
+		return id;
+	}
+
 	@Column(unique=true, nullable=false)
 	private String name;
 	
@@ -77,6 +84,14 @@ public class MapEditorModel extends Observable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void reset() {
+		this.streets = new ArrayList<Street>();
+		this.selectedStreet = null;
+		this.name = null;
+		super.setChanged();
+		super.notifyObservers();
 	}
 	
 

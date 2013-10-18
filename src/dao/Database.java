@@ -1,8 +1,11 @@
 package dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import model.Knot;
 import model.MapEditorModel;
@@ -15,6 +18,9 @@ public class Database {
 	
 	private Database() { }
 	
+	EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+	private EntityManager em = factory.createEntityManager();
+	
 	public static Database getInstance() {
 		if(instance == null) {
 			instance = new Database();
@@ -24,7 +30,9 @@ public class Database {
 	
 	public void saveMap(MapEditorModel mapModel) {
 		
-		EntityManager em = getEntityManager();
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
+		em = factory.createEntityManager();
+		
 		
 	    em.getTransaction().begin();
 	    em.persist(mapModel);
@@ -35,7 +43,7 @@ public class Database {
 	
 	public void saveKnot(Knot k) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
-		EntityManager em = factory.createEntityManager();
+		em = factory.createEntityManager();
 		
 	    em.getTransaction().begin();
 	    
@@ -48,7 +56,7 @@ public class Database {
 	
 	public void saveStreet(Street street) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
-		EntityManager em = factory.createEntityManager();
+		em = factory.createEntityManager();
 		
 	    em.getTransaction().begin();
 	    
@@ -59,9 +67,20 @@ public class Database {
 	    em.close();
 	}
 	
-	private EntityManager getEntityManager() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-		return factory.createEntityManager();
+
+	public List<MapEditorModel> getMaps() {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
+		em = factory.createEntityManager();
+		
+	    em.getTransaction().begin();
+		
+//		em.getTransaction().begin();
+		Query q = em.createQuery("select m from MapEditorModel m");
+		List resultList = q.getResultList();
+		
+		em.close();
+		return resultList;
+		
 	}
 
 }

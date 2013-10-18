@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,10 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import control.MapEditorController;
-import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 
@@ -29,6 +25,8 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
+	private JButton btnReset;
+	private JButton btnDelete;
 
 	public MapEditorView() {
 		
@@ -41,7 +39,7 @@ public class MapEditorView extends JPanel implements Observer{
 			}
 		};
 		this.setLayout(null);
-		mapArea.setBounds(10, 10, 500, 500);
+		mapArea.setBounds(10, 10, 900, 800);
 		mapArea.setBackground(Color.WHITE);
 		mapArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		
@@ -49,19 +47,28 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		// Details
 		streetInfo = new JLabel();
-		streetInfo.setBounds(520, 10, 300, 30);
+		streetInfo.setBounds(920, 10, 300, 30);
 		
 		this.add(streetInfo);
 		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
-		btnSaveMap.setBounds(520, 480, 100, 30);
+		btnSaveMap.setBounds(920, 480, 100, 30);
 		this.add(btnSaveMap);
 		
 		// Load Button
 		btnLoadMap = new JButton("Load Map");
-		btnLoadMap.setBounds(630, 480, 100, 30);
+		btnLoadMap.setBounds(1030, 480, 100, 30);
 		this.add(btnLoadMap);
+		
+		// Reset Button
+		btnReset = new JButton("Reset");
+		btnReset.setBounds(920, 440, 100, 30);
+		this.add(btnReset);
+		
+		btnDelete = new JButton("Delete");
+		btnDelete.setBounds(1030, 440, 100, 30);
+		this.add(btnDelete);
 		
 	}
 	
@@ -75,6 +82,10 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	public JButton getBtnLoadMap() {
 		return btnLoadMap;
+	}
+	
+	public JButton getBtnReset() {
+		return btnReset;
 	}
 	
 	private void draw(Graphics g) {
