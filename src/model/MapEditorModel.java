@@ -94,5 +94,14 @@ public class MapEditorModel extends Observable {
 		super.notifyObservers();
 	}
 	
+	public void loadModel(MapEditorModel model) {
+		this.streets = model.streets;
+		this.name = model.name;
+		this.id = model.id;
+		
+		super.setChanged();
+		super.notifyObservers();
+	}
+	
 
 }
