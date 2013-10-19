@@ -74,13 +74,22 @@ public class Database {
 		
 	    em.getTransaction().begin();
 		
-//		em.getTransaction().begin();
 		Query q = em.createQuery("select m from MapEditorModel m");
-		List resultList = q.getResultList();
+		List<MapEditorModel> resultList = q.getResultList();
 		
 		em.close();
 		return resultList;
+	}
+	
+	public MapEditorModel getModelById(long id) {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
+		em = factory.createEntityManager();
 		
+		em.getTransaction().begin();
+		MapEditorModel map = em.find(MapEditorModel.class, id);
+		
+		em.close();
+		return map;
 	}
 
 }

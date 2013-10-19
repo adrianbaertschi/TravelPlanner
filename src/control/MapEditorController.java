@@ -34,21 +34,41 @@ public class MapEditorController {
 		view.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
 		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
+		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
 	}
 
 	public Component showView() {
 		this.view.setVisible(true);
 		return this.view;
 	}
+	
+	public void setModel(MapEditorModel model) {
+		this.model.loadModel(model);
+	}
 
 	class MapMouseListener implements MouseListener {
 
 		private Street s;
 		
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {	}
+
+		private Street clickedOnStreet(Knot point) {
+			for(Street street : model.getStreets()) {
+				if(street.isPointOnStreet(point.getX(), point.getY())) {
+					return street;
+				}
+			}
+			return null;
+		}
+
+		public void mouseEntered(MouseEvent e) {	}
+		public void mouseExited(MouseEvent e) 	{	}
+		public void mousePressed(MouseEvent e) {	
 			Knot point = new Knot(e.getX(), e.getY());
 
 			Knot selectedKnot = clickedOnEdge(point);
+			
+			model.setSelectedKnot(selectedKnot);
 
 			// CASE 1: New Street
 			if(selectedKnot == null) {
@@ -73,6 +93,7 @@ public class MapEditorController {
 					s = null;
 				} 
 			} else {
+				
 				// CASE 2: append to existing
 				if(s == null) {
 					s = new Street(selectedKnot);
@@ -80,25 +101,14 @@ public class MapEditorController {
 					// TODO: CASE 3: connect two existing
 					s.setEnd(selectedKnot);
 					model.addStreet(s);
+					model.setSelectedKnot(null);
 					
 					// reset Street
 					s = null;
 				}
 			}
 		}
-
-		private Street clickedOnStreet(Knot point) {
-			for(Street street : model.getStreets()) {
-				if(street.isPointOnStreet(point.getX(), point.getY())) {
-					return street;
-				}
-			}
-			return null;
-		}
-
-		public void mouseEntered(MouseEvent e) {	}
-		public void mouseExited(MouseEvent e) 	{	}
-		public void mousePressed(MouseEvent e) {	}
+		
 		public void mouseReleased(MouseEvent e) {	}
 		
 		private Knot clickedOnEdge(Knot k) {
@@ -136,8 +146,11 @@ public class MapEditorController {
 		public void actionPerformed(ActionEvent e) {
 			String name = JOptionPane.showInputDialog("Enter name");
 			
-			model.setName(name);
+			if(name == null) {
+				return;
+			}
 			
+			model.setName(name);
 			Database.getInstance().saveMap(model);
 		}
 	}
@@ -145,17 +158,22 @@ public class MapEditorController {
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0]);
+			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0], MapEditorController.this);
 			d.setVisible(true);
 		}
-		
 	}
 	
 	class BtnResetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			model.reset();
-			
+		}
+	}
+	
+	class BtnDeleteActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			model.removeStreet(model.getSelectedStreet());
 		}
 		
 	}

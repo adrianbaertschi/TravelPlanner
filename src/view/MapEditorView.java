@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Knot;
 import model.MapEditorModel;
 import model.Street;
 
@@ -68,6 +69,7 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		btnDelete = new JButton("Delete");
 		btnDelete.setBounds(1030, 440, 100, 30);
+		btnDelete.setEnabled(false);
 		this.add(btnDelete);
 		
 	}
@@ -88,8 +90,11 @@ public class MapEditorView extends JPanel implements Observer{
 		return btnReset;
 	}
 	
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+	
 	private void draw(Graphics g) {
-		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D)g;
 		
 		// antialiasing ON
@@ -97,10 +102,22 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		for(Street street : model.getStreets()) {
 			
-			g2d.setColor(Color.BLUE);
+			// Knoten
+			if(street.getStart().equals(model.getSelectedKnot())) {
+				g2d.setColor(Color.CYAN);
+			} else {
+				g2d.setColor(Color.DARK_GRAY);
+			}
 			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
-			g2d.fillOval(street.getEnd().getX() -5, street.getEnd().getY() -5, 10, 10);
 			
+			if(street.getEnd().equals(model.getSelectedKnot())) {
+				g2d.setColor(Color.CYAN);
+			} else {
+				g2d.setColor(Color.DARK_GRAY);
+			}
+			g2d.fillOval(street.getEnd().getX()   -5, street.getEnd().getY()   -5, 10, 10);
+			
+			// Strassen
 			if(street == model.getSelectedStreet()) {
 				g2d.setColor(Color.CYAN);
 			} else {
@@ -109,19 +126,25 @@ public class MapEditorView extends JPanel implements Observer{
 			g2d.setStroke(new BasicStroke(2));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
 		}
-		
-		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
+	}
+	
+	private void displayStreetInfo(Street selectedStreet) {
+		if(selectedStreet == null)  {
+			streetInfo.setText("");
+			btnDelete.setEnabled(false);
+		} else {
+			streetInfo.setText("Lenth: " + selectedStreet.getLenth());
+			btnDelete.setEnabled(true);
+		}
 		
 	}
 	
-
-	private void displayStreetInfo(Street selectedStreet) {
-		if(selectedStreet == null)  {
-			streetInfo.setText("Click on street to view info.");
+	private void displayKnotInfo(Knot selectedKnot) {
+		if(selectedKnot != null) {
+			streetInfo.setText("Knot Position: " + selectedKnot.getX() + " / " + selectedKnot.getY());
 		} else {
-			streetInfo.setText("Lenth: " + selectedStreet.getLenth());
+			streetInfo.setText("");
 		}
-		
 	}
 
 	public void update(Observable model, Object value) {
@@ -130,7 +153,14 @@ public class MapEditorView extends JPanel implements Observer{
 			repaint();
 		}
 		if(value instanceof Street) {
-			displayStreetInfo((Street)value);
+			if(this.model.getSelectedStreet() == value) {
+				displayStreetInfo((Street)value);
+			} else {
+				displayStreetInfo(null);
+			}
+		}
+		if(value instanceof Knot) {
+			displayKnotInfo((Knot)value);
 		}
 	}
 }
