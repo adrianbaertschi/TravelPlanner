@@ -5,6 +5,8 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -15,12 +17,15 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
 import model.Street;
+import model.Vehicle;
 
 /**
  * @author dimitri.haemmerli
@@ -29,18 +34,29 @@ import model.Street;
 public class SimulationEditorView extends JPanel implements Observer{
 
 	private MapEditorModel mapModel = new MapEditorModel();
+	private FleetEditorModel fleetEditorModel = new FleetEditorModel();
 	
 	private JPanel mapArea;
+	private JPanel vehicleArea;
+	private JPanel vehicleSelectionArea;
 	private JLabel streetInfo;
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
 	private JButton btnReset;
 	private JButton btnDelete;
+	
+	private JLayeredPane vehicleJLP;
 
 	
 	public SimulationEditorView() {
 		
+		
+		initComponents();
+		
+	}
+	
+	private void initComponents() {
 		
 		// Map Area
 		mapArea = new JPanel() {
@@ -50,6 +66,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 				draw(g);
 			}
 		};
+		
+		
 		this.setLayout(null);
 		mapArea.setBounds(10, 10, 900, 800);
 		mapArea.setBackground(Color.WHITE);
@@ -61,7 +79,33 @@ public class SimulationEditorView extends JPanel implements Observer{
 		streetInfo = new JLabel();
 		streetInfo.setBounds(920, 10, 300, 30);
 		
+		
 		this.add(streetInfo);
+		
+		
+		// Vehicle Area
+		vehicleArea = new JPanel();
+		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
+		vehicleArea.setBackground(Color.WHITE);
+		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		vehicleArea.setLayout(new FlowLayout(FlowLayout.LEFT));
+			
+		
+		this.add(vehicleArea);
+		
+		
+		// VehicleSelectionArea
+		vehicleSelectionArea = new JPanel();
+		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 210));
+		vehicleSelectionArea.setBackground(Color.BLACK);
+		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+
+		vehicleArea.add(vehicleSelectionArea);		
+
+		
+//		for(Vehicle v1 : )
+		
+		
 		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
@@ -81,9 +125,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		btnDelete = new JButton("Delete");
 		btnDelete.setBounds(1030, 440, 100, 30);
 		this.add(btnDelete);
-		
 	}
-	
+
 	public JPanel getMapArea() {
 		return this.mapArea;
 	}

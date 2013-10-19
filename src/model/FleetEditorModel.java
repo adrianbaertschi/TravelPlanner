@@ -12,43 +12,35 @@ import java.util.ArrayList;
 public class FleetEditorModel {
 	
 	private String name;
-	private ArrayList<Car> Cars = new ArrayList<Car>();
+	private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 
 	
-			
-	public void addCar(Car car){
+	public FleetEditorModel(){
 		
-		Cars.add(car);
-		System.out.println("Car " + car.getName() + " added");
 	}
 
+
+	public void addVehicle(Vehicle vehicle){
+		
+		vehicles.add(vehicle);
+	}
+	
 	/**
-	 * @return the name
+	 * @return the vehicles
 	 */
-	public String getName() {
-		return name;
+	public ArrayList<Vehicle> getVehicles() {
+		return vehicles;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	/**
-	 * @return the cars
+	 * @param vehicles the vehicles to set
 	 */
-	public ArrayList<Car> getCars() {
-		return Cars;
+	public void setVehicles(ArrayList<Vehicle> vehicles) {
+		this.vehicles = vehicles;
 	}
+			
 
-	/**
-	 * @param cars the cars to set
-	 */
-	public void setCars(ArrayList<Car> cars) {
-		Cars = cars;
-	}
 
 	
 }

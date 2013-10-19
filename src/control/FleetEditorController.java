@@ -30,20 +30,6 @@ public class FleetEditorController {
 		
 		this.view = new FleetEditorView();
 		this.model = new FleetEditorModel();
-		
-		addListener();
-	}
-	
-	private void addListener() {
-		view.getAddCarJB().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				model.addCar(new Car(view.getCarNameJTF().getText()));
-				
-			}
-		});
 	}
 
 	public Component showView() {

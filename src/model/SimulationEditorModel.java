@@ -11,25 +11,41 @@ import java.util.Observable;
  */
 public class SimulationEditorModel extends Observable {
 	
-	private MapEditorModel mem;
+	private MapEditorModel mapEditorModel;
+	private FleetEditorModel fleetEditorModel;
 
 	public SimulationEditorModel(){
 		
 	}
 
 	/**
-	 * @return the mem
+	 * @return the mapEditorModel
 	 */
 	public MapEditorModel getMapEditorModel() {
-		return mem;
+		return mapEditorModel;
 	}
 
 	/**
-	 * @param mem the mem to set
+	 * @param mapEditorModel the mapEditorModel to set
 	 */
-	public void setMapEditorModel(MapEditorModel mem) {
-		this.mem = mem;
+	public void setMapEditorModel(MapEditorModel mapEditorModel) {
+		this.mapEditorModel = mapEditorModel;
 	}
+
+	/**
+	 * @return the fleetEditorModel
+	 */
+	public FleetEditorModel getFleetEditorModel() {
+		return fleetEditorModel;
+	}
+
+	/**
+	 * @param fleetEditorModel the fleetEditorModel to set
+	 */
+	public void setFleetEditorModel(FleetEditorModel fleetEditorModel) {
+		this.fleetEditorModel = fleetEditorModel;
+	}
+
 	
 
 }
