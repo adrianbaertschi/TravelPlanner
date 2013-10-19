@@ -34,7 +34,11 @@ public class MapEditorModel extends Observable {
 	private Street selectedStreet;
 	
 	@Transient
+	private Knot selectedKnot;
+	
+	@Transient
 	private SolverMapGraph smg = new SolverMapGraph();
+	
 
 	public MapEditorModel(){
 		
@@ -67,6 +71,12 @@ public class MapEditorModel extends Observable {
 			smg.getShortestPath(this);
 		}
 	}
+	
+	public void removeStreet(Street street) {
+		streets.remove(street);
+		super.setChanged();
+		super.notifyObservers(street);
+	}
 
 	public void setSelectedStreet(Street selectedStreet) {
 		this.selectedStreet = selectedStreet;
@@ -84,6 +94,16 @@ public class MapEditorModel extends Observable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Knot getSelectedKnot() {
+		return selectedKnot;
+	}
+
+	public void setSelectedKnot(Knot selectedKnot) {
+		this.selectedKnot = selectedKnot;
+		super.setChanged();
+		super.notifyObservers();
 	}
 	
 	public void reset() {

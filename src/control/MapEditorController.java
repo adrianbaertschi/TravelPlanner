@@ -34,6 +34,7 @@ public class MapEditorController {
 		view.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
 		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
+		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
 	}
 
 	public Component showView() {
@@ -66,6 +67,8 @@ public class MapEditorController {
 			Knot point = new Knot(e.getX(), e.getY());
 
 			Knot selectedKnot = clickedOnEdge(point);
+			
+			model.setSelectedKnot(selectedKnot);
 
 			// CASE 1: New Street
 			if(selectedKnot == null) {
@@ -90,6 +93,7 @@ public class MapEditorController {
 					s = null;
 				} 
 			} else {
+				
 				// CASE 2: append to existing
 				if(s == null) {
 					s = new Street(selectedKnot);
@@ -97,6 +101,7 @@ public class MapEditorController {
 					// TODO: CASE 3: connect two existing
 					s.setEnd(selectedKnot);
 					model.addStreet(s);
+					model.setSelectedKnot(null);
 					
 					// reset Street
 					s = null;
@@ -156,14 +161,19 @@ public class MapEditorController {
 			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0], MapEditorController.this);
 			d.setVisible(true);
 		}
-		
 	}
 	
 	class BtnResetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			model.reset();
-			
+		}
+	}
+	
+	class BtnDeleteActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			model.removeStreet(model.getSelectedStreet());
 		}
 		
 	}
