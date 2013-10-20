@@ -73,6 +73,17 @@ public class Knot {
 	public void setEndPosition(boolean isEndPosition) {
 		this.isEndPosition = isEndPosition;
 	}
+	
+	/**
+	 * Knots are equal if x and y are equal
+	 */
+	public boolean equals(Object o) {
+		if(o instanceof Knot) {
+			Knot k = (Knot)o;
+			return this.x == k.x && this.y == k.y;
+		}
+		return false;
+	}
 
 	/**
 	 * @return the color

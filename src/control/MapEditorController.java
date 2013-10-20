@@ -77,21 +77,30 @@ public class MapEditorController {
 				if(s == null) {
 					s = new Street(point);
 					
+					
 					Street selectedStreet = clickedOnStreet(point);
 					model.setSelectedStreet(selectedStreet);
 					
 					if(selectedStreet != null) {
 						s = null;
+					} else {
+						model.setSelectedKnot(point);
 					}
 					
 					
 					// Second click
-				} else if (s.getStart() != null && s.getEnd() == null) {
-					s.setEnd(point);
-					model.addStreet(s);
+				} else if (s.getStart() != null && s.getEnd() == null && !s.getStart().equals(point)) {
 					
-					// reset Street
-					s = null;
+					if(clickedOnStreet(point) == null) {
+						s.setEnd(point);
+						model.addStreet(s);
+						
+						// reset Street
+						s = null;
+						
+					} else {
+						model.setSelectedKnot(s.getStart());
+					}
 				} 
 			} else {
 				
@@ -99,7 +108,7 @@ public class MapEditorController {
 				if(s == null) {
 					s = new Street(selectedKnot);
 				} else {
-					// TODO: CASE 3: connect two existing
+					// CASE 3: connect two existing
 					s.setEnd(selectedKnot);
 					model.addStreet(s);
 					model.setSelectedKnot(null);
