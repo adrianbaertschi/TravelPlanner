@@ -51,7 +51,13 @@ public class MapEditorController {
 
 		private Street s;
 		
-		public void mouseClicked(MouseEvent e) {	}
+		public void mouseClicked(MouseEvent e) {
+			
+			
+			
+			
+			
+		}
 
 		private Street clickedOnStreet(Knot point) {
 			for(Street street : model.getStreets()) {

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Knot {
@@ -17,7 +18,10 @@ public class Knot {
 	private int y;
 	private boolean isStartingPosition;
 	private boolean isEndPosition;
+
+	@Transient
 	private Color color = Color.DARK_GRAY;
+
 	
 	public Knot() {}
 	
