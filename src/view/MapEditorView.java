@@ -126,6 +126,10 @@ public class MapEditorView extends JPanel implements Observer{
 			g2d.setStroke(new BasicStroke(2));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
 		}
+		if(model.getSelectedKnot() != null) {
+			g2d.setColor(Color.CYAN);
+			g2d.fillOval(model.getSelectedKnot().getX()-5, model.getSelectedKnot().getY()-5, 10, 10);
+		}
 	}
 	
 	private void displayStreetInfo(Street selectedStreet) {
