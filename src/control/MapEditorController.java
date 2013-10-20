@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -125,7 +126,10 @@ public class MapEditorController {
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
+					street.getStart().setColor(Color.CYAN);
 					return street.getStart();
+				}else{
+					street.getStart().setColor(Color.DARK_GRAY);
 				}
 				
 				// On End?
@@ -133,7 +137,10 @@ public class MapEditorController {
 				ydiff = Math.abs(street.getEnd().getY() - y);
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
+					street.getEnd().setColor(Color.CYAN);
 					return street.getEnd();
+				}else{
+					street.getEnd().setColor(Color.DARK_GRAY);
 				}
 			}
 			

@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Color;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Knot {
 	private int y;
 	private boolean isStartingPosition;
 	private boolean isEndPosition;
+	private Color color = Color.DARK_GRAY;
 	
 	public Knot() {}
 	
@@ -69,6 +72,20 @@ public class Knot {
 	 */
 	public void setEndPosition(boolean isEndPosition) {
 		this.isEndPosition = isEndPosition;
+	}
+
+	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }
