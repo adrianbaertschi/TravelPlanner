@@ -133,6 +133,8 @@ public class MapEditorController {
 			int y = k.getY();
 			int toleranz = 5;
 			
+			Knot returnKnot = null;
+			
 			for(Street street : model.getStreets()) {
 				// TODO: Refactor
 				
@@ -140,11 +142,12 @@ public class MapEditorController {
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
+				street.getStart().setColor(Color.DARK_GRAY);
+				street.getEnd().setColor(Color.DARK_GRAY);
+
 				if(xdiff <= toleranz && ydiff <= toleranz) {
 					street.getStart().setColor(Color.CYAN);
-					return street.getStart();
-				}else{
-					street.getStart().setColor(Color.DARK_GRAY);
+					returnKnot = street.getStart();
 				}
 				
 				// On End?
@@ -153,13 +156,11 @@ public class MapEditorController {
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
 					street.getEnd().setColor(Color.CYAN);
-					return street.getEnd();
-				}else{
-					street.getEnd().setColor(Color.DARK_GRAY);
+					returnKnot = street.getEnd();
 				}
 			}
 			
-			return null;
+			return returnKnot;
 		}
 	}
 	
