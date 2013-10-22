@@ -3,7 +3,9 @@ package view;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -22,22 +24,30 @@ public class MapLoaderDialog extends JDialog {
 	public MapLoaderDialog(Frame frame, final MapEditorController parentController) {
 		super(frame);
 		this.setLayout(null);
-		this.setSize(500, 400);
+		this.setSize(350, 350);
 		this.setModal(true);
+		this.setTitle("Load Map");
 		this.setLocationRelativeTo(frame);
 		
 		List<MapEditorModel> maps = Database.getInstance().getMaps();
 		
-		Object[][] rowData = new Object[maps.size()][2];
+		String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
+		Object[][] rowData = new Object[maps.size()][columns.length];
 		for(int i = 0; i < maps.size(); i++) {
 			rowData[i][0] = maps.get(i).getId();
 			rowData[i][1] = maps.get(i).getName();
+			rowData[i][2] = maps.get(i).getStreets().size();
+			
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+			rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
 		}
-		final JTable table = new JTable(rowData, new String[]{"ID",  "Name"}) { 
+		final JTable table = new JTable(rowData, columns) { 
 			public boolean isCellEditable(int rowIndex, int colIndex) {
 				return false;
 			};
 		};
+		table.getColumnModel().getColumn(1).setPreferredWidth(100);
+		table.getColumnModel().getColumn(2).setPreferredWidth(30);
 		table.removeColumn(table.getColumn("ID"));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
@@ -54,11 +64,11 @@ public class MapLoaderDialog extends JDialog {
 				
 			}
 		});
-		scp.setBounds(5, 5, 300, 300);
+		scp.setBounds(5, 5, 340, 265);
 		
 		this.add(scp);
 		
-		btnLoad.setBounds(310, 5, 100, 30);
+		btnLoad.setBounds(5, 275, 100, 30);
 		btnLoad.setEnabled(false);
 		this.add(btnLoad);
 		

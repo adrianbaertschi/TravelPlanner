@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Observable;
 
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -24,7 +27,7 @@ public class MapEditorModel extends Observable {
 		return id;
 	}
 
-	@Column(unique=true, nullable=false)
+	@Column(nullable=false)
 	private String name;
 	
 	@OneToMany(cascade=CascadeType.PERSIST)
@@ -38,6 +41,9 @@ public class MapEditorModel extends Observable {
 	
 	@Transient
 	private SolverMapGraph smg = new SolverMapGraph();
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar saveDate;
 	
 
 	public MapEditorModel(){
@@ -112,6 +118,14 @@ public class MapEditorModel extends Observable {
 		super.notifyObservers(selectedKnot);
 	}
 	
+	public Calendar getSaveDate() {
+		return saveDate;
+	}
+
+	public void setSaveDate(Calendar saveDate) {
+		this.saveDate = saveDate;
+	}
+
 	public void reset() {
 		this.streets = new ArrayList<Street>();
 		this.selectedStreet = null;
