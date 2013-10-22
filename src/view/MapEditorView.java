@@ -103,18 +103,10 @@ public class MapEditorView extends JPanel implements Observer{
 		for(Street street : model.getStreets()) {
 			
 			// Knoten
-			if(street.getStart().equals(model.getSelectedKnot())) {
-				g2d.setColor(Color.CYAN);
-			} else {
-				g2d.setColor(Color.DARK_GRAY);
-			}
+			g2d.setColor(street.getStart().getColor());
 			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
 			
-			if(street.getEnd().equals(model.getSelectedKnot())) {
-				g2d.setColor(Color.CYAN);
-			} else {
-				g2d.setColor(Color.DARK_GRAY);
-			}
+			g2d.setColor(street.getEnd().getColor());
 			g2d.fillOval(street.getEnd().getX()   -5, street.getEnd().getY()   -5, 10, 10);
 			
 			// Strassen
@@ -126,6 +118,7 @@ public class MapEditorView extends JPanel implements Observer{
 			g2d.setStroke(new BasicStroke(2));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
 		}
+		
 		if(model.getSelectedKnot() != null) {
 			g2d.setColor(Color.CYAN);
 			g2d.fillOval(model.getSelectedKnot().getX()-5, model.getSelectedKnot().getY()-5, 10, 10);

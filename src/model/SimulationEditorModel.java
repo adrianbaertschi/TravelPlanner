@@ -22,6 +22,7 @@ public class SimulationEditorModel extends Observable {
 	 * @return the mapEditorModel
 	 */
 	public MapEditorModel getMapEditorModel() {
+		
 		return mapEditorModel;
 	}
 
@@ -46,6 +47,12 @@ public class SimulationEditorModel extends Observable {
 		this.fleetEditorModel = fleetEditorModel;
 	}
 
+	public void changed(){
+		
+		super.setChanged();
+		super.notifyObservers(this);
 	
+	}
+
 
 }

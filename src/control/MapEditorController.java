@@ -1,7 +1,5 @@
 package control;
 
-import static common.Constants.EDGE_RADIUS;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,7 +48,7 @@ public class MapEditorController {
 
 	class MapMouseListener implements MouseListener {
 
-		private Street curStreet;
+		private Street s;
 		
 		public void mouseClicked(MouseEvent e) {	}
 
@@ -75,47 +73,47 @@ public class MapEditorController {
 			// CASE 1: New Street
 			if(selectedKnot == null) {
 				// First click
-				if(curStreet == null) {
-					curStreet = new Street(point);
+				if(s == null) {
+					s = new Street(point);
 					
 					
 					Street selectedStreet = clickedOnStreet(point);
 					model.setSelectedStreet(selectedStreet);
 					
 					if(selectedStreet != null) {
-						curStreet = null;
+						s = null;
 					} else {
 						model.setSelectedKnot(point);
 					}
 					
 					
 					// Second click
-				} else if (curStreet.getStart() != null && curStreet.getEnd() == null && !curStreet.getStart().equals(point)) {
+				} else if (s.getStart() != null && s.getEnd() == null && !s.getStart().equals(point)) {
 					
 					if(clickedOnStreet(point) == null) {
-						curStreet.setEnd(point);
-						model.addStreet(curStreet);
+						s.setEnd(point);
+						model.addStreet(s);
 						
 						// reset Street
-						curStreet = null;
+						s = null;
 						
 					} else {
-						model.setSelectedKnot(curStreet.getStart());
+						model.setSelectedKnot(s.getStart());
 					}
 				} 
 			} else {
 				
 				// CASE 2: append to existing
-				if(curStreet == null) {
-					curStreet = new Street(selectedKnot);
+				if(s == null) {
+					s = new Street(selectedKnot);
 				} else {
 					// CASE 3: connect two existing
-					curStreet.setEnd(selectedKnot);
-					model.addStreet(curStreet);
+					s.setEnd(selectedKnot);
+					model.addStreet(s);
 					model.setSelectedKnot(null);
 					
 					// reset Street
-					curStreet = null;
+					s = null;
 				}
 			}
 		}
@@ -126,14 +124,16 @@ public class MapEditorController {
 			
 			int x = k.getX();
 			int y = k.getY();
+			int toleranz = 5;
 			
 			for(Street street : model.getStreets()) {
+				// TODO: Refactor
 				
 				// On Start Knoten?
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
-				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
+				if(xdiff <= toleranz && ydiff <= toleranz) {
 					return street.getStart();
 				}
 				
@@ -141,10 +141,11 @@ public class MapEditorController {
 				xdiff = Math.abs(street.getEnd().getX() - x);
 				ydiff = Math.abs(street.getEnd().getY() - y);
 				
-				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
+				if(xdiff <= toleranz && ydiff <= toleranz) {
 					return street.getEnd();
 				}
 			}
+			
 			return null;
 		}
 	}
@@ -183,5 +184,7 @@ public class MapEditorController {
 		public void actionPerformed(ActionEvent arg0) {
 			model.removeStreet(model.getSelectedStreet());
 		}
+		
 	}
+
 }

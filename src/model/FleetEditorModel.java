@@ -17,6 +17,9 @@ public class FleetEditorModel {
 	
 	public FleetEditorModel(){
 		
+		//testuse only
+		vehicles.add(new Car());
+		
 	}
 
 

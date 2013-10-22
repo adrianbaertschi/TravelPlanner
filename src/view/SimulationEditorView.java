@@ -10,11 +10,13 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -45,6 +47,12 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JButton btnLoadMap;
 	private JButton btnReset;
 	private JButton btnDelete;
+	
+	private ImageIcon finishII;
+	private JButton finishJB;
+	
+	private ImageIcon startII;
+	private JButton startJB;
 	
 	private JLayeredPane vehicleJLP;
 
@@ -103,46 +111,27 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleArea.add(vehicleSelectionArea);		
 
 		
-//		for(Vehicle v1 : )
+	
+		// Start Button
+		
+		startJB = new JButton("start");
+		vehicleArea.add(startJB);
 		
 		
+		// Finish JButton
+		finishII = new ImageIcon("images/finish.jpg");
+		finishII.setImage(finishII.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+		finishJB = new JButton(finishII);
+
+		vehicleArea.add(finishJB);
 		
-		// Save Button
-		btnSaveMap = new JButton("Save Map");
-		btnSaveMap.setBounds(920, 480, 100, 30);
-		this.add(btnSaveMap);
-		
-		// Load Button
-		btnLoadMap = new JButton("Load Map");
-		btnLoadMap.setBounds(1030, 480, 100, 30);
-		this.add(btnLoadMap);
-		
-		// Reset Button
-		btnReset = new JButton("Reset");
-		btnReset.setBounds(920, 440, 100, 30);
-		this.add(btnReset);
-		
-		btnDelete = new JButton("Delete");
-		btnDelete.setBounds(1030, 440, 100, 30);
-		this.add(btnDelete);
 	}
 
+	
 	public JPanel getMapArea() {
 		return this.mapArea;
 	}
-	
-	public JButton getBtnSaveMap() {
-		return btnSaveMap;
-	}
-	
-	public JButton getBtnLoadMap() {
-		return btnLoadMap;
-	}
-	
-	public JButton getBtnReset() {
-		return btnReset;
-	}
-	
+		
 	private void draw(Graphics g) {
 		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D)g;
@@ -153,10 +142,23 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		for(Street street : mapModel.getStreets()) {
 			
-			g2d.setColor(Color.BLUE);
-			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
-			g2d.fillOval(street.getEnd().getX() -5, street.getEnd().getY() -5, 10, 10);
 			
+			// Knoten
+			if(street.getStart().equals(mapModel.getSelectedKnot())) {
+				g2d.setColor(Color.CYAN);
+			} else {
+				g2d.setColor(Color.DARK_GRAY);
+			}
+			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
+			
+			if(street.getEnd().equals(mapModel.getSelectedKnot())) {
+				g2d.setColor(Color.CYAN);
+			} else {
+				g2d.setColor(Color.DARK_GRAY);
+			}
+			g2d.fillOval(street.getEnd().getX()   -5, street.getEnd().getY()   -5, 10, 10);
+			
+			// Strassen			
 			if(street == mapModel.getSelectedStreet()) {
 				g2d.setColor(Color.CYAN);
 			} else {
@@ -164,6 +166,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 			}
 			g2d.setStroke(new BasicStroke(2));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
+		
+		
+		
 		}
 		
 		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
@@ -204,4 +209,33 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.mapModel = mapModel;
 	}
 
+	/**
+	 * @return the finishJB
+	 */
+	public JButton getFinishJB() {
+		return finishJB;
+	}
+
+	/**
+	 * @param finishJB the finishJB to set
+	 */
+	public void setFinishJB(JButton finishJB) {
+		this.finishJB = finishJB;
+	}
+
+	/**
+	 * @return the startJB
+	 */
+	public JButton getStartJB() {
+		return startJB;
+	}
+
+	/**
+	 * @param startJB the startJB to set
+	 */
+	public void setStartJB(JButton startJB) {
+		this.startJB = startJB;
+	}
+
+	
 }

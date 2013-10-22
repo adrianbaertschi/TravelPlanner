@@ -1,9 +1,12 @@
 package model;
 
+import java.awt.Color;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Knot {
@@ -15,6 +18,11 @@ public class Knot {
 	private int y;
 	private boolean isStartingPosition;
 	private boolean isEndPosition;
+
+	// TODO: move color to view classes
+	@Transient
+	private Color color = Color.DARK_GRAY;
+
 	
 	public Knot() {}
 	
@@ -80,6 +88,20 @@ public class Knot {
 			return this.x == k.x && this.y == k.y;
 		}
 		return false;
+	}
+
+	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }
