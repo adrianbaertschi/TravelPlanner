@@ -1,5 +1,7 @@
 package control;
 
+import static common.Constants.EDGE_RADIUS;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -124,16 +126,14 @@ public class MapEditorController {
 			
 			int x = k.getX();
 			int y = k.getY();
-			int toleranz = 5;
 			
 			for(Street street : model.getStreets()) {
-				// TODO: Refactor
 				
 				// On Start Knoten?
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
-				if(xdiff <= toleranz && ydiff <= toleranz) {
+				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
 					return street.getStart();
 				}
 				
@@ -141,7 +141,7 @@ public class MapEditorController {
 				xdiff = Math.abs(street.getEnd().getX() - x);
 				ydiff = Math.abs(street.getEnd().getY() - y);
 				
-				if(xdiff <= toleranz && ydiff <= toleranz) {
+				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
 					return street.getEnd();
 				}
 			}
