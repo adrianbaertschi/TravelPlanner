@@ -59,14 +59,17 @@ public class MapEditorModel extends Observable {
 
 	public void setStreets(List<Street> streets) {
 		this.streets = streets;
+		
 		super.setChanged();
 		super.notifyObservers(streets);
 	}
 	
 	public void addStreet(Street street) {
 		streets.add(street);
+		
 		super.setChanged();
 		super.notifyObservers(street);
+		
 		if(streets.size()>3){
 			smg.getShortestPath(this);
 		}
@@ -74,12 +77,14 @@ public class MapEditorModel extends Observable {
 	
 	public void removeStreet(Street street) {
 		streets.remove(street);
+		
 		super.setChanged();
 		super.notifyObservers(street);
 	}
 
 	public void setSelectedStreet(Street selectedStreet) {
 		this.selectedStreet = selectedStreet;
+		
 		super.setChanged();
 		super.notifyObservers(selectedStreet);
 	}
@@ -102,14 +107,16 @@ public class MapEditorModel extends Observable {
 
 	public void setSelectedKnot(Knot selectedKnot) {
 		this.selectedKnot = selectedKnot;
+		
 		super.setChanged();
-		super.notifyObservers();
+		super.notifyObservers(selectedKnot);
 	}
 	
 	public void reset() {
 		this.streets = new ArrayList<Street>();
 		this.selectedStreet = null;
 		this.name = null;
+		
 		super.setChanged();
 		super.notifyObservers();
 	}

@@ -48,7 +48,7 @@ public class MapEditorController {
 
 	class MapMouseListener implements MouseListener {
 
-		private Street s;
+		private Street currentStreet;
 		
 		public void mouseClicked(MouseEvent e) {	}
 
@@ -73,47 +73,47 @@ public class MapEditorController {
 			// CASE 1: New Street
 			if(selectedKnot == null) {
 				// First click
-				if(s == null) {
-					s = new Street(point);
+				if(currentStreet == null) {
+					currentStreet = new Street(point);
 					
 					
 					Street selectedStreet = clickedOnStreet(point);
 					model.setSelectedStreet(selectedStreet);
 					
 					if(selectedStreet != null) {
-						s = null;
+						currentStreet = null;
 					} else {
 						model.setSelectedKnot(point);
 					}
 					
 					
 					// Second click
-				} else if (s.getStart() != null && s.getEnd() == null && !s.getStart().equals(point)) {
+				} else if (currentStreet.getStart() != null && currentStreet.getEnd() == null && !currentStreet.getStart().equals(point)) {
 					
 					if(clickedOnStreet(point) == null) {
-						s.setEnd(point);
-						model.addStreet(s);
+						currentStreet.setEnd(point);
+						model.addStreet(currentStreet);
 						
 						// reset Street
-						s = null;
+						currentStreet = null;
 						
 					} else {
-						model.setSelectedKnot(s.getStart());
+						model.setSelectedKnot(currentStreet.getStart());
 					}
 				} 
 			} else {
 				
 				// CASE 2: append to existing
-				if(s == null) {
-					s = new Street(selectedKnot);
+				if(currentStreet == null) {
+					currentStreet = new Street(selectedKnot);
 				} else {
 					// CASE 3: connect two existing
-					s.setEnd(selectedKnot);
-					model.addStreet(s);
+					currentStreet.setEnd(selectedKnot);
+					model.addStreet(currentStreet);
 					model.setSelectedKnot(null);
 					
 					// reset Street
-					s = null;
+					currentStreet = null;
 				}
 			}
 		}

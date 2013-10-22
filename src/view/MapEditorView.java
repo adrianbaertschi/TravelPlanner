@@ -1,10 +1,16 @@
 package view;
 
+import static common.Constants.EDGE_HEIGHT;
+import static common.Constants.EDGE_RADIUS;
+import static common.Constants.EDGE_WIDTH;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,6 +24,10 @@ import model.MapEditorModel;
 import model.Street;
 
 public class MapEditorView extends JPanel implements Observer{
+	
+	private static final Color STREET_COLOR = 	Color.BLUE;
+	private static final Color KNOT_COLOR = 	Color.DARK_GRAY;
+	private static final Color SELECTED_COLOR = Color.CYAN;
 	
 	private MapEditorModel model = new MapEditorModel();
 	
@@ -103,37 +113,32 @@ public class MapEditorView extends JPanel implements Observer{
 		for(Street street : model.getStreets()) {
 			
 			// Knoten
-			g2d.setColor(street.getStart().getColor());
-			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
+			g2d.setColor(KNOT_COLOR);
+			g2d.fill(convertKnotToEllipse(street.getStart()));
 			
-			g2d.setColor(street.getEnd().getColor());
-			g2d.fillOval(street.getEnd().getX()   -5, street.getEnd().getY()   -5, 10, 10);
+			g2d.fill(convertKnotToEllipse(street.getEnd()));
 			
 			// Strassen
 			if(street == model.getSelectedStreet()) {
-				g2d.setColor(Color.CYAN);
+				g2d.setColor(SELECTED_COLOR);
 			} else {
-				g2d.setColor(street.getStreetColor());
+				g2d.setColor(STREET_COLOR);
 			}
 			g2d.setStroke(new BasicStroke(2));
-			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
+			g2d.draw(convertStreetToLine(street));
 		}
 		
 		if(model.getSelectedKnot() != null) {
-			g2d.setColor(Color.CYAN);
-			g2d.fillOval(model.getSelectedKnot().getX()-5, model.getSelectedKnot().getY()-5, 10, 10);
+			g2d.setColor(SELECTED_COLOR);
+			g2d.fill(convertKnotToEllipse(model.getSelectedKnot()));
 		}
 	}
 	
-	private void displayStreetInfo(Street selectedStreet) {
-		if(selectedStreet == null)  {
-			streetInfo.setText("");
-			btnDelete.setEnabled(false);
-		} else {
-			streetInfo.setText("Lenth: " + selectedStreet.getLenth());
-			btnDelete.setEnabled(true);
-		}
-		
+	private Ellipse2D.Float convertKnotToEllipse(Knot knot) {
+		return new Ellipse2D.Float(knot.getX() - EDGE_RADIUS, knot.getY() - EDGE_RADIUS, EDGE_WIDTH, EDGE_HEIGHT);
+	}
+	private Line2D.Float convertStreetToLine(Street s) {
+		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
 	}
 	
 	private void displayKnotInfo(Knot selectedKnot) {
@@ -151,13 +156,17 @@ public class MapEditorView extends JPanel implements Observer{
 		}
 		if(value instanceof Street) {
 			if(this.model.getSelectedStreet() == value) {
-				displayStreetInfo((Street)value);
+				Street st = (Street) value;
+				streetInfo.setText("Lenth: " + st.getLenth());
+				btnDelete.setEnabled(true);
 			} else {
-				displayStreetInfo(null);
+				streetInfo.setText("");
+				btnDelete.setEnabled(false);
 			}
 		}
 		if(value instanceof Knot) {
 			displayKnotInfo((Knot)value);
+			btnDelete.setEnabled(false);
 		}
 	}
 }
