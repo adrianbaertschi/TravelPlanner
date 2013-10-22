@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import model.MapEditorModel;
 import control.MapEditorController;
@@ -16,17 +19,12 @@ import dao.Database;
 
 public class MapLoaderDialog extends JDialog {
 	
-	private MapEditorController parentController;
-	
 	public MapLoaderDialog(Frame frame, final MapEditorController parentController) {
 		super(frame);
 		this.setLayout(null);
 		this.setSize(500, 400);
 		this.setModal(true);
 		this.setLocationRelativeTo(frame);
-		
-		this.parentController = parentController;
-
 		
 		List<MapEditorModel> maps = Database.getInstance().getMaps();
 		
@@ -41,15 +39,27 @@ public class MapLoaderDialog extends JDialog {
 			};
 		};
 		table.removeColumn(table.getColumn("ID"));
-		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
 		JScrollPane scp = new JScrollPane(table);
+		
+		final JButton btnLoad = new JButton("OK");
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			public void valueChanged(ListSelectionEvent event) {
+				if(event.getValueIsAdjusting()) {
+					return;
+				}
+				btnLoad.setEnabled(table.getSelectedRow() >= 0);
+				
+			}
+		});
 		scp.setBounds(5, 5, 300, 300);
 		
 		this.add(scp);
 		
-		JButton btnLoad = new JButton("OK");
 		btnLoad.setBounds(310, 5, 100, 30);
+		btnLoad.setEnabled(false);
 		this.add(btnLoad);
 		
 		btnLoad.addActionListener(new ActionListener() {
@@ -65,7 +75,6 @@ public class MapLoaderDialog extends JDialog {
 				
 			}
 		});
-		
 	}
 
 }
