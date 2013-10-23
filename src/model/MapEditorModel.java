@@ -42,6 +42,7 @@ public class MapEditorModel extends Observable {
 	@Transient
 	private SolverMapGraph smg = new SolverMapGraph();
 	
+	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar saveDate;
 	
