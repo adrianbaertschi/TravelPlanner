@@ -13,81 +13,73 @@ import model.Street;
 
 public class Database {
 	private static String PERSISTENCE_UNIT = "travelDB";
-	
+
 	private static Database instance;
-	
-	private Database() { }
-	
-	EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-	private EntityManager em = factory.createEntityManager();
-	
+
+	private final EntityManagerFactory factory;
+	private EntityManager em;
+
+	private Database() {
+		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+	}
+
 	public static Database getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new Database();
 		}
 		return instance;
 	}
-	
+
 	public void saveMap(MapEditorModel mapModel) {
-		
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
+
 		em = factory.createEntityManager();
-		
-		
-	    em.getTransaction().begin();
-	    em.persist(mapModel);
-	    em.getTransaction().commit();	
-	    
-	    em.close();
+
+		em.getTransaction().begin();
+		em.persist(mapModel);
+		em.getTransaction().commit();
+
+		em.close();
 	}
-	
+
 	public void saveKnot(Knot k) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
 		em = factory.createEntityManager();
-		
-	    em.getTransaction().begin();
-	    
-	    em.persist(k);
-	    em.getTransaction().commit();
 
-	    
-	    em.close();
+		em.getTransaction().begin();
+
+		em.persist(k);
+		em.getTransaction().commit();
+
+		em.close();
 	}
-	
+
 	public void saveStreet(Street street) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
 		em = factory.createEntityManager();
-		
-	    em.getTransaction().begin();
-	    
-	    em.persist(street);
-	    em.getTransaction().commit();
+		em.getTransaction().begin();
 
-	    
-	    em.close();
+		em.persist(street);
+		em.getTransaction().commit();
+
+		em.close();
 	}
-	
 
 	public List<MapEditorModel> getMaps() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
+
 		em = factory.createEntityManager();
-		
-	    em.getTransaction().begin();
-		
+		em.getTransaction().begin();
+
 		Query q = em.createQuery("select m from MapEditorModel m");
 		List<MapEditorModel> resultList = q.getResultList();
-		
+
 		em.close();
 		return resultList;
 	}
-	
+
 	public MapEditorModel getModelById(long id) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("travelDB");
 		em = factory.createEntityManager();
-		
+
 		em.getTransaction().begin();
 		MapEditorModel map = em.find(MapEditorModel.class, id);
-		
+
 		em.close();
 		return map;
 	}
