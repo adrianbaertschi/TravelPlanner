@@ -3,6 +3,8 @@
  */
 package model;
 
+import java.net.URL;
+
 /**
  * @author dimitri.haemmerli
  *
@@ -10,9 +12,13 @@ package model;
 public class Car extends Vehicle {
 	
 	private int gasConsumption;
+	private final String carURL = new String("images/car.jpg");
 	
+	public Car(){
+		
+		super.setImageURL(carURL);
+	}
 	
-
 	/**
 	 * @return the gasConsumption
 	 */

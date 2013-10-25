@@ -39,24 +39,12 @@ public class MapEditorModel extends Observable {
 	@Transient
 	private Knot selectedKnot;
 	
-	@Transient
-	private SolverMapGraph smg = new SolverMapGraph();
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar saveDate;
 	
 
 	public MapEditorModel(){
-		
-	//for test use only
-		Knot k1= new Knot(1, 1);
-		k1.setStartingPosition(true);
-		Knot k2= new Knot(400, 400);
-		k2.setEndPosition(true);		
-		streets.add(new Street(k1, new Knot(100, 100)));
-		streets.add(new Street(new Knot(300, 300), k2));
-	//
-		
+				
 	}
 	
 	public List<Street> getStreets() {
@@ -76,9 +64,6 @@ public class MapEditorModel extends Observable {
 		super.setChanged();
 		super.notifyObservers(street);
 		
-		if(streets.size()>3){
-			smg.getShortestPath(this);
-		}
 	}
 	
 	public void removeStreet(Street street) {
@@ -145,4 +130,10 @@ public class MapEditorModel extends Observable {
 	}
 	
 
+	public void repaintMap(){
+		
+		super.setChanged();
+		super.notifyObservers();
+
+	}
 }

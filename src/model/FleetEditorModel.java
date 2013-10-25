@@ -18,7 +18,9 @@ public class FleetEditorModel {
 	public FleetEditorModel(){
 		
 		//testuse only
-		vehicles.add(new Car());
+		Car c1 = new Car();
+		c1.setIsSelected(true);
+		vehicles.add(c1);
 		
 	}
 

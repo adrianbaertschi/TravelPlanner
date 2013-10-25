@@ -19,7 +19,6 @@ import org.jgrapht.graph.SimpleWeightedGraph;
 public class SolverMapGraph{
 	
 //	SimpleWeightedGraph<Knot, Street> swg = new SimpleWeightedGraph<Knot, Street>(Street.class);
-	SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 	SimpleWeightedGraph<Knot, Street> swgTest = new SimpleWeightedGraph<Knot, Street>(Street.class);
 	List<Knot> knots = new ArrayList<Knot>();
 	
@@ -28,10 +27,69 @@ public class SolverMapGraph{
 	int counter = 0;
 	List<Street> streets;
 
+	private SimulationEditorModel simulationEditorModel;
 	
-	public void getShortestPath(MapEditorModel model){
+	public SolverMapGraph(SimulationEditorModel simulationEditorModel){
+		
+		this.simulationEditorModel = simulationEditorModel;
+		
+		startSimulation();
+		
+		
+	}
+	
+	public void startSimulation(){
+		
+		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
 			
-		streets = model.getStreets();
+			
+			//abfangen falls es keinen küztesten pfad gibt
+			
+			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
+				
+							
+				//getting the nextKnot from Dijkstra
+				v.setNextKnot(shortestPathDijkstra(v, createMapGraph(), v.getCurrentKnot(), v.getFinishKnot()));
+				
+				
+				//drawing the movement to the next knot
+				while(!v.getCurrentKnot().equals(v.getNextKnot())){
+					
+					
+					v.setCurrentPosition(new Knot());
+					for(int i=10; i>=1; i--){
+						
+//						System.out.println(v.getNextKnot().getX() - v.getCurrentKnot().getX());
+//						System.out.println("Zwischenresult: " + ((v.getNextKnot().getX() - v.getCurrentKnot().getX())/i) + " i: " +i);
+//						System.out.println("Result: " + (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())/i));
+						
+						v.getCurrentPosition().setX((v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())/i));
+						v.getCurrentPosition().setY((v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())/i));
+						simulationEditorModel.changed();
+						try {
+						    Thread.sleep(1000);
+						} catch(InterruptedException ex) {
+						    Thread.currentThread().interrupt();
+						}
+						
+//						System.out.println("Current Knot " + v.getCurrentKnot().getX() + "  " + v.getCurrentKnot().getY());
+//						System.out.println("Next Knot " + v.getNextKnot().getX() + "  " + v.getNextKnot().getY());
+//						System.out.println("Current Position " + v.getCurrentPosition().getX() + "  " + v.getCurrentPosition().getY());
+					}
+					
+					v.setCurrentKnot(v.getCurrentPosition());
+				}
+			}
+
+			
+		}
+		
+	}
+	
+	public SimpleWeightedGraph createMapGraph(){
+			
+		SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
 	    for(Street s :streets){
 	    	
@@ -46,63 +104,58 @@ public class SolverMapGraph{
 			if(!swg.containsEdge(s.getStart(), s.getEnd())){
 				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(), s.getEnd());			
 				swg.setEdgeWeight(dwg, s.getLenth());
-//				swg.addEdge(s.getStart(), s.getEnd());
 				
 			}
-
-			System.out.println(s.getStart().getX() + " " + s.getStart().getY());
-			System.out.println(s.getEnd().getX() + " " +  s.getEnd().getY());
-	    	
-			if(s.getStart().isStartingPosition()){
-				startPosition = s.getStart();
-			}
-			if(s.getEnd().isEndPosition()){
-				endPosition = s.getEnd();
-			}
-				
 	    }
-		System.out.println(startPosition.getX() + " " + startPosition.getY());
-		System.out.println(endPosition.getX() + " " + endPosition.getY());
-		System.out.println(swg.containsVertex(endPosition));
-//		if(counter >= 2)
-			shortestPathDijkstra();
-//		counter++;
+//			if(s.getStart().isStartingPosition()){
+//				startPosition = s.getStart();
+//			}
+//			if(s.getEnd().isEndPosition()){
+//				endPosition = s.getEnd();
+//			}
+//				
+//	    }
+//		System.out.println(startPosition.getX() + " " + startPosition.getY());
+//		System.out.println(endPosition.getX() + " " + endPosition.getY());
+//		System.out.println(swg.containsVertex(endPosition));
+////		if(counter >= 2)
+//			shortestPathDijkstra();
+////		counter++;
+		return swg;
 	}
 
-	public void shortestPathDijkstra(){
+	public Knot shortestPathDijkstra(Vehicle v, SimpleWeightedGraph swg, Knot currentPosition, Knot endPosition){
 		
-//		UndirectedGraph<Knot, DefaultWeightedEdge> ug =
-//	            new AsUndirectedGraph<Knot, DefaultWeightedEdge>(dg);
-		DijkstraShortestPath<Knot, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition, endPosition);
-		BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
-		System.out.println(bfsp.getCost(endPosition));
+		
+
+		DijkstraShortestPath<Knot, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Knot, DefaultWeightedEdge>(swg, currentPosition, endPosition);
+		//BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
+		//System.out.println(bfsp.getCost(endPosition));
 		System.out.println(dsp.getPathEdgeList());
 
 		List<DefaultWeightedEdge> shortestPath = dsp.getPathEdgeList();
+		System.out.println("pathlength " + dsp.getPathLength());
 
-		int i = 0;
 		
-		for(Street s1 : streets){
-			
-			s1.setStreetColor(Color.BLUE);
-
-			
-		}
 		if (shortestPath != null) {
+			
 			for (DefaultWeightedEdge d1 : shortestPath) {
 
-				for (Street s1 : streets) {
+				// return the nextKnot (could be the source or the target of the
+				// edge )
+				if (swg.getEdgeSource(d1).equals(v.getCurrentKnot())) {
 
-					if (swg.getEdgeSource(d1).equals(s1.getStart())
-							&& swg.getEdgeTarget(d1).equals(s1.getEnd())) {
-						s1.setStreetColor(Color.PINK);
-					}
+					return (Knot) swg.getEdgeTarget(d1);
+				}
+				if (swg.getEdgeTarget(d1).equals(v.getCurrentKnot())) {
+
+					return (Knot) swg.getEdgeSource(d1);
 				}
 
 			}
 		}
 		
-		System.out.println("pathlength " + dsp.getPathLength());
+		return null;
 	}
 
 }

@@ -4,6 +4,9 @@
 package model;
 
 import java.awt.Image;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 /**
  * @author dimitri.haemmerli
@@ -13,10 +16,14 @@ public class Vehicle {
 	
 	private String type;
 	private int maxSpeed;
-	private Image image;
-	private Knot start;
-	private Knot finish;
+	private String imageURL;
+	private Knot startKnot;
+	private Knot currentKnot;
+	private Knot currentPosition;
+	private Knot nextKnot;
+	private Knot finishKnot;
 	private Boolean isSelected;
+	private Boolean isVisible;
 
 	public Vehicle(){
 		
@@ -50,60 +57,119 @@ public class Vehicle {
 		this.maxSpeed = maxSpeed;
 	}
 
+
 	/**
-	 * @return the image
+	 * @return the imageURL
 	 */
-	public Image getImage() {
-		return image;
+	public String getImageURL() {
+		return imageURL;
 	}
 
 	/**
-	 * @param image the image to set
+	 * @param imageURL the imageURL to set
 	 */
-	public void setImage(Image image) {
-		this.image = image;
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+
+	/**
+	 * @return the startKnot
+	 */
+	public Knot getStartKnot() {
+		return startKnot;
 	}
 
 	/**
-	 * @return the start
+	 * @param startKnot the startKnot to set
 	 */
-	public Knot getStart() {
-		return start;
+	public void setStartKnot(Knot startKnot) {
+		this.startKnot = startKnot;
 	}
 
 	/**
-	 * @param start the start to set
+	 * @return the currentKnot
 	 */
-	public void setStart(Knot start) {
-		this.start = start;
+	public Knot getCurrentKnot() {
+		return currentKnot;
 	}
 
 	/**
-	 * @return the finish
+	 * @param currentKnot the currentKnot to set
 	 */
-	public Knot getFinish() {
-		return finish;
+	public void setCurrentKnot(Knot currentKnot) {
+		this.currentKnot = currentKnot;
 	}
 
 	/**
-	 * @param finish the finish to set
+	 * @return the finishKnot
 	 */
-	public void setFinish(Knot finish) {
-		this.finish = finish;
+	public Knot getFinishKnot() {
+		return finishKnot;
+	}
+
+	/**
+	 * @param finishKnot the finishKnot to set
+	 */
+	public void setFinishKnot(Knot finishKnot) {
+		this.finishKnot = finishKnot;
+	}
+
+
+	/**
+	 * @return the nextKnot
+	 */
+	public Knot getNextKnot() {
+		return nextKnot;
+	}
+
+	/**
+	 * @param nextKnot the nextKnot to set
+	 */
+	public void setNextKnot(Knot nextKnot) {
+		this.nextKnot = nextKnot;
 	}
 
 	/**
 	 * @return the isSelected
 	 */
-	public Boolean isSelected() {
+	public Boolean getIsSelected() {
 		return isSelected;
 	}
 
 	/**
 	 * @param isSelected the isSelected to set
 	 */
-	public void setSelected(Boolean isSelected) {
+	public void setIsSelected(Boolean isSelected) {
 		this.isSelected = isSelected;
+	}
+
+	/**
+	 * @return the isVisible
+	 */
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
+
+	/**
+	 * @param isVisible the isVisible to set
+	 */
+	public void setIsVisible(Boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	/**
+	 * @return the currentPosition
+	 */
+	public Knot getCurrentPosition() {
+		return currentPosition;
+	}
+
+	/**
+	 * @param currentPosition the currentPosition to set
+	 */
+	public void setCurrentPosition(Knot currentPosition) {
+		this.currentPosition = currentPosition;
 	}
 	
 	

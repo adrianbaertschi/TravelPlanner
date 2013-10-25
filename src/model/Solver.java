@@ -9,7 +9,6 @@ import org.jgrapht.Graph;
 
 public class Solver{
 	
-	SolverMapGraph smg = new SolverMapGraph();
 	
 	
 	public Solver (){

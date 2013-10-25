@@ -21,6 +21,7 @@ import model.FleetEditorModel;
 import model.Knot;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
+import model.SolverMapGraph;
 import model.Street;
 import model.Vehicle;
 import view.MapLoaderDialog;
@@ -35,6 +36,7 @@ public class SimulationEditorController {
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
+	private SolverMapGraph solverMapGraph;
 
 	
 	public SimulationEditorController(SimulationEditorView sev, SimulationEditorModel sem){
@@ -51,6 +53,7 @@ public class SimulationEditorController {
 		simulationEditorView.getMapArea().addMouseListener(new MapMouseListener());
 		simulationEditorView.getStartJB().addActionListener(new BtnSetStart());
 		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
+		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
 //		sev.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
 //		sev.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 //		sev.getBtnReset().addActionListener(new BtnResetActionListener());
@@ -62,35 +65,6 @@ public class SimulationEditorController {
 		return this.simulationEditorView;
 	}
 	
-	private Knot clickedOnEdge(Knot k) {
-		
-		int x = k.getX();
-		int y = k.getY();
-		int toleranz = 5;
-		
-		for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
-			// TODO: Refactor
-			
-			// On Start Knoten?
-			int xdiff = Math.abs(street.getStart().getX() - x);
-			int ydiff = Math.abs(street.getStart().getY() - y);
-			
-			if(xdiff <= toleranz && ydiff <= toleranz) {
-				return street.getStart();
-			}
-			
-			// On End?
-			xdiff = Math.abs(street.getEnd().getX() - x);
-			ydiff = Math.abs(street.getEnd().getY() - y);
-			
-			if(xdiff <= toleranz && ydiff <= toleranz) {
-				return street.getEnd();
-			}
-		}
-		
-		return null;
-	}
-
 
 
 	class MapMouseListener implements MouseListener {
@@ -109,7 +83,43 @@ public class SimulationEditorController {
 			simulationEditorModel.changed();
 
 			
+	}
+		private Knot clickedOnEdge(Knot k) {
+			
+			int x = k.getX();
+			int y = k.getY();
+			int toleranz = 5;
+			
+			Knot returnKnot = null;
+
+			for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
+				// TODO: Refactor
+				
+				street.getStart().setColor(Color.DARK_GRAY);
+				street.getEnd().setColor(Color.DARK_GRAY);
+				// On Start Knoten?
+				int xdiff = Math.abs(street.getStart().getX() - x);
+				int ydiff = Math.abs(street.getStart().getY() - y);
+				
+				if(xdiff <= toleranz && ydiff <= toleranz) {
+					returnKnot = street.getStart();
+					street.getStart().setColor(Color.CYAN);
+				}
+				
+				// On End?
+				xdiff = Math.abs(street.getEnd().getX() - x);
+				ydiff = Math.abs(street.getEnd().getY() - y);
+				
+				if(xdiff <= toleranz && ydiff <= toleranz) {
+					returnKnot = street.getEnd();
+					street.getEnd().setColor(Color.CYAN);
+				}
+			}
+			
+			return returnKnot;
 		}
+
+
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -142,20 +152,26 @@ public class SimulationEditorController {
 
 			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
 				
-				if(v.isSelected()){
+				if(v.getIsSelected()){
 					
 					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
 						
 						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setStart(s.getStart());
-							s.getStart().setColor(Color.GREEN);
+							v.setStartKnot(s.getStart());
+							v.setCurrentKnot(s.getStart());
+							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+							simulationEditorModel.changed();
 							
 						}						
 						
 						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setStart(s.getEnd());
+							v.setStartKnot(s.getEnd());
+							v.setCurrentKnot(s.getEnd());
+							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+							simulationEditorModel.changed();
+
 						}						
 					}
 
@@ -173,6 +189,53 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
+			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
+				
+				if(v.getIsSelected()){
+					
+					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
+						
+						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+							
+							v.setFinishKnot(s.getStart());
+							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+							simulationEditorModel.changed();
+							
+						}						
+						
+						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+							
+							v.setFinishKnot(s.getEnd());
+							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+							simulationEditorModel.changed();
+
+						}						
+					}
+
+				}
+				
+			}
+			
+		
+		}
+	}
+	class BtnSetSimulation implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
+				
+				
+				if(v.getStartKnot() != null && v.getFinishKnot() != null){
+					
+					
+					
+					solverMapGraph = new SolverMapGraph(simulationEditorModel);
+					
+				}
+				
+			}
+		
 		}
 	}
 
