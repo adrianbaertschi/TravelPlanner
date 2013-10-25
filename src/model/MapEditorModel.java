@@ -130,10 +130,4 @@ public class MapEditorModel extends Observable {
 	}
 	
 
-	public void repaintMap(){
-		
-		super.setChanged();
-		super.notifyObservers();
-
-	}
 }
