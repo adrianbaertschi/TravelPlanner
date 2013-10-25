@@ -223,6 +223,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			}
 
+			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
 				g2d.drawImage(getToolkit().getImage(v.getImageURL()), 
@@ -258,12 +259,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 			System.out.println("im update");
 			if (((SimulationEditorModel) model).getMapEditorModel() != null) {
 				this.mapModel = ((SimulationEditorModel) model).getMapEditorModel();
+			
 			}
 			
 			if (((SimulationEditorModel) model).getFleetEditorModel() != null) {
 				this.fleetEditorModel = ((SimulationEditorModel) model).getFleetEditorModel();
 			}
-			
+			paint(getGraphics());
 			repaint();
 
 		}
