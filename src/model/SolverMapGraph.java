@@ -44,12 +44,13 @@ public class SolverMapGraph{
 			
 			
 			//abfangen falls es keinen küzesten pfad gibt
+			SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = createMapGraph();
 			
 			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
 				
 							
 				//getting the nextKnot from Dijkstra
-				v.setNextKnot(shortestPathDijkstra(v, createMapGraph(), v.getCurrentKnot(), v.getFinishKnot()));
+				v.setNextKnot(shortestPathDijkstra(v, swg, v.getCurrentKnot(), v.getFinishKnot()));
 				
 				
 				//drawing the movement to the next knot
@@ -57,21 +58,23 @@ public class SolverMapGraph{
 					
 					
 					v.setCurrentPosition(new Knot());
-					for(int i=1; i<=100; i++){
+					for(int i=1; i<=10; i++){
 						
 						
-						v.getCurrentPosition().setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*0.01)));
-						v.getCurrentPosition().setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*0.01)));
+						v.getCurrentPosition().setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*0.1)));
+						v.getCurrentPosition().setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*0.1)));
 						simulationEditorModel.changed();
 						try {
-						    Thread.sleep(50);
+						    Thread.sleep(500);
 						} catch(InterruptedException ex) {
 						    Thread.currentThread().interrupt();
 						}
 						
 					}
 					
-					v.setCurrentKnot(v.getCurrentPosition());
+					v.setCurrentKnot(v.getNextKnot());
+//					v.getCurrentKnot().setX(v.getCurrentPosition().getX());
+//					v.getCurrentKnot().setY(v.getCurrentPosition().getY());
 				}
 			}
 
@@ -120,7 +123,7 @@ public class SolverMapGraph{
 
 	public Knot shortestPathDijkstra(Vehicle v, SimpleWeightedGraph swg, Knot currentPosition, Knot endPosition){
 		
-		
+		System.out.println("test");
 
 		DijkstraShortestPath<Knot, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Knot, DefaultWeightedEdge>(swg, currentPosition, endPosition);
 		//BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
