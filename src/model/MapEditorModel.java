@@ -131,5 +131,4 @@ public class MapEditorModel extends Observable {
 		super.notifyObservers();
 	}
 	
-
 }

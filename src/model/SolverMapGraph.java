@@ -43,7 +43,7 @@ public class SolverMapGraph{
 		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
 			
 			
-			//abfangen falls es keinen küztesten pfad gibt
+			//abfangen falls es keinen küzesten pfad gibt
 			
 			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
 				
@@ -57,24 +57,18 @@ public class SolverMapGraph{
 					
 					
 					v.setCurrentPosition(new Knot());
-					for(int i=10; i>=1; i--){
+					for(int i=1; i<=100; i++){
 						
-//						System.out.println(v.getNextKnot().getX() - v.getCurrentKnot().getX());
-//						System.out.println("Zwischenresult: " + ((v.getNextKnot().getX() - v.getCurrentKnot().getX())/i) + " i: " +i);
-//						System.out.println("Result: " + (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())/i));
 						
-						v.getCurrentPosition().setX((v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())/i));
-						v.getCurrentPosition().setY((v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())/i));
+						v.getCurrentPosition().setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*0.01)));
+						v.getCurrentPosition().setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*0.01)));
 						simulationEditorModel.changed();
 						try {
-						    Thread.sleep(1000);
+						    Thread.sleep(50);
 						} catch(InterruptedException ex) {
 						    Thread.currentThread().interrupt();
 						}
 						
-//						System.out.println("Current Knot " + v.getCurrentKnot().getX() + "  " + v.getCurrentKnot().getY());
-//						System.out.println("Next Knot " + v.getNextKnot().getX() + "  " + v.getNextKnot().getY());
-//						System.out.println("Current Position " + v.getCurrentPosition().getX() + "  " + v.getCurrentPosition().getY());
 					}
 					
 					v.setCurrentKnot(v.getCurrentPosition());
