@@ -38,7 +38,9 @@ public class MapEditorModel extends Observable {
 	
 	@Transient
 	private Knot selectedKnot;
-	
+		
+	@Column(nullable=false)
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar saveDate;
 	

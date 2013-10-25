@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Calendar;
 
 import javax.swing.JOptionPane;
 
@@ -17,7 +16,7 @@ import model.Street;
 import view.MapEditorView;
 import view.MapLoaderDialog;
 import view.MasterGui;
-import dao.Database;
+import dao.MapEditorDao;
 
 public class MapEditorController {
 
@@ -161,8 +160,7 @@ public class MapEditorController {
 			}
 			
 			model.setName(name);
-			model.setSaveDate(Calendar.getInstance());
-			Database.getInstance().saveMap(model);
+			MapEditorDao.getInstance().saveMap(model);
 		}
 	}
 	

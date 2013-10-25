@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import model.MapEditorModel;
 import control.MapEditorController;
-import dao.Database;
+import dao.MapEditorDao;
 
 public class MapLoaderDialog extends JDialog {
 	
@@ -29,7 +29,7 @@ public class MapLoaderDialog extends JDialog {
 		this.setTitle("Load Map");
 		this.setLocationRelativeTo(frame);
 		
-		List<MapEditorModel> maps = Database.getInstance().getMaps();
+		List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
 		
 		String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
 		Object[][] rowData = new Object[maps.size()][columns.length];
@@ -78,7 +78,7 @@ public class MapLoaderDialog extends JDialog {
 				int selectedRow = table.getSelectedRow();
 				long mapId = (long)table.getModel().getValueAt(selectedRow, 0);
 				
-				MapEditorModel modelById = Database.getInstance().getModelById(mapId);
+				MapEditorModel modelById = MapEditorDao.getInstance().getModelById(mapId);
 				parentController.setModel(modelById);
 				
 				MapLoaderDialog.this.setVisible(false);

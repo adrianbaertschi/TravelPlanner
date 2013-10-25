@@ -16,7 +16,7 @@ import control.MapEditorController.BtnLoadMapActioListener;
 import control.MapEditorController.BtnResetActionListener;
 import control.MapEditorController.BtnSaveMapActionListener;
 import control.MapEditorController.MapMouseListener;
-import dao.Database;
+import dao.MapEditorDao;
 import model.FleetEditorModel;
 import model.Knot;
 import model.MapEditorModel;
