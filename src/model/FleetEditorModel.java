@@ -20,6 +20,11 @@ public class FleetEditorModel {
 		//testuse only
 		Car c1 = new Car();
 		c1.setIsSelected(true);
+		c1.setCurrentKnot(new Knot());
+		c1.setCurrentPosition(new Knot());
+		c1.setNextKnot(new Knot());
+		c1.setStartKnot(new Knot());
+		c1.setFinishKnot(new Knot());
 		vehicles.add(c1);
 		
 	}

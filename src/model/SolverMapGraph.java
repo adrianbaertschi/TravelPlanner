@@ -73,12 +73,12 @@ public class SolverMapGraph{
 					}
 					
 					v.setCurrentKnot(v.getNextKnot());
-//					v.getCurrentKnot().setX(v.getCurrentPosition().getX());
-//					v.getCurrentKnot().setY(v.getCurrentPosition().getY());
 				}
 			}
 
-			
+			//reinitialize the currentKnot so a new simulation can be performed
+			v.setCurrentKnot(v.getStartKnot());
+
 		}
 		
 	}
