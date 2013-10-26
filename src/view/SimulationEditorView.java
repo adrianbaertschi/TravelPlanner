@@ -247,9 +247,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 			if (((SimulationEditorModel) model).getFleetEditorModel() != null) {
 				this.fleetEditorModel = ((SimulationEditorModel) model).getFleetEditorModel();
 			}
-			paint(getGraphics());
-			repaint();
-
+			
+			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 	}
 

@@ -49,22 +49,28 @@ public class SolverMapGraph{
 				
 				
 				//drawing the movement to the next knot
+				
 				while(!v.getCurrentKnot().equals(v.getNextKnot())){
 					
+					// TODO: get speed from car
+					int speed = 5; 
+					float ticks = new Street(v.getCurrentKnot(), v.getNextKnot()).getLenth() / speed;
 					
-					for(int i=1; i<=10; i++){
+					
+					for(int i=1; i<=ticks; i++){
 						
 						Knot currentPosition = new Knot();
-						currentPosition.setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*0.1)));
-						currentPosition.setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*0.1)));
+						currentPosition.setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*(1/ticks))));
+						currentPosition.setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*(1/ticks))));
 						v.setCurrentPosition(currentPosition);
 						
 						try {
-						    Thread.sleep(500);
-						} catch(InterruptedException ex) {
-						    Thread.currentThread().interrupt();
+							Thread.sleep(speed);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						
+						simulationEditorModel.changed();
 					}
 					
 					v.setCurrentKnot(v.getNextKnot());
