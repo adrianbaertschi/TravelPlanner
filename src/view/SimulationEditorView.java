@@ -3,34 +3,28 @@
  */
 package view;
 
-import static common.Constants.EDGE_HEIGHT;
-import static common.Constants.EDGE_RADIUS;
-import static common.Constants.EDGE_WIDTH;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import model.FleetEditorModel;
-import model.Knot;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
 import model.Street;
@@ -51,22 +45,16 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JLabel streetInfo;
 	private JLabel vehicleJL;
 	
-	private JButton btnSaveMap;
-	private JButton btnLoadMap;
-	private JButton btnReset;
-	private JButton btnDelete;
-	
 	private ImageIcon finishII;
 	private JButton finishJB;
 	
-	private ImageIcon startII;
 	private JButton startJB;
 	
 	private JButton simulationJB;
 	
 	private ImageIcon vehicleII;
 	
-	private JLayeredPane vehicleJLP;
+	private Image img;
 
 	
 	public SimulationEditorView() {
@@ -147,6 +135,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 		simulationJB = new JButton("Simulation");
 		vehicleArea.add(simulationJB);
 		
+		try {
+			this.img = ImageIO.read(new File("images/car.jpg"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	
@@ -186,7 +181,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		}
 		
-		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
 		
 		
 		
@@ -210,9 +204,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			if(v.getStartKnot() != null){
 				
-				g2d.drawImage(getToolkit().getImage(v.getImageURL()), 
-						v.getStartKnot().getX() - getToolkit().getImage(v.getImageURL()).getWidth(null)/2, 
-						v.getStartKnot().getY() - getToolkit().getImage(v.getImageURL()).getHeight(null)/2,this);
+				g2d.drawImage(img, 
+						v.getStartKnot().getX() - img.getWidth(null)/2, 
+						v.getStartKnot().getY() - img.getHeight(null)/2,this);
 			
 			}
 			if(v.getFinishKnot() != null){
@@ -227,33 +221,21 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
-				g2d.drawImage(getToolkit().getImage(v.getImageURL()), 
-						v.getCurrentPosition().getX() - getToolkit().getImage(v.getImageURL()).getWidth(null)/2, 
-						v.getCurrentPosition().getY() - getToolkit().getImage(v.getImageURL()).getHeight(null)/2,this);
+				g2d.drawImage(img, 
+						v.getCurrentPosition().getX() - img.getWidth(null)/2, 
+						v.getCurrentPosition().getY() - img.getHeight(null)/2,this);
 			
 			}
 
 		}
-
 		
+
+		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
+
 		
 
 	}
 	
-	private Ellipse2D.Float convertKnotToEllipse(Knot knot) {
-		return new Ellipse2D.Float(knot.getX() - EDGE_RADIUS, knot.getY() - EDGE_RADIUS, EDGE_WIDTH, EDGE_HEIGHT);
-	}
-
-
-	private void displayStreetInfo(Street selectedStreet) {
-		if(selectedStreet == null)  {
-			streetInfo.setText("Click on street to view info.");
-		} else {
-			streetInfo.setText("Lenth: " + selectedStreet.getLenth());
-		}
-		
-	}
-
 	public void update(Observable model, Object value) {
 		if (model instanceof SimulationEditorModel) {
 			
@@ -267,9 +249,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 				this.fleetEditorModel = ((SimulationEditorModel) model).getFleetEditorModel();
 			}
 						
-			paint(getGraphics());
-			repaint();
-
+			
+			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 	}
 

@@ -3,11 +3,9 @@
  */
 package model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgrapht.alg.BellmanFordShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
@@ -33,17 +31,14 @@ public class SolverMapGraph{
 		
 		this.simulationEditorModel = simulationEditorModel;
 		
-		startSimulation();
-		
-		
 	}
 	
-	public void startSimulation(){
+	public void startSimulation() {
 		
 		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
 			
 			
-			//abfangen falls es keinen küzesten pfad gibt
+			//abfangen falls es keinen kï¿½zesten pfad gibt
 			SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = createMapGraph();
 			
 			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
@@ -54,22 +49,28 @@ public class SolverMapGraph{
 				
 				
 				//drawing the movement to the next knot
+				
 				while(!v.getCurrentKnot().equals(v.getNextKnot())){
 					
+					// TODO: get speed from car
+					int speed = 5; 
+					float ticks = new Street(v.getCurrentKnot(), v.getNextKnot()).getLenth() / speed;
 					
-					v.setCurrentPosition(new Knot());
-					for(int i=1; i<=10; i++){
+					
+					for(int i=1; i<=ticks; i++){
 						
+						Knot currentPosition = new Knot();
+						currentPosition.setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*(1/ticks))));
+						currentPosition.setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*(1/ticks))));
+						v.setCurrentPosition(currentPosition);
 						
-						v.getCurrentPosition().setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*0.1)));
-						v.getCurrentPosition().setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*0.1)));
-						simulationEditorModel.changed();
 						try {
-						    Thread.sleep(500);
-						} catch(InterruptedException ex) {
-						    Thread.currentThread().interrupt();
+							Thread.sleep(speed);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						
+						simulationEditorModel.changed();
 					}
 					
 					v.setCurrentKnot(v.getNextKnot());
@@ -83,7 +84,7 @@ public class SolverMapGraph{
 		
 	}
 	
-	public SimpleWeightedGraph createMapGraph(){
+	private SimpleWeightedGraph<Knot, DefaultWeightedEdge> createMapGraph(){
 			
 		SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		streets = simulationEditorModel.getMapEditorModel().getStreets();
