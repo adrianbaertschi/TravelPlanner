@@ -3,6 +3,8 @@
  */
 package model;
 
+import java.awt.Image;
+
 
 /**
  * @author dimitri.haemmerli
