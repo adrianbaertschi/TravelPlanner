@@ -10,22 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JOptionPane;
-
-import control.MapEditorController.BtnLoadMapActioListener;
-import control.MapEditorController.BtnResetActionListener;
-import control.MapEditorController.BtnSaveMapActionListener;
-import control.MapEditorController.MapMouseListener;
-import dao.MapEditorDao;
-import model.FleetEditorModel;
 import model.Knot;
-import model.MapEditorModel;
 import model.SimulationEditorModel;
 import model.SolverMapGraph;
 import model.Street;
 import model.Vehicle;
-import view.MapLoaderDialog;
-import view.MasterGui;
 import view.SimulationEditorView;
 
 /**
@@ -36,7 +25,6 @@ public class SimulationEditorController {
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
-	private SolverMapGraph solverMapGraph;
 
 	
 	public SimulationEditorController(SimulationEditorView sev, SimulationEditorModel sem){
@@ -223,15 +211,11 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
+			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()) {
 				
 				
 				if(v.getStartKnot() != null && v.getFinishKnot() != null){
-					
-					
-					
-					solverMapGraph = new SolverMapGraph(simulationEditorModel);
-					
+					new SolverMapGraph(simulationEditorModel).startSimulation();;
 				}
 				
 			}
