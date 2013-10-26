@@ -215,6 +215,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 //				g2d.drawImage(getToolkit().getImage(v.getImageURL()).getScaledInstance(50, 50, Image.SCALE_SMOOTH), 
 						v.getFinishKnot().getX() - getToolkit().getImage(v.getImageURL()).getWidth(null)/2, 
 						v.getFinishKnot().getY() - getToolkit().getImage(v.getImageURL()).getHeight(null)/2,this);
+				g2d.drawImage(img, 
+						v.getFinishKnot().getX() - img.getWidth(null)/2, 
+						v.getFinishKnot().getY() - img.getHeight(null)/2,this);
 			
 			}
 
