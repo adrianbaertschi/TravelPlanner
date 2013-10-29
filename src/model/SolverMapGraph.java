@@ -3,7 +3,6 @@
  */
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jgrapht.alg.DijkstraShortestPath;
@@ -16,15 +15,6 @@ import org.jgrapht.graph.SimpleWeightedGraph;
  */
 public class SolverMapGraph{
 	
-//	SimpleWeightedGraph<Knot, Street> swg = new SimpleWeightedGraph<Knot, Street>(Street.class);
-	SimpleWeightedGraph<Knot, Street> swgTest = new SimpleWeightedGraph<Knot, Street>(Street.class);
-	List<Knot> knots = new ArrayList<Knot>();
-	
-	Knot startPosition = null;
-	Knot endPosition = null;
-	int counter = 0;
-	List<Street> streets;
-
 	private SimulationEditorModel simulationEditorModel;
 	
 	public SolverMapGraph(SimulationEditorModel simulationEditorModel){
@@ -87,7 +77,7 @@ public class SolverMapGraph{
 	private SimpleWeightedGraph<Knot, DefaultWeightedEdge> createMapGraph(){
 			
 		SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-		streets = simulationEditorModel.getMapEditorModel().getStreets();
+		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
 	    for(Street s :streets){
 	    	
@@ -105,24 +95,10 @@ public class SolverMapGraph{
 				
 			}
 	    }
-//			if(s.getStart().isStartingPosition()){
-//				startPosition = s.getStart();
-//			}
-//			if(s.getEnd().isEndPosition()){
-//				endPosition = s.getEnd();
-//			}
-//				
-//	    }
-//		System.out.println(startPosition.getX() + " " + startPosition.getY());
-//		System.out.println(endPosition.getX() + " " + endPosition.getY());
-//		System.out.println(swg.containsVertex(endPosition));
-////		if(counter >= 2)
-//			shortestPathDijkstra();
-////		counter++;
 		return swg;
 	}
 
-	public Knot shortestPathDijkstra(Vehicle v, SimpleWeightedGraph swg, Knot currentPosition, Knot endPosition){
+	public Knot shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg, Knot currentPosition, Knot endPosition){
 		
 		System.out.println("test");
 
@@ -143,11 +119,11 @@ public class SolverMapGraph{
 				// edge )
 				if (swg.getEdgeSource(d1).equals(v.getCurrentKnot())) {
 
-					return (Knot) swg.getEdgeTarget(d1);
+					return swg.getEdgeTarget(d1);
 				}
 				if (swg.getEdgeTarget(d1).equals(v.getCurrentKnot())) {
 
-					return (Knot) swg.getEdgeSource(d1);
+					return swg.getEdgeSource(d1);
 				}
 
 			}

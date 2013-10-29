@@ -11,8 +11,8 @@ import java.util.Observable;
  */
 public class SimulationEditorModel extends Observable {
 	
-	private MapEditorModel mapEditorModel;
-	private FleetEditorModel fleetEditorModel;
+	private MapEditorModel mapEditorModel = new MapEditorModel();
+	private FleetEditorModel fleetEditorModel= new FleetEditorModel();
 
 	public SimulationEditorModel(){
 		

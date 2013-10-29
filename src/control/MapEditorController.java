@@ -1,6 +1,6 @@
 package control;
 
-import static common.Constants.EDGE_RADIUS;
+import static common.Constants.NODE_RADIUS;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -133,7 +133,7 @@ public class MapEditorController {
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
-				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
+				if(xdiff <= NODE_RADIUS && ydiff <= NODE_RADIUS) {
 					return street.getStart();
 				}
 				
@@ -141,7 +141,7 @@ public class MapEditorController {
 				xdiff = Math.abs(street.getEnd().getX() - x);
 				ydiff = Math.abs(street.getEnd().getY() - y);
 				
-				if(xdiff <= EDGE_RADIUS && ydiff <= EDGE_RADIUS) {
+				if(xdiff <= NODE_RADIUS && ydiff <= NODE_RADIUS) {
 					return street.getEnd();
 				}
 			}

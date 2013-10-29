@@ -57,7 +57,7 @@ public class SimulationEditorController {
 
 	class MapMouseListener implements MouseListener {
 
-		private Street s;
+//		private Street s;
 		
 		public void mouseClicked(MouseEvent e) {
 			

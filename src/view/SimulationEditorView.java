@@ -1,6 +1,3 @@
-/**
- * 
- */
 package view;
 
 import java.awt.BasicStroke;
@@ -24,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
 import model.Street;
@@ -36,8 +32,7 @@ import model.Vehicle;
  */
 public class SimulationEditorView extends JPanel implements Observer{
 
-	private MapEditorModel mapModel = new MapEditorModel();
-	private FleetEditorModel fleetEditorModel = new FleetEditorModel();
+	private SimulationEditorModel model = new SimulationEditorModel();
 	
 	private JPanel mapArea;
 	private JPanel vehicleArea;
@@ -58,7 +53,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	
 	public SimulationEditorView() {
-		
 		
 		initComponents();
 		
@@ -110,7 +104,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		vehicleArea.add(vehicleSelectionArea);	
  
-		vehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(0).getImageURL());
+		vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getImageURL());
 		vehicleII.setImage(vehicleII.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
 
 		vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
@@ -157,7 +151,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		for(Street street : mapModel.getStreets()) {
+		for(Street street : model.getMapEditorModel().getStreets()) {
 			
 			
 			g2d.setColor(street.getStart().getColor());
@@ -169,7 +163,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 			
 			// Strassen			
-			if(street == mapModel.getSelectedStreet()) {
+			if(street == model.getMapEditorModel().getSelectedStreet()) {
 				g2d.setColor(Color.CYAN);
 			} else {
 				g2d.setColor(street.getStreetColor());
@@ -185,7 +179,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		
 		// display selected car in vehicle area
-		for(Vehicle v : fleetEditorModel.getVehicles()){
+		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 			
 			if(v.getIsSelected()){
 				
@@ -200,7 +194,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		}
 		
 		// display cars on mapArea
-		for(Vehicle v : fleetEditorModel.getVehicles()){
+		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 			
 			if(v.getStartKnot() != null){
 				
@@ -211,10 +205,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 			}
 			if(v.getFinishKnot() != null){
 				
-				g2d.drawImage(getToolkit().getImage(v.getImageURL()), 
-//				g2d.drawImage(getToolkit().getImage(v.getImageURL()).getScaledInstance(50, 50, Image.SCALE_SMOOTH), 
-						v.getFinishKnot().getX() - getToolkit().getImage(v.getImageURL()).getWidth(null)/2, 
-						v.getFinishKnot().getY() - getToolkit().getImage(v.getImageURL()).getHeight(null)/2,this);
 				g2d.drawImage(img, 
 						v.getFinishKnot().getX() - img.getWidth(null)/2, 
 						v.getFinishKnot().getY() - img.getHeight(null)/2,this);
@@ -243,32 +233,17 @@ public class SimulationEditorView extends JPanel implements Observer{
 		if (model instanceof SimulationEditorModel) {
 			
 			System.out.println("im update");
-			if (((SimulationEditorModel) model).getMapEditorModel() != null) {
-				this.mapModel = ((SimulationEditorModel) model).getMapEditorModel();
-			
-			}
-			
-			if (((SimulationEditorModel) model).getFleetEditorModel() != null) {
-				this.fleetEditorModel = ((SimulationEditorModel) model).getFleetEditorModel();
-			}
-						
+			this.model = (SimulationEditorModel) model; 
 			
 			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 	}
 
 	/**
-	 * @return the mapModel
-	 */
-	public MapEditorModel getMapModel() {
-		return mapModel;
-	}
-
-	/**
 	 * @param mapModel the mapModel to set
 	 */
 	public void setMapEditorModel(MapEditorModel mapModel) {
-		this.mapModel = mapModel;
+		this.model.setMapEditorModel(mapModel);
 	}
 
 	/**

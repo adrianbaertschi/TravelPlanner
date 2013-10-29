@@ -3,7 +3,6 @@
  */
 package model;
 
-import java.net.URL;
 
 /**
  * @author dimitri.haemmerli

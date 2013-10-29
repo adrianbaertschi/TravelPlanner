@@ -1,19 +1,15 @@
 package view;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.Car;
-
-public class FleetEditorView extends JPanel {
+public class FleetEditorView extends JPanel implements Observer {
 	
 	private JButton addCarJB = new JButton();
 	private JTextField carNameJTF = new JTextField("insert Name");
@@ -61,6 +57,11 @@ public class FleetEditorView extends JPanel {
 	 */
 	public void setCarNameJTF(JTextField carNameJTF) {
 		this.carNameJTF = carNameJTF;
+	}
+
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

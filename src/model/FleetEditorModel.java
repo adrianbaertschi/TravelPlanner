@@ -3,7 +3,6 @@
  */
 package model;
 
-import java.awt.Image;
 import java.util.ArrayList;
 
 /**
@@ -47,16 +46,4 @@ public class FleetEditorModel {
 	}
 			
 		
-//	private void getScaledImages() {
-//
-//		for(Vehicle v : vehicles){
-//			
-//			v.setScaledImage(getToolkit().getImage(v.getImageURL()).getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-//			
-//		}
-//		
-//	}
-
-
-	
 }

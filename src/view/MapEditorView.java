@@ -1,8 +1,8 @@
 package view;
 
-import static common.Constants.EDGE_HEIGHT;
-import static common.Constants.EDGE_RADIUS;
-import static common.Constants.EDGE_WIDTH;
+import static common.Constants.NODE_HEIGHT;
+import static common.Constants.NODE_RADIUS;
+import static common.Constants.NODE_WIDTH;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -135,7 +135,7 @@ public class MapEditorView extends JPanel implements Observer{
 	}
 	
 	private Ellipse2D.Float convertKnotToEllipse(Knot knot) {
-		return new Ellipse2D.Float(knot.getX() - EDGE_RADIUS, knot.getY() - EDGE_RADIUS, EDGE_WIDTH, EDGE_HEIGHT);
+		return new Ellipse2D.Float(knot.getX() - NODE_RADIUS, knot.getY() - NODE_RADIUS, NODE_WIDTH, NODE_HEIGHT);
 	}
 	private Line2D.Float convertStreetToLine(Street s) {
 		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
