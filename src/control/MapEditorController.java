@@ -10,7 +10,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 
-import model.Knot;
+import model.Node;
 import model.MapEditorModel;
 import model.Street;
 import view.MapEditorView;
@@ -54,7 +54,7 @@ public class MapEditorController {
 		
 		public void mouseClicked(MouseEvent e) {	}
 
-		private Street clickedOnStreet(Knot point) {
+		private Street clickedOnStreet(Node point) {
 			for(Street street : model.getStreets()) {
 				if(street.isPointOnStreet(point.getX(), point.getY())) {
 					return street;
@@ -66,9 +66,9 @@ public class MapEditorController {
 		public void mouseEntered(MouseEvent e) {	}
 		public void mouseExited(MouseEvent e) 	{	}
 		public void mousePressed(MouseEvent e) {	
-			Knot point = new Knot(e.getX(), e.getY());
+			Node point = new Node(e.getX(), e.getY());
 
-			Knot selectedKnot = clickedOnEdge(point);
+			Node selectedKnot = clickedOnNode(point);
 			
 			model.setSelectedKnot(selectedKnot);
 
@@ -122,7 +122,7 @@ public class MapEditorController {
 		
 		public void mouseReleased(MouseEvent e) {	}
 		
-		private Knot clickedOnEdge(Knot k) {
+		private Node clickedOnNode(Node k) {
 			
 			int x = k.getX();
 			int y = k.getY();

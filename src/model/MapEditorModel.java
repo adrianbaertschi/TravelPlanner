@@ -37,7 +37,7 @@ public class MapEditorModel extends Observable {
 	private Street selectedStreet;
 	
 	@Transient
-	private Knot selectedKnot;
+	private Node selectedKnot;
 		
 	@Column(nullable=false)
 
@@ -94,11 +94,11 @@ public class MapEditorModel extends Observable {
 		this.name = name;
 	}
 	
-	public Knot getSelectedKnot() {
+	public Node getSelectedKnot() {
 		return selectedKnot;
 	}
 
-	public void setSelectedKnot(Knot selectedKnot) {
+	public void setSelectedKnot(Node selectedKnot) {
 		this.selectedKnot = selectedKnot;
 		
 		super.setChanged();

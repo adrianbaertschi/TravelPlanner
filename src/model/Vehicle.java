@@ -15,11 +15,11 @@ public class Vehicle {
 	private int maxSpeed;
 	private String imageURL;
 	private Image scaledImage;
-	private Knot startKnot;
-	private Knot currentKnot;
-	private Knot currentPosition;
-	private Knot nextKnot;
-	private Knot finishKnot;
+	private Node startKnot;
+	private Node currentKnot;
+	private Node currentPosition;
+	private Node nextKnot;
+	private Node finishKnot;
 	private Boolean isSelected;
 	private Boolean isVisible;
 
@@ -74,42 +74,42 @@ public class Vehicle {
 	/**
 	 * @return the startKnot
 	 */
-	public Knot getStartKnot() {
+	public Node getStartKnot() {
 		return startKnot;
 	}
 
 	/**
 	 * @param startKnot the startKnot to set
 	 */
-	public void setStartKnot(Knot startKnot) {
+	public void setStartKnot(Node startKnot) {
 		this.startKnot = startKnot;
 	}
 
 	/**
 	 * @return the currentKnot
 	 */
-	public Knot getCurrentKnot() {
+	public Node getCurrentKnot() {
 		return currentKnot;
 	}
 
 	/**
 	 * @param currentKnot the currentKnot to set
 	 */
-	public void setCurrentKnot(Knot currentKnot) {
+	public void setCurrentKnot(Node currentKnot) {
 		this.currentKnot = currentKnot;
 	}
 
 	/**
 	 * @return the finishKnot
 	 */
-	public Knot getFinishKnot() {
+	public Node getFinishKnot() {
 		return finishKnot;
 	}
 
 	/**
 	 * @param finishKnot the finishKnot to set
 	 */
-	public void setFinishKnot(Knot finishKnot) {
+	public void setFinishKnot(Node finishKnot) {
 		this.finishKnot = finishKnot;
 	}
 
@@ -117,14 +117,14 @@ public class Vehicle {
 	/**
 	 * @return the nextKnot
 	 */
-	public Knot getNextKnot() {
+	public Node getNextKnot() {
 		return nextKnot;
 	}
 
 	/**
 	 * @param nextKnot the nextKnot to set
 	 */
-	public void setNextKnot(Knot nextKnot) {
+	public void setNextKnot(Node nextKnot) {
 		this.nextKnot = nextKnot;
 	}
 
@@ -159,14 +159,14 @@ public class Vehicle {
 	/**
 	 * @return the currentPosition
 	 */
-	public Knot getCurrentPosition() {
+	public Node getCurrentPosition() {
 		return currentPosition;
 	}
 
 	/**
 	 * @param currentPosition the currentPosition to set
 	 */
-	public void setCurrentPosition(Knot currentPosition) {
+	public void setCurrentPosition(Node currentPosition) {
 		this.currentPosition = currentPosition;
 	}
 

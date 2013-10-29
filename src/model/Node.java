@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 @Entity
-public class Knot {
+public class Node {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,9 @@ public class Knot {
 	private Color color = Color.DARK_GRAY;
 
 	
-	public Knot() {}
+	public Node() {}
 	
-	public Knot(int x, int y) {
+	public Node(int x, int y) {
 		this.setX(x);
 		this.setY(y);
 	}
@@ -83,8 +83,8 @@ public class Knot {
 	 * Knots are equal if x and y are equal
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Knot) {
-			Knot k = (Knot)o;
+		if(o instanceof Node) {
+			Node k = (Node)o;
 			return this.x == k.x && this.y == k.y;
 		}
 		return false;

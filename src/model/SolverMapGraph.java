@@ -29,7 +29,7 @@ public class SolverMapGraph{
 			
 			
 			//abfangen falls es keinen k�zesten pfad gibt
-			SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = createMapGraph();
+			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			
 			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
 				
@@ -49,7 +49,7 @@ public class SolverMapGraph{
 					
 					for(int i=1; i<=ticks; i++){
 						
-						Knot currentPosition = new Knot();
+						Node currentPosition = new Node();
 						currentPosition.setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*(1/ticks))));
 						currentPosition.setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*(1/ticks))));
 						v.setCurrentPosition(currentPosition);
@@ -74,9 +74,9 @@ public class SolverMapGraph{
 		
 	}
 	
-	private SimpleWeightedGraph<Knot, DefaultWeightedEdge> createMapGraph(){
+	private SimpleWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
 			
-		SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Knot, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
 	    for(Street s :streets){
@@ -98,11 +98,11 @@ public class SolverMapGraph{
 		return swg;
 	}
 
-	public Knot shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Knot, DefaultWeightedEdge> swg, Knot currentPosition, Knot endPosition){
+	public Node shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg, Node currentPosition, Node endPosition){
 		
 		System.out.println("test");
 
-		DijkstraShortestPath<Knot, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Knot, DefaultWeightedEdge>(swg, currentPosition, endPosition);
+		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, currentPosition, endPosition);
 		//BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
 		//System.out.println(bfsp.getCost(endPosition));
 		System.out.println(dsp.getPathEdgeList());

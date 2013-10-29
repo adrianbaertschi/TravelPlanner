@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Knot;
+import model.Node;
 import model.MapEditorModel;
 import model.Street;
 
@@ -134,14 +134,14 @@ public class MapEditorView extends JPanel implements Observer{
 		}
 	}
 	
-	private Ellipse2D.Float convertKnotToEllipse(Knot knot) {
+	private Ellipse2D.Float convertKnotToEllipse(Node knot) {
 		return new Ellipse2D.Float(knot.getX() - NODE_RADIUS, knot.getY() - NODE_RADIUS, NODE_WIDTH, NODE_HEIGHT);
 	}
 	private Line2D.Float convertStreetToLine(Street s) {
 		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
 	}
 	
-	private void displayKnotInfo(Knot selectedKnot) {
+	private void displayKnotInfo(Node selectedKnot) {
 		if(selectedKnot != null) {
 			streetInfo.setText("Knot Position: " + selectedKnot.getX() + " / " + selectedKnot.getY());
 		} else {
@@ -164,8 +164,8 @@ public class MapEditorView extends JPanel implements Observer{
 				btnDelete.setEnabled(false);
 			}
 		}
-		if(value instanceof Knot) {
-			displayKnotInfo((Knot)value);
+		if(value instanceof Node) {
+			displayKnotInfo((Node)value);
 			btnDelete.setEnabled(false);
 		}
 	}

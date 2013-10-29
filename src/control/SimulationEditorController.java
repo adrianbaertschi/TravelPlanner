@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import model.Knot;
+import model.Node;
 import model.SimulationEditorModel;
 import model.SolverMapGraph;
 import model.Street;
@@ -42,9 +42,6 @@ public class SimulationEditorController {
 		simulationEditorView.getStartJB().addActionListener(new BtnSetStart());
 		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
 		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
-//		sev.getBtnSaveMap().addActionListener(new BtnSaveMapActionListener());
-//		sev.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
-//		sev.getBtnReset().addActionListener(new BtnResetActionListener());
 
 	}
 	
@@ -57,34 +54,32 @@ public class SimulationEditorController {
 
 	class MapMouseListener implements MouseListener {
 
-//		private Street s;
-		
 		public void mouseClicked(MouseEvent e) {
 			
 			System.out.println("klicked");
 			
-			Knot knot = new Knot(e.getX(), e.getY());
+			Node knot = new Node(e.getX(), e.getY());
 			
-			Knot selectedKnot = clickedOnEdge(knot);
+			Node selectedKnot = clickedOnNode(knot);
 			
 			simulationEditorModel.getMapEditorModel().setSelectedKnot(selectedKnot);
 			simulationEditorModel.changed();
 
 			
 	}
-		private Knot clickedOnEdge(Knot k) {
+		private Node clickedOnNode(Node k) {
 			
 			int x = k.getX();
 			int y = k.getY();
 			int toleranz = 5;
 			
-			Knot returnKnot = null;
+			Node returnKnot = null;
 
 			for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
-				// TODO: Refactor
 				
 				street.getStart().setColor(Color.DARK_GRAY);
 				street.getEnd().setColor(Color.DARK_GRAY);
+				
 				// On Start Knoten?
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);

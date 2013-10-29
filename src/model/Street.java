@@ -18,35 +18,35 @@ public class Street {
 	private long id;
 	
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private Knot start;
+	private Node start;
 	
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private Knot end;
+	private Node end;
 	
 	
 	private Color streetColor = Color.BLUE;
 	
 	public Street() {}
 	
-	public Street(Knot start) {
+	public Street(Node start) {
 		this.start = start;
 	}
 	
-	public Street(Knot start, Knot end) {
+	public Street(Node start, Node end) {
 		this.start = start;
 		this.end = end;
 	}
 	
-	public Knot getStart() {
+	public Node getStart() {
 		return start;
 	}
-	public void setStart(Knot start) {
+	public void setStart(Node start) {
 		this.start = start;
 	}
-	public Knot getEnd() {
+	public Node getEnd() {
 		return end;
 	}
-	public void setEnd(Knot end) {
+	public void setEnd(Node end) {
 		this.end = end;
 	}
 	
