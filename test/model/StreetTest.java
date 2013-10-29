@@ -10,8 +10,8 @@ public class StreetTest {
 	
 	@Test
 	public void testGetLength() {
-		Knot k1 = new Knot(0, 0);
-		Knot k2 = new Knot(4, 3);
+		Node k1 = new Node(0, 0);
+		Node k2 = new Node(4, 3);
 		
 		Street s = new Street(k1, k2);
 		assertEquals(5, s.getLenth());
@@ -22,8 +22,8 @@ public class StreetTest {
 	
 	@Test
 	public void testIsPointOnStreet() {
-		Knot k1 = new Knot(0, 0);
-		Knot k2 = new Knot(4, 4);
+		Node k1 = new Node(0, 0);
+		Node k2 = new Node(4, 4);
 		
 		Street s = new Street(k1, k2);
 		

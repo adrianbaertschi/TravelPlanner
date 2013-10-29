@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import model.Knot;
+import model.Node;
 import model.MapEditorModel;
 import model.Street;
 
@@ -19,9 +19,9 @@ public class MapEditorDaoTest {
 		MapEditorModel map = new MapEditorModel();
 		
 		// Dreieck
-		Knot k1 = new Knot(0, 0);
-		Knot k2 = new Knot(0, 5);
-		Knot k3 = new Knot(5, 0);
+		Node k1 = new Node(0, 0);
+		Node k2 = new Node(0, 5);
+		Node k3 = new Node(5, 0);
 
 		Street s1 = new Street(k1, k2);
 		Street s2 = new Street(k2, k3);
