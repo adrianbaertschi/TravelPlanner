@@ -26,7 +26,7 @@ import model.Street;
 public class MapEditorView extends JPanel implements Observer{
 	
 	private static final Color STREET_COLOR = 	Color.BLUE;
-	private static final Color KNOT_COLOR = 	Color.DARK_GRAY;
+	private static final Color NODE_COLOR = 	Color.DARK_GRAY;
 	private static final Color SELECTED_COLOR = Color.CYAN;
 	
 	private MapEditorModel model = new MapEditorModel();
@@ -113,7 +113,7 @@ public class MapEditorView extends JPanel implements Observer{
 		for(Street street : model.getStreets()) {
 			
 			// Knoten
-			g2d.setColor(KNOT_COLOR);
+			g2d.setColor(NODE_COLOR);
 			g2d.fill(convertKnotToEllipse(street.getStart()));
 			
 			g2d.fill(convertKnotToEllipse(street.getEnd()));
