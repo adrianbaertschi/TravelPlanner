@@ -3,7 +3,6 @@
  */
 package control;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,8 +76,6 @@ public class SimulationEditorController {
 
 			for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
 				
-				street.getStart().setColor(Color.DARK_GRAY);
-				street.getEnd().setColor(Color.DARK_GRAY);
 				
 				// On Start Knoten?
 				int xdiff = Math.abs(street.getStart().getX() - x);
@@ -86,7 +83,6 @@ public class SimulationEditorController {
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
 					returnKnot = street.getStart();
-					street.getStart().setColor(Color.CYAN);
 				}
 				
 				// On End?
@@ -95,7 +91,6 @@ public class SimulationEditorController {
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
 					returnKnot = street.getEnd();
-					street.getEnd().setColor(Color.CYAN);
 				}
 			}
 			

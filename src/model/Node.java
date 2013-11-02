@@ -1,12 +1,9 @@
 package model;
 
-import java.awt.Color;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
 public class Node {
@@ -19,11 +16,6 @@ public class Node {
 	private boolean isStartingPosition;
 	private boolean isEndPosition;
 
-	// TODO: move color to view classes
-	@Transient
-	private Color color = Color.DARK_GRAY;
-
-	
 	public Node() {}
 	
 	public Node(int x, int y) {
@@ -89,19 +81,4 @@ public class Node {
 		}
 		return false;
 	}
-
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 }

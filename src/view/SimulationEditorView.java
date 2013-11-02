@@ -154,12 +154,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 		for(Street street : model.getMapEditorModel().getStreets()) {
 			
 			
-			g2d.setColor(street.getStart().getColor());
-
-			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
+			g2d.setColor(Color.DARK_GRAY);
 			
-			g2d.setColor(street.getEnd().getColor());
+			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
 			g2d.fillOval(street.getEnd().getX() -5, street.getEnd().getY() -5, 10, 10);
+			
+			if(model.getMapEditorModel().getSelectedKnot() != null) {
+				g2d.setColor(Color.CYAN);
+				g2d.fillOval(model.getMapEditorModel().getSelectedKnot().getX() -5, model.getMapEditorModel().getSelectedKnot().getY() -5, 10, 10);
+			}
 
 			
 			// Strassen			
