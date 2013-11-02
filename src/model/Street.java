@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.geom.Line2D;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +26,9 @@ public class Street {
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Node end;
 	
+	@Column(nullable=false)
+	@Enumerated(EnumType.STRING)
+	private StreetType streetType;
 	
 	private Color streetColor = Color.BLUE;
 	
@@ -90,5 +96,12 @@ public class Street {
 	public void setStreetColor(Color streetColor) {
 		this.streetColor = streetColor;
 	}
+
+	public StreetType getStreetType() {
+		return streetType;
+	}
 	
+	public void setStreetType(StreetType streetType) {
+		this.streetType = streetType;
+	}
 }

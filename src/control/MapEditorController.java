@@ -10,8 +10,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 
-import model.Node;
 import model.MapEditorModel;
+import model.Node;
 import model.Street;
 import view.MapEditorView;
 import view.MapLoaderDialog;
@@ -94,6 +94,7 @@ public class MapEditorController {
 					
 					if(clickedOnStreet(point) == null) {
 						currentStreet.setEnd(point);
+						currentStreet.setStreetType(view.getSelectedStreetType());
 						model.addStreet(currentStreet);
 						
 						// reset Street
@@ -111,6 +112,7 @@ public class MapEditorController {
 				} else {
 					// CASE 3: connect two existing
 					currentStreet.setEnd(selectedKnot);
+					currentStreet.setStreetType(view.getSelectedStreetType());
 					model.addStreet(currentStreet);
 					model.setSelectedKnot(null);
 					

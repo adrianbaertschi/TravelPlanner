@@ -16,16 +16,17 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Node;
 import model.MapEditorModel;
+import model.Node;
 import model.Street;
+import model.StreetType;
 
 public class MapEditorView extends JPanel implements Observer{
 	
-	private static final Color STREET_COLOR = 	Color.BLUE;
 	private static final Color NODE_COLOR = 	Color.DARK_GRAY;
 	private static final Color SELECTED_COLOR = Color.CYAN;
 	
@@ -33,6 +34,8 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private JPanel mapArea;
 	private JLabel streetInfo;
+	
+	private JComboBox<StreetType> cbxStreetType;
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
@@ -58,9 +61,13 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		// Details
 		streetInfo = new JLabel();
-		streetInfo.setBounds(920, 10, 300, 30);
+		streetInfo.setBounds(920, 200, 300, 30);
 		
 		this.add(streetInfo);
+		
+		cbxStreetType = new JComboBox<StreetType>(StreetType.values());
+		cbxStreetType.setBounds(920, 10, 200, 30);
+		this.add(cbxStreetType);
 		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
@@ -104,6 +111,10 @@ public class MapEditorView extends JPanel implements Observer{
 		return btnDelete;
 	}
 	
+	public JComboBox<StreetType> getCbxStreetType() {
+		return this.cbxStreetType;
+	}
+	
 	private void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
@@ -112,20 +123,20 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		for(Street street : model.getStreets()) {
 			
-			// Knoten
-			g2d.setColor(NODE_COLOR);
-			g2d.fill(convertKnotToEllipse(street.getStart()));
-			
-			g2d.fill(convertKnotToEllipse(street.getEnd()));
-			
 			// Strassen
 			if(street == model.getSelectedStreet()) {
 				g2d.setColor(SELECTED_COLOR);
 			} else {
-				g2d.setColor(STREET_COLOR);
+				g2d.setColor(street.getStreetType().getColor());
 			}
-			g2d.setStroke(new BasicStroke(2));
+			g2d.setStroke(new BasicStroke(3));
 			g2d.draw(convertStreetToLine(street));
+			
+			
+			// Knoten
+			g2d.setColor(NODE_COLOR);
+			g2d.fill(convertKnotToEllipse(street.getStart()));
+			g2d.fill(convertKnotToEllipse(street.getEnd()));
 		}
 		
 		if(model.getSelectedKnot() != null) {
@@ -168,5 +179,9 @@ public class MapEditorView extends JPanel implements Observer{
 			displayKnotInfo((Node)value);
 			btnDelete.setEnabled(false);
 		}
+	}
+	
+	public StreetType getSelectedStreetType() {
+		return this.cbxStreetType.getItemAt(this.cbxStreetType.getSelectedIndex());
 	}
 }
