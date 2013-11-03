@@ -42,7 +42,7 @@ public class MasterGui extends JFrame {
 		MapEditorController mapEditorController = new MapEditorController(new MapEditorView(), mapEditorModel);
 		
 		FleetEditorModel fleetEditorModel = new FleetEditorModel();
-		
+		FleetEditorController fleetEditorController = new FleetEditorController(new FleetEditorView(), fleetEditorModel);
 		
 		
 		SimulationEditorModel simulationEditorModel = new SimulationEditorModel();
@@ -52,7 +52,7 @@ public class MasterGui extends JFrame {
 		
 		
 		tabPane.addTab("Map Editor", mapEditorController.showView());
-		tabPane.addTab("Fleet Editor", new FleetEditorController().showView());
+		tabPane.addTab("Fleet Editor", fleetEditorController.showView());
 		tabPane.addTab("Simulation Editor", simulationEditorController.showView());
 
 		

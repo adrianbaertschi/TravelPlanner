@@ -4,14 +4,16 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * @author dimitri.haemmerli
  *
  */
-public class FleetEditorModel {
+public class FleetEditorModel extends Observable{
 	
-	private String name;
+	VehicleType vehicleTypes;
+	
 	private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 
 	
@@ -45,5 +47,21 @@ public class FleetEditorModel {
 		this.vehicles = vehicles;
 	}
 			
+	
+	
+	/**
+	 * @return the vehicleTypes
+	 */
+	public Enum<VehicleType> getVehicleTypes() {
+		return vehicleTypes;
+	}
+
+
+	public void changed(){
 		
+		super.setChanged();
+		super.notifyObservers(this);
+	
+	}
+
 }

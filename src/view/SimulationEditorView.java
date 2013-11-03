@@ -6,7 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.text.Position;
 
 import model.MapEditorModel;
 import model.SimulationEditorModel;
@@ -41,12 +46,14 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JLabel vehicleJL;
 	
 	private ImageIcon finishII;
-	private JButton finishJB;
 	
 	private JButton startJB;
-	
+	private JButton finishJB;		
 	private JButton simulationJB;
 	
+	private JButton nextVehicleJB;
+	private JButton previousVehicleJB;
+
 	private ImageIcon vehicleII;
 	
 	private Image img;
@@ -89,29 +96,54 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleArea = new JPanel();
 		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
 		vehicleArea.setBackground(Color.WHITE);
-		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		vehicleArea.setLayout(new FlowLayout(FlowLayout.LEFT));
-			
-		
-		this.add(vehicleArea);
-		
+
 		
 		// VehicleSelectionArea
 		vehicleSelectionArea = new JPanel();
-		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 210));
-		vehicleSelectionArea.setBackground(Color.BLACK);
-		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
+//		vehicleSelectionArea.setBackground(Color.BLACK);
+//		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		
+		vehicleSelectionArea.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();		
+		gbc.insets = new Insets( 5, 5, 5, 5 );	
+		gbc.anchor = GridBagConstraints.WEST;	
+//		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.weightx = 0;
+		gbc.gridwidth = 1;
+		previousVehicleJB = new JButton("<<<");
+		vehicleSelectionArea.add (previousVehicleJB, gbc);
+
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		gbc.weightx = 0;
+		gbc.gridwidth = 1;
+		gbc.anchor = GridBagConstraints.EAST;
+		nextVehicleJB = new JButton(">>>");
+		vehicleSelectionArea.add (nextVehicleJB, gbc);
+
+	
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 0;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 3;
+		vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getImageURL());
+		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+		vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
+		
+		vehicleSelectionArea.add (vehicleJL, gbc);
 
 		vehicleArea.add(vehicleSelectionArea);	
- 
-		vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getImageURL());
-		vehicleII.setImage(vehicleII.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
 
-		vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
+		this.add(vehicleArea);
+			
 
-		vehicleSelectionArea.add(vehicleJL);
-		
-	
 		// Start Button
 		
 		startJB = new JButton("start");
