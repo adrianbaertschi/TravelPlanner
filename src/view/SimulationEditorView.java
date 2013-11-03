@@ -97,12 +97,14 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
 		vehicleArea.setBackground(Color.WHITE);
 //		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		vehicleArea.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vehicleArea.setLayout(null);
 
 		
 		// VehicleSelectionArea
 		vehicleSelectionArea = new JPanel();
 		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
+		vehicleSelectionArea.setBounds(0, 0, vehicleArea.getWidth(), 250);
+
 //		vehicleSelectionArea.setBackground(Color.BLACK);
 //		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		
@@ -133,9 +135,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 		gbc.weightx = 0;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 3;
+		gbc.anchor = GridBagConstraints.CENTER;
+
 		vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getImageURL());
 		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
-		vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
+		vehicleJL = new JLabel(vehicleII);
 		
 		vehicleSelectionArea.add (vehicleJL, gbc);
 
@@ -147,6 +151,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		// Start Button
 		
 		startJB = new JButton("start");
+		startJB.setBounds(0, 480, 100, 30);
+
 		vehicleArea.add(startJB);
 		
 		
@@ -154,11 +160,14 @@ public class SimulationEditorView extends JPanel implements Observer{
 		finishII = new ImageIcon("images/finish.jpg");
 		finishII.setImage(finishII.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
 		finishJB = new JButton(finishII);
+		finishJB.setBounds(110, 480, 100, 30);
 
 		vehicleArea.add(finishJB);
 		
 		//Simulation JButton
 		simulationJB = new JButton("Simulation");
+		simulationJB.setBounds(0, 440, 100, 30);
+
 		vehicleArea.add(simulationJB);
 		
 		try {

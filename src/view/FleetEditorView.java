@@ -50,8 +50,15 @@ public class FleetEditorView extends JPanel implements Observer {
 	
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
+	private JButton addVehicleJB;
+
+	private JButton saveFleetJB;
+	private JButton loadFleetJB;
+	private JButton deleteFleetJB;
 	
-	
+	private JButton resetCurrentVehicleJB;
+	private JButton deleteCurrentVehcleJB;
+
 
 	private ImageIcon vehicleII;
 
@@ -92,20 +99,20 @@ public class FleetEditorView extends JPanel implements Observer {
 		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
 		vehicleArea.setBackground(Color.WHITE);
 //		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		vehicleArea.setLayout(new FlowLayout(FlowLayout.LEFT));
+		vehicleArea.setLayout(null);
 
 		
 		// VehicleSelectionArea
 		vehicleSelectionArea = new JPanel();
 		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
+		vehicleSelectionArea.setBounds(0, 0, vehicleArea.getWidth(), 250);
 //		vehicleSelectionArea.setBackground(Color.BLACK);
 //		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		
 		vehicleSelectionArea.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();		
-		gbc.insets = new Insets( 5, 5, 5, 5 );	
+		gbc.insets = new Insets( 0, 0, 5, 5 );	
 		gbc.anchor = GridBagConstraints.WEST;	
-//		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -113,6 +120,14 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.gridwidth = 1;
 		previousVehicleJB = new JButton("<<<");
 		vehicleSelectionArea.add (previousVehicleJB, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.weightx = 0;
+		gbc.gridwidth = 1;
+		addVehicleJB = new JButton("Add  Vehicle");
+		gbc.anchor = GridBagConstraints.CENTER;
+		vehicleSelectionArea.add (addVehicleJB, gbc);
 
 		gbc.gridx = 2;
 		gbc.gridy = 2;
@@ -128,10 +143,12 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.weightx = 0;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 3;
+		gbc.anchor = GridBagConstraints.CENTER;
+
 		//TODO: replace constant 
 		vehicleII = new ImageIcon("images/car.jpg");
 		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
-		vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
+		vehicleJL = new JLabel(vehicleII);
 		
 		vehicleSelectionArea.add (vehicleJL, gbc);
 
@@ -139,22 +156,25 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		this.add(vehicleArea);
 
-		// Start Button
-
-		startJB = new JButton("start");
-		vehicleArea.add(startJB);
-
-		// Finish JButton
-		finishII = new ImageIcon("images/finish.jpg");
-		finishII.setImage(finishII.getImage().getScaledInstance(30, 30,
-				Image.SCALE_DEFAULT));
-		finishJB = new JButton(finishII);
-
-		vehicleArea.add(finishJB);
-
-		// Simulation JButton
-		simulationJB = new JButton("Simulation");
-		vehicleArea.add(simulationJB);
+		// Save Button
+		saveFleetJB = new JButton("Save Fleet");
+		saveFleetJB.setBounds(0, 480, 100, 30);
+		vehicleArea.add(saveFleetJB);
+		
+		// Load Button
+		loadFleetJB = new JButton("Load Fleet");
+		loadFleetJB.setBounds(110, 480, 100, 30);
+		vehicleArea.add(loadFleetJB);
+		
+		// Reset Button
+		resetCurrentVehicleJB = new JButton("Reset");
+		resetCurrentVehicleJB.setBounds(0, 440, 100, 30);
+		vehicleArea.add(resetCurrentVehicleJB);
+		
+		deleteFleetJB = new JButton("Delete");
+		deleteFleetJB.setBounds(110, 440, 100, 30);
+		deleteFleetJB.setEnabled(false);
+		vehicleArea.add(deleteFleetJB);
 
 		try {
 			this.img = ImageIO.read(new File("images/car.jpg"));
