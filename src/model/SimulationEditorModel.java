@@ -47,11 +47,17 @@ public class SimulationEditorModel extends Observable {
 		this.fleetEditorModel = fleetEditorModel;
 	}
 
-	public void changed(){
+	public void changed(Object o){
+		
 		
 		super.setChanged();
-		super.notifyObservers(this);
-	
+		
+		if(o instanceof Vehicle){	
+			super.notifyObservers(o);
+		}else{
+			super.notifyObservers(this);
+
+		}
 	}
 
 

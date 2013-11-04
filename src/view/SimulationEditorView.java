@@ -247,28 +247,19 @@ public class SimulationEditorView extends JPanel implements Observer{
 			if(v.getStartKnot() != null){
 				
 				img.paintIcon(this, g2d, v.getStartKnot().getX() - img.getIconWidth()/2, v.getStartKnot().getY() - img.getIconHeight()/2);
-//				g2d.drawImage(img, 
-//						v.getStartKnot().getX() - img.getIconWidth()/2, 
-//						v.getStartKnot().getY() - img.getIconHeight()/2,this);
 			
 			}
 			if(v.getFinishKnot() != null){
 				
 				img.paintIcon(this, g2d, v.getFinishKnot().getX() - img.getIconWidth()/2, v.getFinishKnot().getY() - img.getIconHeight()/2);
-//						g2d.drawImage(img, 
-//						v.getFinishKnot().getX() - img.getIconWidth()/2, 
-//						v.getFinishKnot().getY() - img.getIconHeight()/2,this);
 			
 			}
 
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
-				img.paintIcon(this, g2d, v.getCurrentPosition().getX() - img.getIconWidth()/2, v.getCurrentPosition().getY() - img.getIconHeight()/2);
-//				g2d.drawImage(img, 
-//						v.getCurrentPosition().getX() - img.getIconWidth()/2, 
-//						v.getCurrentPosition().getY() - img.getIconHeight()/2,this);
-			
+				img.paintIcon(this, g2d, v.getCurrentPosition().getX() - img.getIconWidth()/2, v.getCurrentPosition().getY() - img.getIconHeight()/2);			
+		
 			}
 
 		}

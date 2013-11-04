@@ -20,6 +20,7 @@ public class Vehicle {
 	private Node finishKnot;
 	private Boolean isSelected;
 	private Boolean isVisible;
+	private Thread thread;
 
 	public Vehicle(){
 		
@@ -150,6 +151,20 @@ public class Vehicle {
 	 */
 	public void setVehicleTypes(VehicleType vehicleTypes) {
 		this.vehicleTypes = vehicleTypes;
+	}
+
+	/**
+	 * @return the thread
+	 */
+	public Thread getThread() {
+		return thread;
+	}
+
+	/**
+	 * @param thread the thread to set
+	 */
+	public void setThread(Thread thread) {
+		this.thread = thread;
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import control.FleetEditorController.BtnNextVehicle;
 import control.FleetEditorController.BtnPreviousVehicle;
@@ -26,6 +27,7 @@ public class SimulationEditorController {
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
+	private ArrayList<SolverMapGraph> solver = new ArrayList<SolverMapGraph>();
 
 	
 	public SimulationEditorController(SimulationEditorView sev, SimulationEditorModel sem){
@@ -68,7 +70,7 @@ public class SimulationEditorController {
 			Node selectedKnot = clickedOnNode(knot);
 			
 			simulationEditorModel.getMapEditorModel().setSelectedKnot(selectedKnot);
-			simulationEditorModel.changed();
+			simulationEditorModel.changed(null);
 
 			
 	}
@@ -142,7 +144,7 @@ public class SimulationEditorController {
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed();
+							simulationEditorModel.changed(null);
 							
 						}						
 						
@@ -151,7 +153,7 @@ public class SimulationEditorController {
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed();
+							simulationEditorModel.changed(null);
 
 						}						
 					}
@@ -173,7 +175,7 @@ public class SimulationEditorController {
 							
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed();
+							simulationEditorModel.changed(null);
 							
 						}						
 						
@@ -181,7 +183,7 @@ public class SimulationEditorController {
 							
 							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed();
+							simulationEditorModel.changed(null);
 
 						}						
 	
@@ -197,14 +199,27 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()) {
+			
+			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 				
+				solver.add(new SolverMapGraph(simulationEditorModel));
+				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
+				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
+			}
+			
+			for(SolverMapGraph smg: solver) {
 				
-				if(v.getStartKnot() != null && v.getFinishKnot() != null){
-					new SolverMapGraph(simulationEditorModel).startSimulation();;
+				if(smg.getVehicle().getStartKnot() != null && smg.getVehicle().getFinishKnot() != null){
+					
+//					SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
+//					v.setThread(new Thread(new SolverMapGraph(simulationEditorModel)));
+					smg.getVehicle().getThread().start();
+//					new SolverMapGraph(simulationEditorModel).startSimulation();;
 				}
 				
 			}
+			
+			
 		
 		}
 	}
@@ -214,7 +229,7 @@ public class SimulationEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			simulationEditorModel.getFleetEditorModel().increaseVehiclePos();
-			simulationEditorModel.changed();
+			simulationEditorModel.changed(null);
 		
 		}
 	}
@@ -223,7 +238,7 @@ public class SimulationEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			simulationEditorModel.getFleetEditorModel().decreaseVehiclePos();
-			simulationEditorModel.changed();
+			simulationEditorModel.changed(null);
 		}
 	}
 

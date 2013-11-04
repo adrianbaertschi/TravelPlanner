@@ -13,9 +13,10 @@ import org.jgrapht.graph.SimpleWeightedGraph;
  * @author dimitri.haemmerli
  *
  */
-public class SolverMapGraph{
+public class SolverMapGraph implements Runnable{
 	
 	private SimulationEditorModel simulationEditorModel;
+	private Vehicle vehicle;
 	
 	public SolverMapGraph(SimulationEditorModel simulationEditorModel){
 		
@@ -25,34 +26,34 @@ public class SolverMapGraph{
 	
 	public void startSimulation() {
 		
-		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
+//		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
 			
 			
 			//abfangen falls es keinen k�zesten pfad gibt
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			
-			while(!v.getCurrentKnot().equals(v.getFinishKnot())){
+			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
 				
 							
 				//getting the nextKnot from Dijkstra
-				v.setNextKnot(shortestPathDijkstra(v, swg, v.getCurrentKnot(), v.getFinishKnot()));
+				vehicle.setNextKnot(shortestPathDijkstra(vehicle, swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot()));
 				
 				
 				//drawing the movement to the next knot
 				
-				while(!v.getCurrentKnot().equals(v.getNextKnot())){
+				while(!vehicle.getCurrentKnot().equals(vehicle.getNextKnot())){
 					
 					// TODO: get speed from car
-					int speed = 5; 
-					float ticks = new Street(v.getCurrentKnot(), v.getNextKnot()).getLenth() / speed;
+					int speed = 20; 
+					float ticks = new Street(vehicle.getCurrentKnot(), vehicle.getNextKnot()).getLenth() / speed;
 					
 					
 					for(int i=1; i<=ticks; i++){
 						
 						Node currentPosition = new Node();
-						currentPosition.setX((int) (v.getCurrentKnot().getX() + (v.getNextKnot().getX() - v.getCurrentKnot().getX())*(i*(1/ticks))));
-						currentPosition.setY((int) (v.getCurrentKnot().getY() + (v.getNextKnot().getY() - v.getCurrentKnot().getY())*(i*(1/ticks))));
-						v.setCurrentPosition(currentPosition);
+						currentPosition.setX((int) (vehicle.getCurrentKnot().getX() + (vehicle.getNextKnot().getX() - vehicle.getCurrentKnot().getX())*(i*(1/ticks))));
+						currentPosition.setY((int) (vehicle.getCurrentKnot().getY() + (vehicle.getNextKnot().getY() - vehicle.getCurrentKnot().getY())*(i*(1/ticks))));
+						vehicle.setCurrentPosition(currentPosition);
 						
 						try {
 							Thread.sleep(speed);
@@ -60,17 +61,19 @@ public class SolverMapGraph{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						simulationEditorModel.changed();
+						updateModelSync();
+//						simulationEditorModel.changed(vehicle);
+
 					}
 					
-					v.setCurrentKnot(v.getNextKnot());
+					vehicle.setCurrentKnot(vehicle.getNextKnot());
 				}
 			}
 
 			//reinitialize the currentKnot so a new simulation can be performed
-			v.setCurrentKnot(v.getStartKnot());
+			vehicle.setCurrentKnot(vehicle.getStartKnot());
 
-		}
+//		}
 		
 	}
 	
@@ -131,5 +134,34 @@ public class SolverMapGraph{
 		
 		return null;
 	}
+
+
+	/**
+	 * @return the vehicle
+	 */
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	/**
+	 * @param vehicle the vehicle to set
+	 */
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	@Override
+	public void run() {
+
+		startSimulation();
+		
+	}
+    
+	public synchronized void updateModelSync() {
+		
+		simulationEditorModel.changed(vehicle);
+				
+	}
+
 
 }
