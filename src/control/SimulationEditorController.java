@@ -197,6 +197,7 @@ public class SimulationEditorController {
 		
 		}
 	}
+
 	class BtnSetSimulation implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
