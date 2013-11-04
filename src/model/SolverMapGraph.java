@@ -31,13 +31,18 @@ public class SolverMapGraph implements Runnable{
 			
 			//abfangen falls es keinen k�zesten pfad gibt
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
-			
+			int speedLimit = 0;
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
 				
 							
 				//getting the nextKnot from Dijkstra
 				vehicle.setNextKnot(shortestPathDijkstra(vehicle, swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot()));
-				
+				for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
+					if(s.getStart().equals(vehicle.getCurrentKnot()) && s.getEnd().equals(vehicle.getNextKnot()) ||
+							s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
+						speedLimit = s.getStreetType().getSpeedLimit();
+					}
+				}
 				
 				//drawing the movement to the next knot
 				
@@ -56,7 +61,7 @@ public class SolverMapGraph implements Runnable{
 						vehicle.setCurrentPosition(currentPosition);
 						
 						try {
-							Thread.sleep(5 *speed);
+							Thread.sleep(5 * (150-speedLimit)/10);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

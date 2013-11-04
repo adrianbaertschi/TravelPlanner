@@ -258,6 +258,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
+				img.setImage(img.getImage().getScaledInstance(15, 15,Image.SCALE_DEFAULT));
 				img.paintIcon(this, g2d, v.getCurrentPosition().getX() - img.getIconWidth()/2, v.getCurrentPosition().getY() - img.getIconHeight()/2);			
 		
 			}
