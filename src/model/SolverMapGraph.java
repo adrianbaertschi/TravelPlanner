@@ -44,7 +44,7 @@ public class SolverMapGraph implements Runnable{
 				while(!vehicle.getCurrentKnot().equals(vehicle.getNextKnot())){
 					
 					// TODO: get speed from car
-					int speed = 20; 
+					int speed = 1; 
 					float ticks = new Street(vehicle.getCurrentKnot(), vehicle.getNextKnot()).getLenth() / speed;
 					
 					
@@ -56,7 +56,7 @@ public class SolverMapGraph implements Runnable{
 						vehicle.setCurrentPosition(currentPosition);
 						
 						try {
-							Thread.sleep(speed);
+							Thread.sleep(5 *speed);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
