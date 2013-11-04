@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import control.FleetEditorController.BtnNextVehicle;
+import control.FleetEditorController.BtnPreviousVehicle;
 import model.Node;
 import model.SimulationEditorModel;
 import model.SolverMapGraph;
@@ -31,6 +33,7 @@ public class SimulationEditorController {
 		this.simulationEditorView = sev;
 		this.simulationEditorModel = sem;
 		this.simulationEditorView.setMapEditorModel(simulationEditorModel.getMapEditorModel());
+		this.simulationEditorView.setFleetEditorModel(simulationEditorModel.getFleetEditorModel());
 		this.simulationEditorModel.addObserver(simulationEditorView);
 		addListener();
 
@@ -41,6 +44,9 @@ public class SimulationEditorController {
 		simulationEditorView.getStartJB().addActionListener(new BtnSetStart());
 		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
 		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
+		simulationEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
+		simulationEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
+
 
 	}
 	
@@ -128,16 +134,13 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
-				
-				if(v.getIsSelected()){
-					
+								
 					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
 						
 						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setStartKnot(s.getStart());
-							v.setCurrentKnot(s.getStart());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
 							simulationEditorModel.changed();
 							
@@ -145,8 +148,8 @@ public class SimulationEditorController {
 						
 						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setStartKnot(s.getEnd());
-							v.setCurrentKnot(s.getEnd());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
 							simulationEditorModel.changed();
 
@@ -154,11 +157,7 @@ public class SimulationEditorController {
 					}
 
 				}
-				
-			}
-			
-		
-		}
+					
 			
 
 	}
@@ -167,15 +166,12 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
-				
-				if(v.getIsSelected()){
-					
+									
 					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
 						
 						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setFinishKnot(s.getStart());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
 							simulationEditorModel.changed();
 							
@@ -183,14 +179,13 @@ public class SimulationEditorController {
 						
 						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
 							
-							v.setFinishKnot(s.getEnd());
+							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
 							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
 							simulationEditorModel.changed();
 
 						}						
-					}
+	
 
-				}
 				
 			}
 			
@@ -211,6 +206,24 @@ public class SimulationEditorController {
 				
 			}
 		
+		}
+	}
+
+	class BtnNextVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().increaseVehiclePos();
+			simulationEditorModel.changed();
+		
+		}
+	}
+	class BtnPreviousVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().decreaseVehiclePos();
+			simulationEditorModel.changed();
 		}
 	}
 

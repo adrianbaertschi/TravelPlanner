@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.text.Position;
 
+import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
 import model.Street;
@@ -56,7 +57,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	private ImageIcon vehicleII;
 	
-	private Image img;
+	private ImageIcon img;
 
 	
 	public SimulationEditorView() {
@@ -137,10 +138,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 		gbc.gridwidth = 3;
 		gbc.anchor = GridBagConstraints.CENTER;
 
-		vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getImageURL());
-		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
-		vehicleJL = new JLabel(vehicleII);
-		
+		//TODO: if else weghauen
+		if(model.getFleetEditorModel().getVehicles().size() > 0){
+				vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getVehicleTypes().getUrlVehicle());
+				vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+				vehicleJL = new JLabel(vehicleII);
+		}else{
+			vehicleJL = new JLabel();
+			vehicleJL.setPreferredSize(new Dimension(200, 200));;
+		}
 		vehicleSelectionArea.add (vehicleJL, gbc);
 
 		vehicleArea.add(vehicleSelectionArea);	
@@ -169,14 +175,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		simulationJB.setBounds(0, 440, 100, 30);
 
 		vehicleArea.add(simulationJB);
-		
-		try {
-			this.img = ImageIO.read(new File("images/car.jpg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+				
 	}
 
 	
@@ -217,50 +216,58 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		
 		
-		}
-		
-		
+		}		
 		
 		
 		// display selected car in vehicle area
-		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
-			
-			if(v.getIsSelected()){
-				
-				vehicleII = new ImageIcon(v.getImageURL());
-
-				vehicleII.setImage(vehicleII.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-
-				vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
-				
-			}
-			
+		if(model.getFleetEditorModel().getVehicles().size() > 0){
+			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
+			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			vehicleJL.setIcon(vehicleII);
 		}
+//		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
+//			
+//			if(v.getIsSelected()){
+//				
+//				vehicleII = new ImageIcon(v.getImageURL());
+//
+//				vehicleII.setImage(vehicleII.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+//
+//				vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
+//				
+//			}
+//			
+//		}
 		
 		// display cars on mapArea
 		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 			
+			img = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
+			img.setImage(img.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
 			if(v.getStartKnot() != null){
 				
-				g2d.drawImage(img, 
-						v.getStartKnot().getX() - img.getWidth(null)/2, 
-						v.getStartKnot().getY() - img.getHeight(null)/2,this);
+				img.paintIcon(this, g2d, v.getStartKnot().getX() - img.getIconWidth()/2, v.getStartKnot().getY() - img.getIconHeight()/2);
+//				g2d.drawImage(img, 
+//						v.getStartKnot().getX() - img.getIconWidth()/2, 
+//						v.getStartKnot().getY() - img.getIconHeight()/2,this);
 			
 			}
 			if(v.getFinishKnot() != null){
 				
-				g2d.drawImage(img, 
-						v.getFinishKnot().getX() - img.getWidth(null)/2, 
-						v.getFinishKnot().getY() - img.getHeight(null)/2,this);
+				img.paintIcon(this, g2d, v.getFinishKnot().getX() - img.getIconWidth()/2, v.getFinishKnot().getY() - img.getIconHeight()/2);
+//						g2d.drawImage(img, 
+//						v.getFinishKnot().getX() - img.getIconWidth()/2, 
+//						v.getFinishKnot().getY() - img.getIconHeight()/2,this);
 			
 			}
 
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
-				g2d.drawImage(img, 
-						v.getCurrentPosition().getX() - img.getWidth(null)/2, 
-						v.getCurrentPosition().getY() - img.getHeight(null)/2,this);
+				img.paintIcon(this, g2d, v.getCurrentPosition().getX() - img.getIconWidth()/2, v.getCurrentPosition().getY() - img.getIconHeight()/2);
+//				g2d.drawImage(img, 
+//						v.getCurrentPosition().getX() - img.getIconWidth()/2, 
+//						v.getCurrentPosition().getY() - img.getIconHeight()/2,this);
 			
 			}
 
@@ -279,15 +286,22 @@ public class SimulationEditorView extends JPanel implements Observer{
 			System.out.println("im update");
 			this.model = (SimulationEditorModel) model; 
 			
+			vehicleArea.repaint();
 			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 	}
 
 	/**
-	 * @param mapModel the mapModel to set
+	 * @param mapEditorModel the mapEditorModel to set
 	 */
 	public void setMapEditorModel(MapEditorModel mapModel) {
 		this.model.setMapEditorModel(mapModel);
+	}
+	/**
+	 * @param fleetEditorModel the fleetEditorModel to set
+	 */
+	public void setFleetEditorModel(FleetEditorModel fem) {
+		this.model.setFleetEditorModel(fem);
 	}
 
 	/**
@@ -330,6 +344,34 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 */
 	public void setSimulationJB(JButton simulationJB) {
 		this.simulationJB = simulationJB;
+	}
+
+	/**
+	 * @return the nextVehicleJB
+	 */
+	public JButton getNextVehicleJB() {
+		return nextVehicleJB;
+	}
+
+	/**
+	 * @param nextVehicleJB the nextVehicleJB to set
+	 */
+	public void setNextVehicleJB(JButton nextVehicleJB) {
+		this.nextVehicleJB = nextVehicleJB;
+	}
+
+	/**
+	 * @return the previousVehicleJB
+	 */
+	public JButton getPreviousVehicleJB() {
+		return previousVehicleJB;
+	}
+
+	/**
+	 * @param previousVehicleJB the previousVehicleJB to set
+	 */
+	public void setPreviousVehicleJB(JButton previousVehicleJB) {
+		this.previousVehicleJB = previousVehicleJB;
 	}
 
 	

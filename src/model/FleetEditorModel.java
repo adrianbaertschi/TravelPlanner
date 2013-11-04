@@ -15,16 +15,17 @@ public class FleetEditorModel extends Observable{
 	private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	private ArrayList<Vehicle> vehicleSelection = new ArrayList<Vehicle>();
 	private int vehicleSelectionPos = 0;
+	private int vehiclePos = 0;
 
 	
 	public FleetEditorModel(){
 		
 
 		//testuse only
-		Car c1 = new Car();
-		c1.setIsSelected(true);
-		c1.setVehicleTypes(VehicleType.GREENCAR);
-		vehicles.add(c1);
+//		Car c1 = new Car();
+//		c1.setIsSelected(true);
+//		c1.setVehicleTypes(VehicleType.GREENCAR);
+//		vehicles.add(c1);
 		
 		createVehicleSelection();
 	}
@@ -104,6 +105,22 @@ private void createVehicleSelection() {
 
 
 	/**
+	 * @return the vehiclePos
+	 */
+	public int getVehiclePos() {
+		return vehiclePos;
+	}
+
+
+	/**
+	 * @param vehiclePos the vehiclePos to set
+	 */
+	public void setVehiclePos(int vehiclePos) {
+		this.vehiclePos = vehiclePos;
+	}
+
+
+	/**
 	 * @param vehicleSelectionPos the vehicleSelectionPos to set
 	 */
 	public void setVehicleSelectionPos(int vehicleSelectionPos) {
@@ -122,7 +139,8 @@ private void createVehicleSelection() {
 			vehicleSelectionPos = 0;
 		}
 		
-		changed();
+		super.setChanged();
+		super.notifyObservers(this);
 	}
 	
 	public void decreaseVehicleSelectionPos(){
@@ -136,14 +154,39 @@ private void createVehicleSelection() {
 			vehicleSelectionPos = vehicleSelection.size() - 1;
 		}
 		
-		changed();
+		super.setChanged();
+		super.notifyObservers(this);
 	}
-
-	public void changed(){
+	
+	public void increaseVehiclePos(){
+		
+		if(vehiclePos < vehicles.size() - 1 ){
+			
+			vehiclePos++;
+			
+		}else{
+			
+			vehiclePos = 0;
+		}
 		
 		super.setChanged();
 		super.notifyObservers(this);
-	
 	}
+	
+	public void decreaseVehiclePos(){
+		
+		if(vehiclePos > 0){
+			
+			vehiclePos--;
+			
+		}else{
+			
+			vehiclePos = vehicles.size() - 1;
+		}
+		
+		super.setChanged();
+		super.notifyObservers(this);
+	}
+
 
 }

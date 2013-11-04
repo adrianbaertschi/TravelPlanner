@@ -39,6 +39,7 @@ public class FleetEditorController {
 	private void addListener() {
 		fleetEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		fleetEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
+		fleetEditorView.getAddVehicleJB().addActionListener(new BtnAddVehicle());
 //		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
 //		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
 
@@ -64,6 +65,13 @@ public class FleetEditorController {
 
 			fleetEditorModel.decreaseVehicleSelectionPos();
 
+		}
+	}
+	class BtnAddVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			fleetEditorModel.getVehicles().add(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()));
 		}
 	}
 

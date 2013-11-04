@@ -13,8 +13,6 @@ public class Vehicle {
 	
 	private VehicleType vehicleTypes;
 	private int maxSpeed;
-	private String imageURL;
-	private Image scaledImage;
 	private Node startKnot;
 	private Node currentKnot;
 	private Node currentPosition;
@@ -40,22 +38,6 @@ public class Vehicle {
 	public void setMaxSpeed(int maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
-
-
-	/**
-	 * @return the imageURL
-	 */
-	public String getImageURL() {
-		return imageURL;
-	}
-
-	/**
-	 * @param imageURL the imageURL to set
-	 */
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
-
 
 	/**
 	 * @return the startKnot
@@ -154,20 +136,6 @@ public class Vehicle {
 	 */
 	public void setCurrentPosition(Node currentPosition) {
 		this.currentPosition = currentPosition;
-	}
-
-	/**
-	 * @return the scaledImage
-	 */
-	public Image getScaledImage() {
-		return scaledImage;
-	}
-
-	/**
-	 * @param scaledImage the scaledImage to set
-	 */
-	public void setScaledImage(Image scaledImage) {
-		this.scaledImage = scaledImage;
 	}
 
 	/**
