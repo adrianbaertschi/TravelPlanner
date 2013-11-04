@@ -272,14 +272,17 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 	
 	public void update(Observable model, Object value) {
+
 		if (model instanceof SimulationEditorModel) {
 			
 			System.out.println("im update");
 			this.model = (SimulationEditorModel) model; 
 			
-			vehicleArea.repaint();
-			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
+			repaint();
+//			vehicleArea.repaint();
+//			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
+		
 	}
 
 	/**
