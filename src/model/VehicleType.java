@@ -1,27 +1,24 @@
 package model;
 
-import java.awt.Color;
-/**
- * 
- */
-
 /**
  * @author dimitri.haemmerli
  *
  */
 public enum VehicleType {
 	
-	REDCAR("redCar", "images/car.jpg"),
-    REDFINISH("redFinish", "images/finish"),
-    GREENCAR("greenCar", "images/car.jpg"), 
-    GREENFINISH("greenFinish", "images/finish");
+	REDCAR("redCar", "images/car_red.jpg", "images/finish"),
+    GREENCAR("greenCar", "images/car_green.jpg", "images/finish"), 
+    BLUECAR("blueCar", "images/car_blue.jpg", "images/finish"), 
+    YELLOWCAR("yellowCar", "images/car_yellow.jpg", "images/finish");
 
     private String identifier;
-    private String url;
+    private String urlVehicle;
+    private String urlFinish;
 
-    private VehicleType(String identifier, String url) {
+    private VehicleType(String identifier, String urlVehicle, String urlFinish) {
     	this.identifier = identifier;
-    	this.url = url;
+    	this.urlVehicle = urlVehicle;
+    	this.urlFinish = urlFinish;
     }
 
 	/**
@@ -32,11 +29,19 @@ public enum VehicleType {
 	}
 
 	/**
-	 * @return the url
+	 * @return the urlVehicle
 	 */
-	public String getUrl() {
-		return url;
+	public String getUrlVehicle() {
+		return urlVehicle;
 	}
+
+	/**
+	 * @return the urlFinish
+	 */
+	public String getUrlFinish() {
+		return urlFinish;
+	}
+
 
 
 

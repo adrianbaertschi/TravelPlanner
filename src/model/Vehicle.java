@@ -11,7 +11,7 @@ import java.awt.Image;
  */
 public class Vehicle {
 	
-	private String type;
+	private VehicleType vehicleTypes;
 	private int maxSpeed;
 	private String imageURL;
 	private Image scaledImage;
@@ -25,20 +25,6 @@ public class Vehicle {
 
 	public Vehicle(){
 		
-	}
-
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	/**
@@ -182,6 +168,20 @@ public class Vehicle {
 	 */
 	public void setScaledImage(Image scaledImage) {
 		this.scaledImage = scaledImage;
+	}
+
+	/**
+	 * @return the vehicleTypes
+	 */
+	public VehicleType getVehicleTypes() {
+		return vehicleTypes;
+	}
+
+	/**
+	 * @param vehicleTypes the vehicleTypes to set
+	 */
+	public void setVehicleTypes(VehicleType vehicleTypes) {
+		this.vehicleTypes = vehicleTypes;
 	}
 	
 	

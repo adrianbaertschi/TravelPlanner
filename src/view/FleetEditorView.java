@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,6 +22,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -38,15 +40,10 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private JPanel mapArea;
 	private JPanel vehicleArea;
-	private JPanel vehicleSelectionArea;
+
+	private JPanel vehicleSelectionAreaJP;
 	private JLabel streetInfo;
 	private JLabel vehicleJL;
-
-	private ImageIcon finishII;
-	
-	private JButton startJB;
-	private JButton finishJB;
-	private JButton simulationJB;
 	
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
@@ -60,6 +57,9 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JButton deleteCurrentVehcleJB;
 
 
+	private GridBagConstraints gbc;	
+
+	
 	private ImageIcon vehicleII;
 
 	private Image img;
@@ -99,17 +99,17 @@ public class FleetEditorView extends JPanel implements Observer {
 		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
 		vehicleArea.setBackground(Color.WHITE);
 //		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		vehicleArea.setLayout(null);
-
+		vehicleArea.setLayout(null);		
 		
-		// VehicleSelectionArea
-		vehicleSelectionArea = new JPanel();
-		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
-		vehicleSelectionArea.setBounds(0, 0, vehicleArea.getWidth(), 250);
-//		vehicleSelectionArea.setBackground(Color.BLACK);
-//		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		// vehicleSelectionAreaJP
+		vehicleSelectionAreaJP = new JPanel();
+		vehicleSelectionAreaJP.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
+		vehicleSelectionAreaJP.setBounds(0, 0, vehicleArea.getWidth(), 250);
+//		vehicleSelectionAreaJP.setBackground(Color.BLACK);
+//		vehicleSelectionAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		
-		vehicleSelectionArea.setLayout(new GridBagLayout());
+		
+		vehicleSelectionAreaJP.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();		
 		gbc.insets = new Insets( 0, 0, 5, 5 );	
 		gbc.anchor = GridBagConstraints.WEST;	
@@ -119,7 +119,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.weightx = 0;
 		gbc.gridwidth = 1;
 		previousVehicleJB = new JButton("<<<");
-		vehicleSelectionArea.add (previousVehicleJB, gbc);
+		vehicleSelectionAreaJP.add (previousVehicleJB, gbc);
 		
 		gbc.gridx = 1;
 		gbc.gridy = 2;
@@ -127,7 +127,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.gridwidth = 1;
 		addVehicleJB = new JButton("Add  Vehicle");
 		gbc.anchor = GridBagConstraints.CENTER;
-		vehicleSelectionArea.add (addVehicleJB, gbc);
+		vehicleSelectionAreaJP.add (addVehicleJB, gbc);
 
 		gbc.gridx = 2;
 		gbc.gridy = 2;
@@ -135,7 +135,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.gridwidth = 1;
 		gbc.anchor = GridBagConstraints.EAST;
 		nextVehicleJB = new JButton(">>>");
-		vehicleSelectionArea.add (nextVehicleJB, gbc);
+		vehicleSelectionAreaJP.add (nextVehicleJB, gbc);
 
 	
 		gbc.gridx = 0;
@@ -143,16 +143,15 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.weightx = 0;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 3;
-		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.anchor = GridBagConstraints.CENTER;			
 
-		//TODO: replace constant 
-		vehicleII = new ImageIcon("images/car.jpg");
-		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+		vehicleII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
+		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 		vehicleJL = new JLabel(vehicleII);
-		
-		vehicleSelectionArea.add (vehicleJL, gbc);
 
-		vehicleArea.add(vehicleSelectionArea);	
+		vehicleSelectionAreaJP.add(vehicleJL, gbc);			
+
+		vehicleArea.add(vehicleSelectionAreaJP);	
 
 		this.add(vehicleArea);
 
@@ -196,66 +195,121 @@ public class FleetEditorView extends JPanel implements Observer {
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-
-
+		
+		vehicleII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
+		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+		vehicleJL.setIcon(vehicleII);
 
 		}
-
-
-	/**
-	 * @return the finishJB
-	 */
-	public JButton getFinishJB() {
-		return finishJB;
-	}
-
-	/**
-	 * @param finishJB
-	 *            the finishJB to set
-	 */
-	public void setFinishJB(JButton finishJB) {
-		this.finishJB = finishJB;
-	}
-
-	/**
-	 * @return the startJB
-	 */
-	public JButton getStartJB() {
-		return startJB;
-	}
-
-	/**
-	 * @param startJB
-	 *            the startJB to set
-	 */
-	public void setStartJB(JButton startJB) {
-		this.startJB = startJB;
-	}
-
-	/**
-	 * @return the simulationJB
-	 */
-	public JButton getSimulationJB() {
-		return simulationJB;
-	}
-
-	/**
-	 * @param simulationJB
-	 *            the simulationJB to set
-	 */
-	public void setSimulationJB(JButton simulationJB) {
-		this.simulationJB = simulationJB;
-	}
-
 	
 	public void update(Observable model, Object value) {
 		if (model instanceof FleetEditorModel) {
 			
 			System.out.println("im update");
-			this.fleetEditorModel = (FleetEditorModel) fleetEditorModel; 
+			this.fleetEditorModel = (FleetEditorModel) model; 
 			
 		}
-		
+		this.revalidate();
+		this.repaint();
 	}
 
+	/**
+	 * @return the nextVehicleJB
+	 */
+	public JButton getNextVehicleJB() {
+		return nextVehicleJB;
+	}
+
+	/**
+	 * @param nextVehicleJB the nextVehicleJB to set
+	 */
+	public void setNextVehicleJB(JButton nextVehicleJB) {
+		this.nextVehicleJB = nextVehicleJB;
+	}
+
+	/**
+	 * @return the previousVehicleJB
+	 */
+	public JButton getPreviousVehicleJB() {
+		return previousVehicleJB;
+	}
+
+	/**
+	 * @param previousVehicleJB the previousVehicleJB to set
+	 */
+	public void setPreviousVehicleJB(JButton previousVehicleJB) {
+		this.previousVehicleJB = previousVehicleJB;
+	}
+
+	/**
+	 * @return the addVehicleJB
+	 */
+	public JButton getAddVehicleJB() {
+		return addVehicleJB;
+	}
+
+	/**
+	 * @param addVehicleJB the addVehicleJB to set
+	 */
+	public void setAddVehicleJB(JButton addVehicleJB) {
+		this.addVehicleJB = addVehicleJB;
+	}
+
+	/**
+	 * @return the saveFleetJB
+	 */
+	public JButton getSaveFleetJB() {
+		return saveFleetJB;
+	}
+
+	/**
+	 * @param saveFleetJB the saveFleetJB to set
+	 */
+	public void setSaveFleetJB(JButton saveFleetJB) {
+		this.saveFleetJB = saveFleetJB;
+	}
+
+	/**
+	 * @return the deleteFleetJB
+	 */
+	public JButton getDeleteFleetJB() {
+		return deleteFleetJB;
+	}
+
+	/**
+	 * @param deleteFleetJB the deleteFleetJB to set
+	 */
+	public void setDeleteFleetJB(JButton deleteFleetJB) {
+		this.deleteFleetJB = deleteFleetJB;
+	}
+
+	/**
+	 * @return the resetCurrentVehicleJB
+	 */
+	public JButton getResetCurrentVehicleJB() {
+		return resetCurrentVehicleJB;
+	}
+
+	/**
+	 * @param resetCurrentVehicleJB the resetCurrentVehicleJB to set
+	 */
+	public void setResetCurrentVehicleJB(JButton resetCurrentVehicleJB) {
+		this.resetCurrentVehicleJB = resetCurrentVehicleJB;
+	}
+
+	/**
+	 * @return the deleteCurrentVehcleJB
+	 */
+	public JButton getDeleteCurrentVehcleJB() {
+		return deleteCurrentVehcleJB;
+	}
+
+	/**
+	 * @param deleteCurrentVehcleJB the deleteCurrentVehcleJB to set
+	 */
+	public void setDeleteCurrentVehcleJB(JButton deleteCurrentVehcleJB) {
+		this.deleteCurrentVehcleJB = deleteCurrentVehcleJB;
+	}
+
+	
 }

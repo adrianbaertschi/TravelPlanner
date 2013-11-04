@@ -4,12 +4,16 @@
 package control;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import control.SimulationEditorController.BtnSetFinish;
 import control.SimulationEditorController.BtnSetSimulation;
 import control.SimulationEditorController.BtnSetStart;
 import control.SimulationEditorController.MapMouseListener;
 import model.FleetEditorModel;
+import model.SolverMapGraph;
+import model.Vehicle;
 import view.FleetEditorView;
 
 /**
@@ -33,8 +37,8 @@ public class FleetEditorController {
 	}
 
 	private void addListener() {
-//		simulationEditorView.getMapArea().addMouseListener(new MapMouseListener());
-//		simulationEditorView.getStartJB().addActionListener(new BtnSetStart());
+		fleetEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
+		fleetEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
 //		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
 //		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
 
@@ -46,4 +50,22 @@ public class FleetEditorController {
 	}
 
 
+	class BtnNextVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			fleetEditorModel.increaseVehicleSelectionPos();
+		
+		}
+	}
+	class BtnPreviousVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			fleetEditorModel.decreaseVehicleSelectionPos();
+
+		}
+	}
+
+	
 }
