@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
@@ -43,6 +44,7 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private JPanel fleetAreaJP;
 	
+	//vehicle Selection
 	private JPanel fleetSelectionAreJP;
 	private JPanel fleetSelectionTitleJP;
 	private JLabel fleetSelectionTitleJL;
@@ -54,12 +56,23 @@ public class FleetEditorView extends JPanel implements Observer {
 	private ImageIcon fleetCurrentVehicleII;
 	private JPanel fleetNextVehicleJP;
 	private JLabel fleetNextVehicleJL;
-	private ImageIcon fleetNextVehicleII;
+	private ImageIcon fleetNextVehicleII;	
+	private JButton nextFleetVehicleJB;
+	private JButton previousFleetVehicleJB;
 
+
+	// vehicle definition
 	private JPanel fleetDefinitionAreJP;
 	private JPanel fleetDefinitionTitleJP;
 	private JLabel fleetDefinitionTitleJL;
 	
+	private JPanel fleetDefinitionOptionsJP;
+	private JLabel vehicleNameJL;
+	private JTextField vehicleNameJTF;
+	private JLabel maxSpeedJL;
+	
+	
+	//add vehicle 
 	private JPanel addVehicleArea;
 	private JPanel addVehicleTitleJP;
 	private JLabel addVehicleTitleJL;
@@ -68,8 +81,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JLabel vehicleSelectionJL;
 	private ImageIcon vehicleSelectionII;
 
-	private JButton nextFleetVehicleJB;
-	private JButton previousFleetVehicleJB;
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
 	private JButton addVehicleJB;
@@ -123,7 +134,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		fleetSelectionTitleJP = new JPanel();
 		fleetSelectionTitleJP.setBounds(10, 10, 280, 50);
-		fleetSelectionTitleJL = new JLabel("Vehicel Selection");
+		fleetSelectionTitleJL = new JLabel("Fleet - Vehicle Selection");
 		fleetSelectionTitleJP.add(fleetSelectionTitleJL);
 		
 		fleetPreviousVehicleJP = new JPanel();
@@ -169,11 +180,24 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		fleetDefinitionTitleJP = new JPanel();
 		fleetDefinitionTitleJP.setBounds(10, 10, 570, 50);
-		fleetDefinitionTitleJL = new JLabel("Define Vehicle");
+		fleetDefinitionTitleJL = new JLabel("Fleet - Vehicle Options");
 		fleetDefinitionTitleJP.add(fleetDefinitionTitleJL);
+		
+		fleetDefinitionOptionsJP = new JPanel();
+		fleetDefinitionOptionsJP.setBounds(10, 100, 570, 690);
+		
+		vehicleNameJL = new JLabel("Vehicle - Name");
+		vehicleNameJL.setPreferredSize(new Dimension(150, 30));
+		vehicleNameJTF = new JTextField();
+		vehicleNameJTF.setPreferredSize(new Dimension(150, 30));
+		vehicleNameJTF.setEnabled(false);
+		
+		fleetDefinitionOptionsJP.add(vehicleNameJL);
+		fleetDefinitionOptionsJP.add(vehicleNameJTF);
 		
 		
 		fleetDefinitionAreJP.add(fleetDefinitionTitleJP);
+		fleetDefinitionAreJP.add(fleetDefinitionOptionsJP);
 		
 		
 		// Vehicle Area
@@ -274,9 +298,15 @@ public class FleetEditorView extends JPanel implements Observer {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		// draw vehicles in fleetSelection
 
-	
+		//enable user input
+		if(fleetEditorModel.getVehicles().size() > 0){
+			
+			enableUserInput();
+			
+		}
+		
+		// draw vehicles in fleetSelection
 		if(fleetEditorModel.getVehicles().size() > 2){
 			
 			if(fleetEditorModel.getVehiclePos() - 1 == -1){
@@ -336,6 +366,13 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		}
 	
+	private void enableUserInput() {
+
+		
+		vehicleNameJTF.setEnabled(true);
+		
+	}
+
 	public void update(Observable model, Object value) {
 		if (model instanceof FleetEditorModel) {
 			
