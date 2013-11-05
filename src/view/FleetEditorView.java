@@ -128,7 +128,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetPreviousVehicleJP.add(fleetPreviousVehicleJL);
 		
 		fleetCurrentVehicleJP = new JPanel();
-		fleetCurrentVehicleJP.setBounds(300/2-100, 300, 200, 200);
+		fleetCurrentVehicleJP.setBounds(300/2-125, 275, 250, 250);
 		fleetCurrentVehicleJL = new JLabel();
 		fleetCurrentVehicleJP.add(fleetCurrentVehicleJL);
 		
@@ -143,12 +143,12 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetSelectionAreJP.add(fleetNextVehicleJP);
 		
 		//TODO:Text im Hochformat
-		previousFleetVehicleJB = new JButton(">>>");	
-		previousFleetVehicleJB.setBounds(265, 140, 25, 70);
+		nextFleetVehicleJB = new JButton(">>>");	
+		nextFleetVehicleJB.setBounds(265, 140, 25, 70);
 		
 		//TODO:Text im Hochformat
-		nextFleetVehicleJB = new JButton("<<<");
-		nextFleetVehicleJB.setBounds(265, 590, 25, 70);
+		previousFleetVehicleJB = new JButton("<<<");
+		previousFleetVehicleJB.setBounds(265, 590, 25, 70);
 		
 		fleetSelectionAreJP.add(previousFleetVehicleJB);
 		fleetSelectionAreJP.add(nextFleetVehicleJB);
@@ -268,7 +268,7 @@ public class FleetEditorView extends JPanel implements Observer {
 			}
 			
 			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
-			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(250, 250,Image.SCALE_DEFAULT));
 			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
 	
 			if(fleetEditorModel.getVehiclePos() +1 == fleetEditorModel.getVehicles().size()){
@@ -284,7 +284,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		}else if(fleetEditorModel.getVehicles().size() > 1){
 			
 			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
-			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(250, 250,Image.SCALE_DEFAULT));
 			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
 
 			if(fleetEditorModel.getVehiclePos() +1 == fleetEditorModel.getVehicles().size()){
@@ -301,7 +301,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		}else if(fleetEditorModel.getVehicles().size() > 0){
 			
 			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
-			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(250, 250,Image.SCALE_DEFAULT));
 			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
 
 		}
