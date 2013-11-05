@@ -47,6 +47,15 @@ public class MapEditorController {
 	public void setModel(MapEditorModel model) {
 		this.model.loadModel(model);
 	}
+	
+	private int getNodeHeightValue() {
+		Long value = (Long) view.getTxfNodeHeight().getValue();
+		
+		if(value == null) {
+			return 0;
+		}
+		return value.intValue();
+	}
 
 	class MapMouseListener implements MouseListener {
 
@@ -66,7 +75,7 @@ public class MapEditorController {
 		public void mouseEntered(MouseEvent e) {	}
 		public void mouseExited(MouseEvent e) 	{	}
 		public void mousePressed(MouseEvent e) {	
-			Node point = new Node(e.getX(), e.getY());
+			Node point = new Node(e.getX(), e.getY(), getNodeHeightValue());
 
 			Node selectedKnot = clickedOnNode(point);
 			
@@ -111,6 +120,8 @@ public class MapEditorController {
 					currentStreet = new Street(selectedKnot);
 				} else {
 					// CASE 3: connect two existing
+					// TODO: zwei an gleicher stelle verhindern 
+					System.out.println("3--------------" + selectedKnot + currentStreet.getStart());
 					currentStreet.setEnd(selectedKnot);
 					currentStreet.setStreetType(view.getSelectedStreetType());
 					model.addStreet(currentStreet);
