@@ -38,6 +38,9 @@ import model.Vehicle;
  */
 public class SimulationEditorView extends JPanel implements Observer{
 
+	private static final Color NODE_COLOR = 	Color.DARK_GRAY;
+	private static final Color SELECTED_COLOR = Color.CYAN;
+
 	private SimulationEditorModel model = new SimulationEditorModel();
 	
 	private JPanel mapArea;
@@ -207,11 +210,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			// Strassen			
 			if(street == model.getMapEditorModel().getSelectedStreet()) {
-				g2d.setColor(Color.CYAN);
+				g2d.setColor(SELECTED_COLOR);
 			} else {
-				g2d.setColor(street.getStreetColor());
+				g2d.setColor(street.getStreetType().getColor());
 			}
-			g2d.setStroke(new BasicStroke(2));
+			g2d.setStroke(new BasicStroke(3));
 			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
 		
 		
