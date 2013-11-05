@@ -57,8 +57,12 @@ public class FleetEditorView extends JPanel implements Observer {
 	private ImageIcon fleetNextVehicleII;
 
 	private JPanel fleetDefinitionAreJP;
+	private JPanel fleetDefinitionTitleJP;
+	private JLabel fleetDefinitionTitleJL;
 	
-	private JPanel vehicleArea;
+	private JPanel addVehicleArea;
+	private JPanel addVehicleTitleJP;
+	private JLabel addVehicleTitleJL;
 
 	private JPanel vehicleSelectionAreaJP;
 	private JLabel vehicleSelectionJL;
@@ -102,12 +106,12 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		fleetAreaJP.setLayout(null);
 		fleetAreaJP.setBounds(10, 10, 900, 800);
-		fleetAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//		fleetAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		this.add(fleetAreaJP);
 
 
-		//fleet selctionAre
+		//fleet selctionArea
 		fleetSelectionAreJP = new JPanel();
 		fleetSelectionAreJP.setBounds(0, 0, 300, 800);
 		fleetSelectionAreJP.setBackground(Color.WHITE);
@@ -153,25 +157,43 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetSelectionAreJP.add(previousFleetVehicleJB);
 		fleetSelectionAreJP.add(nextFleetVehicleJB);
 		
-		//fleet definitionArea
-		fleetDefinitionAreJP = new JPanel();
-		fleetDefinitionAreJP.setBounds(300, 0, 600, 800);
-		fleetDefinitionAreJP.setBackground(Color.BLUE);
 		
+		//fleet definition area
+		fleetDefinitionAreJP = new JPanel();
+		fleetDefinitionAreJP.setBounds(310, 0, 600, 800);
+		fleetDefinitionAreJP.setBackground(Color.WHITE);
+		fleetDefinitionAreJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		fleetAreaJP.add(fleetDefinitionAreJP);
+		
+		fleetDefinitionAreJP.setLayout(null);
 
+		fleetDefinitionTitleJP = new JPanel();
+		fleetDefinitionTitleJP.setBounds(10, 10, 570, 50);
+		fleetDefinitionTitleJL = new JLabel("Define Vehicle");
+		fleetDefinitionTitleJP.add(fleetDefinitionTitleJL);
+		
+		
+		fleetDefinitionAreJP.add(fleetDefinitionTitleJP);
+		
 		
 		// Vehicle Area
-		vehicleArea = new JPanel();
-		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
-		vehicleArea.setBackground(Color.WHITE);
-//		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		vehicleArea.setLayout(null);		
+		addVehicleArea = new JPanel();
+		addVehicleArea.setBounds(920, 10, 250, 800);
+		addVehicleArea.setBackground(Color.WHITE);
+		addVehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		addVehicleArea.setLayout(null);		
+		
+		addVehicleTitleJP = new JPanel();
+		addVehicleTitleJP.setBounds(10, 10, 230, 50);
+		addVehicleTitleJL = new JLabel("Add new Vehicle");
+		addVehicleTitleJP.add(addVehicleTitleJL);
+
+		addVehicleArea.add(addVehicleTitleJP);
 		
 		// vehicleSelectionAreaJP
 		vehicleSelectionAreaJP = new JPanel();
-		vehicleSelectionAreaJP.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
-		vehicleSelectionAreaJP.setBounds(0, 0, vehicleArea.getWidth(), 250);
+		vehicleSelectionAreaJP.setPreferredSize(new Dimension(addVehicleArea.getWidth(), 250));
+		vehicleSelectionAreaJP.setBounds(10, 100, addVehicleArea.getWidth()-20, 250);
 //		vehicleSelectionAreaJP.setBackground(Color.BLACK);
 //		vehicleSelectionAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		
@@ -218,29 +240,29 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		vehicleSelectionAreaJP.add(vehicleSelectionJL, gbc);			
 
-		vehicleArea.add(vehicleSelectionAreaJP);	
+		addVehicleArea.add(vehicleSelectionAreaJP);	
 
-		this.add(vehicleArea);
+		this.add(addVehicleArea);
 
 		// Save Button
 		saveFleetJB = new JButton("Save Fleet");
-		saveFleetJB.setBounds(0, 480, 100, 30);
-		vehicleArea.add(saveFleetJB);
+		saveFleetJB.setBounds(10, 480, 100, 30);
+		addVehicleArea.add(saveFleetJB);
 		
 		// Load Button
 		loadFleetJB = new JButton("Load Fleet");
-		loadFleetJB.setBounds(110, 480, 100, 30);
-		vehicleArea.add(loadFleetJB);
+		loadFleetJB.setBounds(120, 480, 100, 30);
+		addVehicleArea.add(loadFleetJB);
 		
 		// Reset Button
 		resetCurrentVehicleJB = new JButton("Reset");
-		resetCurrentVehicleJB.setBounds(0, 440, 100, 30);
-		vehicleArea.add(resetCurrentVehicleJB);
+		resetCurrentVehicleJB.setBounds(10, 440, 100, 30);
+		addVehicleArea.add(resetCurrentVehicleJB);
 		
 		deleteFleetJB = new JButton("Delete");
-		deleteFleetJB.setBounds(110, 440, 100, 30);
+		deleteFleetJB.setBounds(120, 440, 100, 30);
 		deleteFleetJB.setEnabled(false);
-		vehicleArea.add(deleteFleetJB);
+		addVehicleArea.add(deleteFleetJB);
 
 	}
 
