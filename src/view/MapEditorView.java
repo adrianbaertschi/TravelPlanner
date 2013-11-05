@@ -17,8 +17,10 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.text.NumberFormatter;
 
 import model.MapEditorModel;
 import model.Node;
@@ -36,6 +38,9 @@ public class MapEditorView extends JPanel implements Observer{
 	private JLabel streetInfo;
 	
 	private JComboBox<StreetType> cbxStreetType;
+	
+	private JLabel lblNodeHeight;
+	private JFormattedTextField txfNodeHeight;
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
@@ -69,26 +74,34 @@ public class MapEditorView extends JPanel implements Observer{
 		cbxStreetType.setBounds(920, 10, 200, 30);
 		this.add(cbxStreetType);
 		
+		lblNodeHeight = new JLabel("Node height:");
+		lblNodeHeight.setBounds(920, 100, 100, 30);
+		this.add(lblNodeHeight);
+		
+		txfNodeHeight = new JFormattedTextField(new NumberFormatter());
+		txfNodeHeight.setBounds(1020, 100, 100, 30);
+		this.add(txfNodeHeight);
+		
+		// Delete Street
+		btnDelete = new JButton("Delete Street");
+		btnDelete.setBounds(920, 440, 130, 30);
+		btnDelete.setEnabled(false);
+		this.add(btnDelete);
+		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
-		btnSaveMap.setBounds(920, 480, 100, 30);
+		btnSaveMap.setBounds(920, 740, 130, 30);
 		this.add(btnSaveMap);
 		
 		// Load Button
 		btnLoadMap = new JButton("Load Map");
-		btnLoadMap.setBounds(1030, 480, 100, 30);
+		btnLoadMap.setBounds(1055, 740, 130, 30);
 		this.add(btnLoadMap);
 		
-		// Reset Button
-		btnReset = new JButton("Reset");
-		btnReset.setBounds(920, 440, 100, 30);
+		// Reset Map
+		btnReset = new JButton("Reset Map");
+		btnReset.setBounds(920, 780, 130, 30);
 		this.add(btnReset);
-		
-		btnDelete = new JButton("Delete");
-		btnDelete.setBounds(1030, 440, 100, 30);
-		btnDelete.setEnabled(false);
-		this.add(btnDelete);
-		
 	}
 	
 	public JPanel getMapArea() {
@@ -113,6 +126,10 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	public JComboBox<StreetType> getCbxStreetType() {
 		return this.cbxStreetType;
+	}
+	
+	public JFormattedTextField getTxfNodeHeight() {
+		return this.txfNodeHeight;
 	}
 	
 	private void draw(Graphics g) {
@@ -152,9 +169,9 @@ public class MapEditorView extends JPanel implements Observer{
 		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
 	}
 	
-	private void displayKnotInfo(Node selectedKnot) {
-		if(selectedKnot != null) {
-			streetInfo.setText("Knot Position: " + selectedKnot.getX() + " / " + selectedKnot.getY());
+	private void displayNodeInfo(Node selectedNode) {
+		if(selectedNode != null) {
+			streetInfo.setText("Node position: " + selectedNode.getX() + " / " + selectedNode.getY() + " height: " + selectedNode.getHeight());
 		} else {
 			streetInfo.setText("");
 		}
@@ -176,7 +193,7 @@ public class MapEditorView extends JPanel implements Observer{
 			}
 		}
 		if(value instanceof Node) {
-			displayKnotInfo((Node)value);
+			displayNodeInfo((Node)value);
 			btnDelete.setEnabled(false);
 		}
 	}
