@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -18,7 +19,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,13 +41,31 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private FleetEditorModel fleetEditorModel = new FleetEditorModel();
 
-	private JPanel mapArea;
+	private JPanel fleetAreaJP;
+	
+	private JPanel fleetSelectionAreJP;
+	private JPanel fleetSelectionTitleJP;
+	private JLabel fleetSelectionTitleJL;
+	private JPanel fleetPreviousVehicleJP;
+	private JLabel fleetPreviousVehicleJL;
+	private ImageIcon fleetPreviousVehicleII;
+	private JPanel fleetCurrentVehicleJP;
+	private JLabel fleetCurrentVehicleJL;
+	private ImageIcon fleetCurrentVehicleII;
+	private JPanel fleetNextVehicleJP;
+	private JLabel fleetNextVehicleJL;
+	private ImageIcon fleetNextVehicleII;
+
+	private JPanel fleetDefinitionAreJP;
+	
 	private JPanel vehicleArea;
 
 	private JPanel vehicleSelectionAreaJP;
-	private JLabel streetInfo;
-	private JLabel vehicleJL;
-	
+	private JLabel vehicleSelectionJL;
+	private ImageIcon vehicleSelectionII;
+
+	private JButton nextFleetVehicleJB;
+	private JButton previousFleetVehicleJB;
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
 	private JButton addVehicleJB;
@@ -59,11 +80,6 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private GridBagConstraints gbc;	
 
-	
-	private ImageIcon vehicleII;
-
-	private Image img;
-
 	public FleetEditorView() {
 
 		initComponents();
@@ -72,28 +88,79 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private void initComponents() {
 
-		// Map Area
-		mapArea = new JPanel() {
-			@Override
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				draw(g);
-			}
+		this.setLayout(null);
+
+		
+		//fleetArea
+		fleetAreaJP = new JPanel(){
+	        @Override
+            public void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    draw(g);
+            }
 		};
 
-		this.setLayout(null);
-		mapArea.setBounds(10, 10, 900, 800);
-		mapArea.setBackground(Color.WHITE);
-		mapArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		fleetAreaJP.setLayout(null);
+		fleetAreaJP.setBounds(10, 10, 900, 800);
+		fleetAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-		this.add(mapArea);
+		this.add(fleetAreaJP);
 
-		// Details
-		streetInfo = new JLabel();
-		streetInfo.setBounds(920, 10, 300, 30);
 
-		this.add(streetInfo);
+		//fleet selctionAre
+		fleetSelectionAreJP = new JPanel();
+		fleetSelectionAreJP.setBounds(0, 0, 300, 800);
+		fleetSelectionAreJP.setBackground(Color.WHITE);
+		fleetSelectionAreJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		
+		fleetAreaJP.add(fleetSelectionAreJP);
+		
+		fleetSelectionAreJP.setLayout(null);
+		
+		fleetSelectionTitleJP = new JPanel();
+		fleetSelectionTitleJP.setBounds(10, 10, 280, 50);
+		fleetSelectionTitleJL = new JLabel("Vehicel Selection");
+		fleetSelectionTitleJP.add(fleetSelectionTitleJL);
+		
+		fleetPreviousVehicleJP = new JPanel();
+		fleetPreviousVehicleJP.setBounds(300/2-75, 100, 150, 150);
+		fleetPreviousVehicleJL = new JLabel();
+		fleetPreviousVehicleJP.add(fleetPreviousVehicleJL);
+		
+		fleetCurrentVehicleJP = new JPanel();
+		fleetCurrentVehicleJP.setBounds(300/2-100, 300, 200, 200);
+		fleetCurrentVehicleJL = new JLabel();
+		fleetCurrentVehicleJP.add(fleetCurrentVehicleJL);
+		
+		fleetNextVehicleJP = new JPanel();
+		fleetNextVehicleJP.setBounds(300/2-75, 550, 150, 150);
+		fleetNextVehicleJL = new JLabel();
+		fleetNextVehicleJP.add(fleetNextVehicleJL);
+		
+		fleetSelectionAreJP.add(fleetSelectionTitleJP);
+		fleetSelectionAreJP.add(fleetPreviousVehicleJP);
+		fleetSelectionAreJP.add(fleetCurrentVehicleJP);
+		fleetSelectionAreJP.add(fleetNextVehicleJP);
+		
+		//TODO:Text im Hochformat
+		previousFleetVehicleJB = new JButton(">>>");	
+		previousFleetVehicleJB.setBounds(265, 140, 25, 70);
+		
+		//TODO:Text im Hochformat
+		nextFleetVehicleJB = new JButton("<<<");
+		nextFleetVehicleJB.setBounds(265, 590, 25, 70);
+		
+		fleetSelectionAreJP.add(previousFleetVehicleJB);
+		fleetSelectionAreJP.add(nextFleetVehicleJB);
+		
+		//fleet definitionArea
+		fleetDefinitionAreJP = new JPanel();
+		fleetDefinitionAreJP.setBounds(300, 0, 600, 800);
+		fleetDefinitionAreJP.setBackground(Color.BLUE);
+		
+		fleetAreaJP.add(fleetDefinitionAreJP);
 
+		
 		// Vehicle Area
 		vehicleArea = new JPanel();
 		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
@@ -145,11 +212,11 @@ public class FleetEditorView extends JPanel implements Observer {
 		gbc.gridwidth = 3;
 		gbc.anchor = GridBagConstraints.CENTER;			
 
-		vehicleII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
-		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
-		vehicleJL = new JLabel(vehicleII);
+		vehicleSelectionII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
+		vehicleSelectionII.setImage(vehicleSelectionII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+		vehicleSelectionJL = new JLabel(vehicleSelectionII);
 
-		vehicleSelectionAreaJP.add(vehicleJL, gbc);			
+		vehicleSelectionAreaJP.add(vehicleSelectionJL, gbc);			
 
 		vehicleArea.add(vehicleSelectionAreaJP);	
 
@@ -175,17 +242,6 @@ public class FleetEditorView extends JPanel implements Observer {
 		deleteFleetJB.setEnabled(false);
 		vehicleArea.add(deleteFleetJB);
 
-		try {
-			this.img = ImageIO.read(new File("images/car.jpg"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public JPanel getMapArea() {
-		return this.mapArea;
 	}
 
 	private void draw(Graphics g) {
@@ -196,9 +252,65 @@ public class FleetEditorView extends JPanel implements Observer {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		vehicleII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
-		vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
-		vehicleJL.setIcon(vehicleII);
+		// draw vehicles in fleetSelection
+
+	
+		if(fleetEditorModel.getVehicles().size() > 2){
+			
+			if(fleetEditorModel.getVehiclePos() - 1 == -1){
+				fleetPreviousVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehicles().size()-1).getVehicleTypes().getUrlVehicle());
+				fleetPreviousVehicleII.setImage(fleetPreviousVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));					
+				fleetPreviousVehicleJL.setIcon(fleetPreviousVehicleII);
+			}else {
+				fleetPreviousVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()-1).getVehicleTypes().getUrlVehicle());
+				fleetPreviousVehicleII.setImage(fleetPreviousVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));					
+				fleetPreviousVehicleJL.setIcon(fleetPreviousVehicleII);
+			}
+			
+			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
+	
+			if(fleetEditorModel.getVehiclePos() +1 == fleetEditorModel.getVehicles().size()){
+				fleetNextVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(0).getVehicleTypes().getUrlVehicle());
+				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
+				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
+			}else {
+				fleetNextVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()+1).getVehicleTypes().getUrlVehicle());
+				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
+				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
+			}
+
+		}else if(fleetEditorModel.getVehicles().size() > 1){
+			
+			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
+
+			if(fleetEditorModel.getVehiclePos() +1 == fleetEditorModel.getVehicles().size()){
+				fleetNextVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(0).getVehicleTypes().getUrlVehicle());
+				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
+				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
+			}else {
+				fleetNextVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()+1).getVehicleTypes().getUrlVehicle());
+				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
+				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
+			}
+
+			
+		}else if(fleetEditorModel.getVehicles().size() > 0){
+			
+			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
+			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
+
+		}
+		
+		
+		// draw vehicle in vehicleSelection
+		vehicleSelectionII = new ImageIcon(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()).getVehicleTypes().getUrlVehicle());
+		vehicleSelectionII.setImage(vehicleSelectionII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
+		vehicleSelectionJL.setIcon(vehicleSelectionII);
 
 		}
 	
@@ -209,8 +321,35 @@ public class FleetEditorView extends JPanel implements Observer {
 			this.fleetEditorModel = (FleetEditorModel) model; 
 			
 		}
-		this.revalidate();
-		this.repaint();
+		repaint();
+	}
+
+	/**
+	 * @return the nextFleetVehicleJB
+	 */
+	public JButton getNextFleetVehicleJB() {
+		return nextFleetVehicleJB;
+	}
+
+	/**
+	 * @param nextFleetVehicleJB the nextFleetVehicleJB to set
+	 */
+	public void setNextFleetVehicleJB(JButton nextFleetVehicleJB) {
+		this.nextFleetVehicleJB = nextFleetVehicleJB;
+	}
+
+	/**
+	 * @return the previousFleetVehicleJB
+	 */
+	public JButton getPreviousFleetVehicleJB() {
+		return previousFleetVehicleJB;
+	}
+
+	/**
+	 * @param previousFleetVehicleJB the previousFleetVehicleJB to set
+	 */
+	public void setPreviousFleetVehicleJB(JButton previousFleetVehicleJB) {
+		this.previousFleetVehicleJB = previousFleetVehicleJB;
 	}
 
 	/**

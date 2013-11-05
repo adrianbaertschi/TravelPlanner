@@ -59,6 +59,10 @@ private void createVehicleSelection() {
 	public void addVehicle(Vehicle vehicle){
 		
 		vehicles.add(vehicle);
+		
+		super.setChanged();
+		super.notifyObservers(this);
+
 	}
 	
 	/**

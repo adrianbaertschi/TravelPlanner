@@ -37,6 +37,8 @@ public class FleetEditorController {
 	}
 
 	private void addListener() {
+		fleetEditorView.getNextFleetVehicleJB().addActionListener(new BtnNextFleetVehicle());
+		fleetEditorView.getPreviousFleetVehicleJB().addActionListener(new BtnPreviousFleetVehicle());
 		fleetEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		fleetEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
 		fleetEditorView.getAddVehicleJB().addActionListener(new BtnAddVehicle());
@@ -50,6 +52,22 @@ public class FleetEditorController {
 		return this.fleetEditorView;
 	}
 
+	class BtnNextFleetVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			fleetEditorModel.increaseVehiclePos();
+		
+		}
+	}
+	class BtnPreviousFleetVehicle implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			fleetEditorModel.decreaseVehiclePos();
+		
+		}
+	}
 
 	class BtnNextVehicle implements ActionListener {
 
@@ -71,7 +89,7 @@ public class FleetEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			fleetEditorModel.getVehicles().add(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()));
+			fleetEditorModel.addVehicle(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()));
 		}
 	}
 
