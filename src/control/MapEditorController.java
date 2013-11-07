@@ -38,6 +38,7 @@ public class MapEditorController {
 		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
 		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
+		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
 	}
 
 	public Component showView() {
@@ -49,8 +50,8 @@ public class MapEditorController {
 		this.model.loadModel(model);
 	}
 	
-	private int getNodeHeightValue() {
-		Long value = (Long) view.getTxfNodeHeight().getValue();
+	private int getInputNodeHeightValue() {
+		Integer value = (Integer) view.getTxfNodeHeight().getValue();
 		
 		if(value == null) {
 			return 0;
@@ -85,10 +86,13 @@ public class MapEditorController {
 				return;
 			}
 			
-			Node point = new Node(e.getX(), e.getY(), getNodeHeightValue());
+			Node point = new Node(e.getX(), e.getY(), getInputNodeHeightValue());
 
 			Node selectedKnot = clickedOnNode(point);
 			
+			if(selectedKnot != null) {
+				model.setSelectedStreet(null);
+			}
 			model.setSelectedKnot(selectedKnot);
 
 			// CASE 1: New Street
@@ -125,7 +129,8 @@ public class MapEditorController {
 						currentStreet = null;
 						
 					} else {
-						model.setSelectedKnot(currentStreet.getStart());
+						Street selectedStreet = clickedOnStreet(point);
+						model.setSelectedStreet(selectedStreet);
 					}
 				} 
 			} else {
@@ -223,6 +228,16 @@ public class MapEditorController {
 
 		public void actionPerformed(ActionEvent arg0) {
 			model.removeStreet(model.getSelectedStreet());
+		}
+		
+	}
+	
+	class BtnSetHeightActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			int height = getInputNodeHeightValue();
+			model.getSelectedKnot().setHeight(height);
+			
 		}
 		
 	}

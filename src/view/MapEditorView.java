@@ -11,6 +11,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.text.NumberFormatter;
 
 import model.MapEditorModel;
@@ -35,12 +38,13 @@ public class MapEditorView extends JPanel implements Observer{
 	private MapEditorModel model = new MapEditorModel();
 	
 	private JPanel mapArea;
-	private JLabel streetInfo;
+	private JTextArea infoField;
 	
 	private JComboBox<StreetType> cbxStreetType;
 	
 	private JLabel lblNodeHeight;
 	private JFormattedTextField txfNodeHeight;
+	private JButton btnSetHeight;
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
@@ -65,26 +69,37 @@ public class MapEditorView extends JPanel implements Observer{
 		this.add(mapArea);
 		
 		// Details
-		streetInfo = new JLabel();
-		streetInfo.setBounds(920, 200, 300, 30);
+		infoField = new JTextArea();
+		infoField.setBounds(920, 100, 260, 100);
+		infoField.setEditable(false);
 		
-		this.add(streetInfo);
+		this.add(infoField);
 		
 		cbxStreetType = new JComboBox<StreetType>(StreetType.values());
-		cbxStreetType.setBounds(920, 10, 200, 30);
+		cbxStreetType.setBounds(920, 240, 200, 30);
 		this.add(cbxStreetType);
 		
 		lblNodeHeight = new JLabel("Node height:");
-		lblNodeHeight.setBounds(920, 100, 100, 30);
+		lblNodeHeight.setBounds(920, 10, 100, 30);
 		this.add(lblNodeHeight);
 		
-		txfNodeHeight = new JFormattedTextField(new NumberFormatter());
-		txfNodeHeight.setBounds(1020, 100, 100, 30);
+		NumberFormatter numberFormatter = new NumberFormatter(NumberFormat.getIntegerInstance(new Locale("de", "CH")));
+		numberFormatter.setMinimum(0);
+		numberFormatter.setMaximum(9999);
+		numberFormatter.setCommitsOnValidEdit(true);
+		
+		txfNodeHeight = new JFormattedTextField(numberFormatter);
+		txfNodeHeight.setBounds(1020, 10, 50, 30);
 		this.add(txfNodeHeight);
 		
+		btnSetHeight = new JButton("set height");
+		btnSetHeight.setBounds(1080, 10, 100, 30);
+		btnSetHeight.setEnabled(false);
+		this.add(btnSetHeight);
+		
 		// Delete Street
-		btnDelete = new JButton("Delete Street");
-		btnDelete.setBounds(920, 440, 130, 30);
+		btnDelete = new JButton("Delete selected street");
+		btnDelete.setBounds(920, 280, 200, 30);
 		btnDelete.setEnabled(false);
 		this.add(btnDelete);
 		
@@ -132,6 +147,10 @@ public class MapEditorView extends JPanel implements Observer{
 		return this.txfNodeHeight;
 	}
 	
+	public JButton getBtnSetHeight() {
+		return this.btnSetHeight;
+	}
+	
 	private void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
@@ -152,18 +171,18 @@ public class MapEditorView extends JPanel implements Observer{
 			
 			// Knoten
 			g2d.setColor(NODE_COLOR);
-			g2d.fill(convertKnotToEllipse(street.getStart()));
-			g2d.fill(convertKnotToEllipse(street.getEnd()));
+			g2d.fill(convertNodeToEllipse(street.getStart()));
+			g2d.fill(convertNodeToEllipse(street.getEnd()));
 		}
 		
 		if(model.getSelectedKnot() != null) {
 			g2d.setColor(SELECTED_COLOR);
-			g2d.fill(convertKnotToEllipse(model.getSelectedKnot()));
+			g2d.fill(convertNodeToEllipse(model.getSelectedKnot()));
 		}
 	}
 	
-	private Ellipse2D.Float convertKnotToEllipse(Node knot) {
-		return new Ellipse2D.Float(knot.getX() - NODE_RADIUS, knot.getY() - NODE_RADIUS, NODE_WIDTH, NODE_HEIGHT);
+	private Ellipse2D.Float convertNodeToEllipse(Node node) {
+		return new Ellipse2D.Float(node.getX() - NODE_RADIUS, node.getY() - NODE_RADIUS, NODE_WIDTH, NODE_HEIGHT);
 	}
 	private Line2D.Float convertStreetToLine(Street s) {
 		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
@@ -171,24 +190,32 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private void displayNodeInfo(Node selectedNode) {
 		if(selectedNode != null) {
-			streetInfo.setText("Node position: " + selectedNode.getX() + " / " + selectedNode.getY() + " height: " + selectedNode.getHeight());
+			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + " / " + selectedNode.getY());
+			txfNodeHeight.setValue(selectedNode.getHeight());
 		} else {
-			streetInfo.setText("");
+			infoField.setText("");
 		}
+	}
+	
+	private void displayStreetInfo(Street st) {
+		NumberFormat nf = NumberFormat.getIntegerInstance();
+		String degrees = nf.format(Math.toDegrees(st.getIncline()));
+		infoField.setText("Selected Street:\nLength: " + st.getLenth() + " \nIncline: " + degrees + "°");
 	}
 
 	public void update(Observable model, Object value) {
 		if(model instanceof MapEditorModel) {
 			this.model = (MapEditorModel) model;
 			repaint();
+			infoField.setText("");
+			txfNodeHeight.setValue(0);
 		}
 		if(value instanceof Street) {
 			if(this.model.getSelectedStreet() == value) {
-				Street st = (Street) value;
-				streetInfo.setText("Lenth: " + st.getLenth());
+				displayStreetInfo((Street) value);
 				btnDelete.setEnabled(true);
 			} else {
-				streetInfo.setText("");
+				infoField.setText("");
 				btnDelete.setEnabled(false);
 			}
 		}
@@ -196,6 +223,8 @@ public class MapEditorView extends JPanel implements Observer{
 			displayNodeInfo((Node)value);
 			btnDelete.setEnabled(false);
 		}
+		
+		btnSetHeight.setEnabled(this.model.getSelectedKnot() != null);
 	}
 	
 	public StreetType getSelectedStreetType() {

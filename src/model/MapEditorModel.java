@@ -61,8 +61,8 @@ public class MapEditorModel extends Observable {
 	}
 	
 	public void addStreet(Street street) {
+		String message = "Double streets not allowed!";
 		for(Street s : streets) {
-			String message = "Doppelte Strassen nicht erlaubt!";
 			if(s.getStart().equals(street.getStart()) && s.getEnd().equals(street.getEnd())) {
 				throw new MapEditorModelException(message);
 			}
@@ -83,7 +83,7 @@ public class MapEditorModel extends Observable {
 		streets.remove(street);
 		
 		super.setChanged();
-		super.notifyObservers(street);
+		super.notifyObservers();
 	}
 
 	public void setSelectedStreet(Street selectedStreet) {
