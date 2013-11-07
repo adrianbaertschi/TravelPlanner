@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
 import model.MapEditorModel;
+import model.MapEditorModelException;
 import model.Node;
 import model.Street;
 import view.MapEditorView;
@@ -75,6 +76,15 @@ public class MapEditorController {
 		public void mouseEntered(MouseEvent e) {	}
 		public void mouseExited(MouseEvent e) 	{	}
 		public void mousePressed(MouseEvent e) {	
+
+			// deselect everything
+			if(e.isControlDown()) {
+				model.setSelectedKnot(null);
+				model.setSelectedStreet(null);
+				currentStreet = null;
+				return;
+			}
+			
 			Node point = new Node(e.getX(), e.getY(), getNodeHeightValue());
 
 			Node selectedKnot = clickedOnNode(point);
@@ -99,12 +109,17 @@ public class MapEditorController {
 					
 					
 					// Second click
-				} else if (currentStreet.getStart() != null && currentStreet.getEnd() == null && !currentStreet.getStart().equals(point)) {
+				} else if (currentStreet.getStart() != null && currentStreet.getEnd() == null && !(clickedOnNode(point) == point)) {
 					
 					if(clickedOnStreet(point) == null) {
 						currentStreet.setEnd(point);
 						currentStreet.setStreetType(view.getSelectedStreetType());
-						model.addStreet(currentStreet);
+						try {
+							model.addStreet(currentStreet);
+							
+						} catch (MapEditorModelException ex) {
+							JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						
 						// reset Street
 						currentStreet = null;
@@ -120,11 +135,17 @@ public class MapEditorController {
 					currentStreet = new Street(selectedKnot);
 				} else {
 					// CASE 3: connect two existing
-					// TODO: zwei an gleicher stelle verhindern 
-					System.out.println("3--------------" + selectedKnot + currentStreet.getStart());
+					if(currentStreet.getStart().equals(selectedKnot)) {
+						return;
+					}
 					currentStreet.setEnd(selectedKnot);
 					currentStreet.setStreetType(view.getSelectedStreetType());
-					model.addStreet(currentStreet);
+					try {
+						model.addStreet(currentStreet);
+						
+					} catch(MapEditorModelException ex) {
+						JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					}
 					model.setSelectedKnot(null);
 					
 					// reset Street
@@ -136,30 +157,36 @@ public class MapEditorController {
 		public void mouseReleased(MouseEvent e) {	}
 		
 		private Node clickedOnNode(Node k) {
-			
-			int x = k.getX();
-			int y = k.getY();
-			
+
 			for(Street street : model.getStreets()) {
-				
+
 				// On Start Knoten?
-				int xdiff = Math.abs(street.getStart().getX() - x);
-				int ydiff = Math.abs(street.getStart().getY() - y);
-				
-				if(xdiff <= NODE_RADIUS && ydiff <= NODE_RADIUS) {
+				if(isOnNode(street.getStart(), k)) {
 					return street.getStart();
 				}
-				
+
 				// On End?
-				xdiff = Math.abs(street.getEnd().getX() - x);
-				ydiff = Math.abs(street.getEnd().getY() - y);
-				
-				if(xdiff <= NODE_RADIUS && ydiff <= NODE_RADIUS) {
+				if(isOnNode(street.getEnd(), k)) {
 					return street.getEnd();
 				}
 			}
-			
+
+			if(isOnNode(model.getSelectedKnot(), k)) {
+				return model.getSelectedKnot();
+			}
+
 			return null;
+		}
+		
+		private boolean isOnNode(Node source, Node point) {
+			if(source == null) {
+				return false;
+			}
+			
+			int xdiff = Math.abs(source.getX() - point.getX());
+			int ydiff = Math.abs(source.getY() - point.getY());
+			
+			return xdiff <= NODE_RADIUS && ydiff <= NODE_RADIUS;
 		}
 	}
 	

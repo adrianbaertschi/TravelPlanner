@@ -61,6 +61,17 @@ public class MapEditorModel extends Observable {
 	}
 	
 	public void addStreet(Street street) {
+		for(Street s : streets) {
+			String message = "Doppelte Strassen nicht erlaubt!";
+			if(s.getStart().equals(street.getStart()) && s.getEnd().equals(street.getEnd())) {
+				throw new MapEditorModelException(message);
+			}
+			if(s.getStart().equals(street.getEnd()) && s.getEnd().equals(street.getStart())) {
+				throw new MapEditorModelException(message);
+			}
+		}
+		
+		
 		streets.add(street);
 		
 		super.setChanged();
@@ -130,5 +141,23 @@ public class MapEditorModel extends Observable {
 		super.setChanged();
 		super.notifyObservers();
 	}
+	
+//	/**
+//	 * Check if there is a Street from n1 to n2 or from n2 to n1
+//	 * @param n1
+//	 * @param n2
+//	 * @return true if there is already a treet, otherwise false;
+//	 */
+//	public boolean existsStreet(Node n1, Node n2) {
+//		for(Street street : streets) {
+//			if(street.getStart().equals(n1) && street.getEnd().equals(n2)) {
+//				return true;
+//			}
+//			if(street.getStart().equals(n2) && street.getEnd().equals(n1)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 	
 }

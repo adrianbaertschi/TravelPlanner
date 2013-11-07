@@ -105,7 +105,7 @@ public class Street {
 		double distance = Line2D.ptSegDist(start.getX(), start.getY(), end.getX(), end.getY(), x, y);
 		distance = Math.abs(distance);
 		
-		int toleance = 5; //TODO: define constants somewhere
+		int toleance = 8; //TODO: define constants somewhere
 		return distance <= toleance;
 		
 	}
