@@ -226,6 +226,7 @@ public class MapEditorController implements Controller {
 				rowData[i][1] = maps.get(i).getName();
 				rowData[i][2] = maps.get(i).getStreets().size();
 				
+				//TODO format util?
 				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
 				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
 			}

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+//TODO: entity package etc.
 @Entity
 public class EntityBase extends Observable {
 	@Id

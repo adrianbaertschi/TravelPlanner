@@ -125,7 +125,8 @@ public class FleetEditorController implements Controller {
 				rowData[i][0] = fleets.get(i).getId();
 				rowData[i][1] = fleets.get(i).getName();
 				rowData[i][2] = fleets.get(i).getVehicles().size();
-				
+
+				//TODO format util?
 				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
 				rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
 			}
