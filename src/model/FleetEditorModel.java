@@ -4,17 +4,30 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Observable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * @author dimitri.haemmerli
  *
  */
-public class FleetEditorModel extends Observable{
-		
-	private ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+@Entity
+public class FleetEditorModel extends EntityBase {
+	
+	@OneToMany(cascade=CascadeType.PERSIST)
+	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
+	
+	@Transient
 	private ArrayList<Vehicle> vehicleSelection = new ArrayList<Vehicle>();
+	
+	@Transient
 	private int vehicleSelectionPos = 0;
+	
+	@Transient
 	private int vehiclePos = 0;
 
 	
@@ -68,7 +81,7 @@ private void createVehicleSelection() {
 	/**
 	 * @return the vehicles
 	 */
-	public ArrayList<Vehicle> getVehicles() {
+	public List<Vehicle> getVehicles() {
 		return vehicles;
 	}
 
@@ -76,7 +89,7 @@ private void createVehicleSelection() {
 	/**
 	 * @param vehicles the vehicles to set
 	 */
-	public void setVehicles(ArrayList<Vehicle> vehicles) {
+	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
 			
@@ -191,6 +204,13 @@ private void createVehicleSelection() {
 		super.setChanged();
 		super.notifyObservers(this);
 	}
-
-
+	
+	public void loadModel(FleetEditorModel model) {
+		this.vehicles = model.getVehicles();
+		this.setId(model.getId());
+		
+		super.setChanged();
+		super.notifyObservers(this);
+		
+	}
 }

@@ -3,11 +3,14 @@
  */
 package model;
 
+import javax.persistence.Entity;
+
 
 /**
  * @author dimitri.haemmerli
  *
  */
+@Entity
 public class Car extends Vehicle {
 	
 	private int gasConsumption;

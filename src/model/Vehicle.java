@@ -3,13 +3,16 @@
  */
 package model;
 
-import java.awt.Image;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 
 /**
  * @author dimitri.haemmerli
  *
  */
-public class Vehicle {
+@Entity
+public class Vehicle extends EntityBase {
 	
 	private VehicleType vehicleTypes;
 	private int maxSpeed;
@@ -20,6 +23,8 @@ public class Vehicle {
 	private Node finishKnot;
 	private Boolean isSelected;
 	private Boolean isVisible;
+	
+	@Transient
 	private Thread thread;
 
 	public Vehicle(){

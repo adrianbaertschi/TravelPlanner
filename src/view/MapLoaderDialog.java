@@ -10,12 +10,12 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.MapEditorModel;
+import view.components.ReadOnlyJTable;
 import control.MapEditorController;
 import dao.MapEditorDao;
 
@@ -41,11 +41,8 @@ public class MapLoaderDialog extends JDialog {
 			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
 			rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
 		}
-		final JTable table = new JTable(rowData, columns) { 
-			public boolean isCellEditable(int rowIndex, int colIndex) {
-				return false;
-			};
-		};
+		final ReadOnlyJTable table = new ReadOnlyJTable(rowData, columns);
+		
 		table.getColumnModel().getColumn(1).setPreferredWidth(100);
 		table.getColumnModel().getColumn(2).setPreferredWidth(30);
 		table.removeColumn(table.getColumn("ID"));

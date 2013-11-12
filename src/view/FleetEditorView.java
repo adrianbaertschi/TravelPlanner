@@ -1,42 +1,25 @@
 package view;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.io.File;
-import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import model.FleetEditorModel;
-import model.MapEditorModel;
-import model.SimulationEditorModel;
-import model.Street;
-import model.Vehicle;
-import model.VehicleType;
 
 public class FleetEditorView extends JPanel implements Observer {
 
@@ -458,6 +441,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	 */
 	public JButton getSaveFleetJB() {
 		return saveFleetJB;
+	}
+	
+	public JButton getLoadFleetJB() {
+		return this.loadFleetJB;
 	}
 
 	/**

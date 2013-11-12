@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
@@ -15,11 +18,11 @@ import model.MapEditorModelException;
 import model.Node;
 import model.Street;
 import view.MapEditorView;
-import view.MapLoaderDialog;
 import view.MasterGui;
+import view.components.LoaderDialog;
 import dao.MapEditorDao;
 
-public class MapEditorController {
+public class MapEditorController implements Controller {
 
 	private MapEditorView view;
 	private MapEditorModel model;
@@ -41,13 +44,14 @@ public class MapEditorController {
 		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
 	}
 
+	@Override
 	public Component showView() {
 		this.view.setVisible(true);
 		return this.view;
 	}
 	
-	public void setModel(MapEditorModel model) {
-		this.model.loadModel(model);
+	public void setModel(Object model) {
+		this.model.loadModel((MapEditorModel) model);
 	}
 	
 	private int getInputNodeHeightValue() {
@@ -212,7 +216,21 @@ public class MapEditorController {
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0], MapEditorController.this);
+			
+			List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
+
+			String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
+			Object[][] rowData = new Object[maps.size()][columns.length];
+			for(int i = 0; i < maps.size(); i++) {
+				rowData[i][0] = maps.get(i).getId();
+				rowData[i][1] = maps.get(i).getName();
+				rowData[i][2] = maps.get(i).getStreets().size();
+				
+				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
+			}
+			
+			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], MapEditorController.this,  MapEditorDao.getInstance(), rowData, columns);
 			d.setVisible(true);
 		}
 	}
