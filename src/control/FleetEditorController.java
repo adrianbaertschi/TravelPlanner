@@ -57,6 +57,9 @@ public class FleetEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			fleetEditorModel.increaseVehiclePos();
+			//TODO:
+			//fahrzeug updaten
+//			fleetEditorModel.updateVehicleAttributes();
 		
 		}
 	}
@@ -65,7 +68,10 @@ public class FleetEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			fleetEditorModel.decreaseVehiclePos();
-		
+			//TODO:
+			//fahrzeug updaten
+//			fleetEditorModel.updateVehicleAttributes();
+
 		}
 	}
 

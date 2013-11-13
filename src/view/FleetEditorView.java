@@ -209,7 +209,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		addVehicleTitleJP = new JPanel();
 		addVehicleTitleJP.setBounds(10, 10, 230, 50);
-		addVehicleTitleJL = new JLabel("Add new Vehicle");
+		addVehicleTitleJL = new JLabel("Fleet - Add New Vehicle");
 		addVehicleTitleJP.add(addVehicleTitleJL);
 
 		addVehicleArea.add(addVehicleTitleJP);

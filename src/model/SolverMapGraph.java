@@ -61,7 +61,7 @@ public class SolverMapGraph implements Runnable{
 						vehicle.setCurrentPosition(currentPosition);
 						
 						try {
-							Thread.sleep(5 * (150-speedLimit)/10);
+							Thread.sleep(5 * (140-speedLimit)/10);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
