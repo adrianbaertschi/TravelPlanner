@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
@@ -15,11 +18,11 @@ import model.MapEditorModelException;
 import model.Node;
 import model.Street;
 import view.MapEditorView;
-import view.MapLoaderDialog;
 import view.MasterGui;
+import view.components.LoaderDialog;
 import dao.MapEditorDao;
 
-public class MapEditorController {
+public class MapEditorController implements Controller {
 
 	private MapEditorView view;
 	private MapEditorModel model;
@@ -38,19 +41,21 @@ public class MapEditorController {
 		view.getBtnLoadMap().addActionListener(new BtnLoadMapActioListener());
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
 		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
+		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
 	}
 
+	@Override
 	public Component showView() {
 		this.view.setVisible(true);
 		return this.view;
 	}
 	
-	public void setModel(MapEditorModel model) {
-		this.model.loadModel(model);
+	public void setModel(Object model) {
+		this.model.loadModel((MapEditorModel) model);
 	}
 	
-	private int getNodeHeightValue() {
-		Long value = (Long) view.getTxfNodeHeight().getValue();
+	private int getInputNodeHeightValue() {
+		Integer value = (Integer) view.getTxfNodeHeight().getValue();
 		
 		if(value == null) {
 			return 0;
@@ -85,10 +90,13 @@ public class MapEditorController {
 				return;
 			}
 			
-			Node point = new Node(e.getX(), e.getY(), getNodeHeightValue());
+			Node point = new Node(e.getX(), e.getY(), getInputNodeHeightValue());
 
 			Node selectedKnot = clickedOnNode(point);
 			
+			if(selectedKnot != null) {
+				model.setSelectedStreet(null);
+			}
 			model.setSelectedKnot(selectedKnot);
 
 			// CASE 1: New Street
@@ -125,7 +133,8 @@ public class MapEditorController {
 						currentStreet = null;
 						
 					} else {
-						model.setSelectedKnot(currentStreet.getStart());
+						Street selectedStreet = clickedOnStreet(point);
+						model.setSelectedStreet(selectedStreet);
 					}
 				} 
 			} else {
@@ -207,7 +216,22 @@ public class MapEditorController {
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			MapLoaderDialog d = new MapLoaderDialog(MasterGui.getFrames()[0], MapEditorController.this);
+			
+			List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
+
+			String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
+			Object[][] rowData = new Object[maps.size()][columns.length];
+			for(int i = 0; i < maps.size(); i++) {
+				rowData[i][0] = maps.get(i).getId();
+				rowData[i][1] = maps.get(i).getName();
+				rowData[i][2] = maps.get(i).getStreets().size();
+				
+				//TODO format util?
+				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
+			}
+			
+			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], MapEditorController.this,  MapEditorDao.getInstance(), rowData, columns);
 			d.setVisible(true);
 		}
 	}
@@ -223,6 +247,16 @@ public class MapEditorController {
 
 		public void actionPerformed(ActionEvent arg0) {
 			model.removeStreet(model.getSelectedStreet());
+		}
+		
+	}
+	
+	class BtnSetHeightActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			int height = getInputNodeHeightValue();
+			model.getSelectedKnot().setHeight(height);
+			
 		}
 		
 	}
