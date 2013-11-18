@@ -6,10 +6,10 @@ package model;
  */
 public enum VehicleType {
 	
-	REDCAR("redCar", "images/car_red.jpg", "images/finish"),
-    GREENCAR("greenCar", "images/car_green.jpg", "images/finish"), 
-    BLUECAR("blueCar", "images/car_blue.jpg", "images/finish"), 
-    YELLOWCAR("yellowCar", "images/car_yellow.jpg", "images/finish");
+	REDCAR("redCar", "images/car_red.jpg", "images/car_red_finish.jpg"),
+    GREENCAR("greenCar", "images/car_green.jpg", "images/car_green_finish.jpg"), 
+    BLUECAR("blueCar", "images/car_blue.jpg", "images/car_blue_finish.jpg"), 
+    YELLOWCAR("yellowCar", "images/car_yellow.jpg", "images/car_yellow_finish.jpg");
 
     private String identifier;
     private String urlVehicle;

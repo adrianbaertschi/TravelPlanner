@@ -72,7 +72,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	private ImageIcon vehicleII;
 	
-	private ImageIcon img;
+	private ImageIcon carII;
+	private ImageIcon carFinishII;
 	
 	private boolean inSimulation = false;
 
@@ -188,9 +189,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		
 		// Finish JButton
-		finishII = new ImageIcon("images/finish.jpg");
-		finishII.setImage(finishII.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-		finishJB = new JButton(finishII);
+		finishJB = new JButton("finish");
 		finishJB.setBounds(110, 480, 100, 30);
 
 		vehicleOptionsArea.add(finishJB);
@@ -290,24 +289,26 @@ public class SimulationEditorView extends JPanel implements Observer{
 		// display cars on mapArea
 		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 			
-			img = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
-			img.setImage(img.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
+			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
+			carII.setImage(carII.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
 			if(v.getStartKnot() != null){
 				
-				img.paintIcon(this, g2d, v.getStartKnot().getX() - img.getIconWidth()/2, v.getStartKnot().getY() - img.getIconHeight()/2);
+				carII.paintIcon(this, g2d, v.getStartKnot().getX() - carII.getIconWidth()/2, v.getStartKnot().getY() - carII.getIconHeight()/2);
 			
 			}
 			if(v.getFinishKnot() != null){
-				
-				img.paintIcon(this, g2d, v.getFinishKnot().getX() - img.getIconWidth()/2, v.getFinishKnot().getY() - img.getIconHeight()/2);
+				carFinishII = new ImageIcon(v.getVehicleTypes().getUrlFinish());
+				carFinishII.setImage(carFinishII.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
+
+				carFinishII.paintIcon(this, g2d, v.getFinishKnot().getX() - carFinishII.getIconWidth()/2, v.getFinishKnot().getY() - carFinishII.getIconHeight()/2);
 			
 			}
 
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
-				img.setImage(img.getImage().getScaledInstance(15, 15,Image.SCALE_DEFAULT));
-				img.paintIcon(this, g2d, v.getCurrentPosition().getX() - img.getIconWidth()/2, v.getCurrentPosition().getY() - img.getIconHeight()/2);			
+				carII.setImage(carII.getImage().getScaledInstance(20, 20,Image.SCALE_DEFAULT));
+				carII.paintIcon(this, g2d, v.getCurrentPosition().getX() - carII.getIconWidth()/2, v.getCurrentPosition().getY() - carII.getIconHeight()/2);			
 		
 			}
 
