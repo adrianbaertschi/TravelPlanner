@@ -18,11 +18,14 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.naming.InsufficientResourcesException;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.text.Position;
 
@@ -45,7 +48,16 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JPanel mapArea;
 	private JPanel vehicleArea;
+	private JPanel vehicleOptionsArea;
 	private JPanel vehicleSelectionArea;
+	private JPanel simulationOptionsArea;
+
+	
+	private JRadioButton fastestPathJRB;
+	private JRadioButton shortestPathJRB;
+	
+	private ButtonGroup vehicleOptionBG;
+	
 	private JLabel streetInfo;
 	private JLabel vehicleJL;
 	
@@ -61,6 +73,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private ImageIcon vehicleII;
 	
 	private ImageIcon img;
+	
+	private boolean inSimulation = false;
 
 	
 	public SimulationEditorView() {
@@ -98,7 +112,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		// Vehicle Area
 		vehicleArea = new JPanel();
-		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
+		vehicleArea.setBounds(920, 0, 250, 800);
 		vehicleArea.setBackground(Color.WHITE);
 //		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		vehicleArea.setLayout(null);
@@ -155,14 +169,22 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleArea.add(vehicleSelectionArea);	
 
 		this.add(vehicleArea);
-			
-
+		
+		
+		//vehicel options 
+		
+		vehicleOptionsArea = new JPanel();
+		vehicleOptionsArea.setLayout(null);
+		vehicleOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
+		
+		
+		vehicleArea.add(vehicleOptionsArea);
 		// Start Button
 		
 		startJB = new JButton("start");
 		startJB.setBounds(0, 480, 100, 30);
 
-		vehicleArea.add(startJB);
+		vehicleOptionsArea.add(startJB);
 		
 		
 		// Finish JButton
@@ -171,14 +193,32 @@ public class SimulationEditorView extends JPanel implements Observer{
 		finishJB = new JButton(finishII);
 		finishJB.setBounds(110, 480, 100, 30);
 
-		vehicleArea.add(finishJB);
+		vehicleOptionsArea.add(finishJB);
 		
 		//Simulation JButton
 		simulationJB = new JButton("Simulation");
 		simulationJB.setBounds(0, 440, 100, 30);
 
-		vehicleArea.add(simulationJB);
-				
+		vehicleOptionsArea.add(simulationJB);
+		
+		
+		fastestPathJRB = new JRadioButton("fastest path");
+		fastestPathJRB.setBounds(10,10,100,30);
+		shortestPathJRB = new JRadioButton("shortest path");
+		shortestPathJRB.setBounds(10,60,100,30);
+
+		vehicleOptionBG = new ButtonGroup();
+		vehicleOptionBG.add(fastestPathJRB);
+		vehicleOptionBG.add(shortestPathJRB);
+
+		vehicleOptionsArea.add(fastestPathJRB);
+		vehicleOptionsArea.add(shortestPathJRB);
+		
+		simulationOptionsArea = new JPanel();
+		simulationOptionsArea.setLayout(null);
+		simulationOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
+
+		
 	}
 
 	
@@ -190,6 +230,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D)g;
 		
+		if(inSimulation){
+			
+			vehicleArea.add(simulationOptionsArea);
+			
+		}
 		
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -370,6 +415,48 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 */
 	public void setPreviousVehicleJB(JButton previousVehicleJB) {
 		this.previousVehicleJB = previousVehicleJB;
+	}
+
+	/**
+	 * @return the inSimulation
+	 */
+	public boolean isInSimulation() {
+		return inSimulation;
+	}
+
+	/**
+	 * @param inSimulation the inSimulation to set
+	 */
+	public void setInSimulation(boolean inSimulation) {
+		this.inSimulation = inSimulation;
+	}
+
+	/**
+	 * @return the fastestPathJRB
+	 */
+	public JRadioButton getFastestPathJRB() {
+		return fastestPathJRB;
+	}
+
+	/**
+	 * @param fastestPathJRB the fastestPathJRB to set
+	 */
+	public void setFastestPathJRB(JRadioButton fastestPathJRB) {
+		this.fastestPathJRB = fastestPathJRB;
+	}
+
+	/**
+	 * @return the shortestPathJRB
+	 */
+	public JRadioButton getShortestPathJRB() {
+		return shortestPathJRB;
+	}
+
+	/**
+	 * @param shortestPathJRB the shortestPathJRB to set
+	 */
+	public void setShortestPathJRB(JRadioButton shortestPathJRB) {
+		this.shortestPathJRB = shortestPathJRB;
 	}
 
 	

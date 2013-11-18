@@ -48,6 +48,8 @@ public class SimulationEditorController {
 		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
 		simulationEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		simulationEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
+		simulationEditorView.getShortestPathJRB().addActionListener(new BtnShortestPath());
+		simulationEditorView.getFastestPathJRB().addActionListener(new BtnFastestPath());
 
 
 	}
@@ -199,7 +201,7 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			
+			simulationEditorView.setInSimulation(true);
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 				
 				solver.add(new SolverMapGraph(simulationEditorModel));
@@ -238,6 +240,23 @@ public class SimulationEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			simulationEditorModel.getFleetEditorModel().decreaseVehiclePos();
+			simulationEditorModel.changed(null);
+		}
+	}
+	
+	class BtnShortestPath implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(1);;
+			simulationEditorModel.changed(null);
+		}
+	}
+	class BtnFastestPath implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(2);;
 			simulationEditorModel.changed(null);
 		}
 	}
