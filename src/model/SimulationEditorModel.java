@@ -52,9 +52,13 @@ public class SimulationEditorModel extends Observable {
 		
 		super.setChanged();
 		
-		if(o instanceof Vehicle){	
+		if(o instanceof Vehicle){
+//			System.out.println("Vehicle");
 			super.notifyObservers(o);
-		}else{
+		} else if(o instanceof UserDisruption) {
+			System.out.println("user disruption");
+			super.notifyObservers(o);
+		} else{
 			super.notifyObservers(this);
 
 		}

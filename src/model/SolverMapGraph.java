@@ -4,6 +4,8 @@
 package model;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -13,7 +15,7 @@ import org.jgrapht.graph.SimpleWeightedGraph;
  * @author dimitri.haemmerli
  *
  */
-public class SolverMapGraph implements Runnable{
+public class SolverMapGraph implements Runnable, Observer{
 	
 	private SimulationEditorModel simulationEditorModel;
 	private Vehicle vehicle;
@@ -24,10 +26,7 @@ public class SolverMapGraph implements Runnable{
 		
 	}
 	
-	public void startSimulation() {
-		
-//		for(Vehicle v : simulationEditorModel.getFleetEditorModel().getVehicles()){
-			
+	private void startSimulation() {
 			
 			//abfangen falls es keinen k�zesten pfad gibt
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
@@ -64,10 +63,9 @@ public class SolverMapGraph implements Runnable{
 							Thread.sleep(5 * (140-speedLimit)/10);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							return;
 						}
 						updateModelSync();
-//						simulationEditorModel.changed(vehicle);
 
 					}
 					
@@ -78,7 +76,6 @@ public class SolverMapGraph implements Runnable{
 			//reinitialize the currentKnot so a new simulation can be performed
 			vehicle.setCurrentKnot(vehicle.getStartKnot());
 
-//		}
 		
 	}
 	
@@ -88,6 +85,10 @@ public class SolverMapGraph implements Runnable{
 		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
 	    for(Street s :streets){
+	    	
+	    	if(s.isClosed()) {
+	    		continue;
+	    	}
 	    	
 			// add the vertices
 	    	if(!swg.containsVertex(s.getStart())){
@@ -106,7 +107,7 @@ public class SolverMapGraph implements Runnable{
 		return swg;
 	}
 
-	public Node shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg, Node currentPosition, Node endPosition){
+	private Node shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg, Node currentPosition, Node endPosition){
 		
 		System.out.println("test");
 
@@ -162,10 +163,27 @@ public class SolverMapGraph implements Runnable{
 		
 	}
     
-	public synchronized void updateModelSync() {
+	private synchronized void updateModelSync() {
 		
 		simulationEditorModel.changed(vehicle);
 				
+	}
+	
+	private void recalculate() {
+		this.vehicle.setStartKnot(this.vehicle.getCurrentKnot());
+		this.vehicle.getThread().interrupt();
+		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
+		smg.setVehicle(vehicle);
+		this.vehicle.setThread(new Thread(smg));
+		this.getVehicle().getThread().start();
+	}
+
+	public void update(Observable o, Object arg) {
+		if(arg instanceof UserDisruption) {
+			System.out.println("recalc=======================================================");
+			this.simulationEditorModel = (SimulationEditorModel) o;
+			recalculate();
+		}
 	}
 
 

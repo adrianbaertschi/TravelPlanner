@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Street {
@@ -32,6 +33,9 @@ public class Street {
 	
 	// TODO: remove from model
 	private Color streetColor = Color.BLUE;
+	
+	@Transient
+	private boolean isClosed = false;
 	
 	public Street() {}
 	
@@ -80,6 +84,14 @@ public class Street {
 	}
 	
 	
+	public boolean isClosed() {
+		return isClosed;
+	}
+
+	public void setClosed(boolean isClosed) {
+		this.isClosed = isClosed;
+	}
+
 	/**
 	 * Calculate length of street based on start, end and heigt
 	 * 

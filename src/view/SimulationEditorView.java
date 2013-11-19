@@ -3,28 +3,21 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.io.File;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.text.Position;
 
 import model.FleetEditorModel;
 import model.MapEditorModel;
@@ -54,6 +47,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JButton startJB;
 	private JButton finishJB;		
 	private JButton simulationJB;
+	
+	private JButton closeStreetJB;
 	
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
@@ -98,7 +93,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		// Vehicle Area
 		vehicleArea = new JPanel();
-		vehicleArea.setBounds(920, 10, 1200-910-40, 800);
+		vehicleArea.setBounds(920, 10, 1200-910-40, 520);
 		vehicleArea.setBackground(Color.WHITE);
 //		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		vehicleArea.setLayout(null);
@@ -178,7 +173,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 		simulationJB.setBounds(0, 440, 100, 30);
 
 		vehicleArea.add(simulationJB);
-				
+		
+		JPanel disruptionPanel = new JPanel();
+		disruptionPanel.setBorder(BorderFactory.createTitledBorder("Close"));
+		disruptionPanel.setBounds(920, 550, 250, 250); //920, 10, 1200-910-40, 520);
+		this.add(disruptionPanel);
+		
+		closeStreetJB = new JButton("Close street");
+		closeStreetJB.setBounds(10, 10, 100, 30);
+		disruptionPanel.add(closeStreetJB);
 	}
 
 	
@@ -187,9 +190,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 		
 	private void draw(Graphics g) {
-		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D)g;
-		
 		
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -208,9 +209,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 			}
 
 			
-			// Strassen			
+			// Strassen
 			if(street == model.getMapEditorModel().getSelectedStreet()) {
 				g2d.setColor(SELECTED_COLOR);
+			} else if(street.isClosed()) {
+				g2d.setColor(Color.GREEN);
 			} else {
 				g2d.setColor(street.getStreetType().getColor());
 			}
@@ -269,7 +272,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		}
 		
 
-		System.out.println("Repaint time: " + (System.currentTimeMillis() - start));
 
 		
 
@@ -279,7 +281,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		if (model instanceof SimulationEditorModel) {
 			
-			System.out.println("im update");
 			this.model = (SimulationEditorModel) model; 
 			
 			repaint();
@@ -310,24 +311,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @param finishJB the finishJB to set
-	 */
-	public void setFinishJB(JButton finishJB) {
-		this.finishJB = finishJB;
-	}
-
-	/**
 	 * @return the startJB
 	 */
 	public JButton getStartJB() {
 		return startJB;
-	}
-
-	/**
-	 * @param startJB the startJB to set
-	 */
-	public void setStartJB(JButton startJB) {
-		this.startJB = startJB;
 	}
 
 	/**
@@ -338,24 +325,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @param simulationJB the simulationJB to set
-	 */
-	public void setSimulationJB(JButton simulationJB) {
-		this.simulationJB = simulationJB;
-	}
-
-	/**
 	 * @return the nextVehicleJB
 	 */
 	public JButton getNextVehicleJB() {
 		return nextVehicleJB;
-	}
-
-	/**
-	 * @param nextVehicleJB the nextVehicleJB to set
-	 */
-	public void setNextVehicleJB(JButton nextVehicleJB) {
-		this.nextVehicleJB = nextVehicleJB;
 	}
 
 	/**
@@ -365,11 +338,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		return previousVehicleJB;
 	}
 
-	/**
-	 * @param previousVehicleJB the previousVehicleJB to set
-	 */
-	public void setPreviousVehicleJB(JButton previousVehicleJB) {
-		this.previousVehicleJB = previousVehicleJB;
+	public JButton getCloseStreetJB() {
+		return this.closeStreetJB;
 	}
 
 	

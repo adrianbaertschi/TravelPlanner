@@ -9,13 +9,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.List;
 
-import control.FleetEditorController.BtnNextVehicle;
-import control.FleetEditorController.BtnPreviousVehicle;
 import model.Node;
 import model.SimulationEditorModel;
 import model.SolverMapGraph;
 import model.Street;
+import model.UserDisruption;
 import model.Vehicle;
 import view.SimulationEditorView;
 
@@ -23,11 +23,12 @@ import view.SimulationEditorView;
  * @author dimitri.haemmerli
  *
  */
+//TODO: implement coltroller
 public class SimulationEditorController {
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
-	private ArrayList<SolverMapGraph> solver = new ArrayList<SolverMapGraph>();
+	private List<SolverMapGraph> solver = new ArrayList<SolverMapGraph>();
 
 	
 	public SimulationEditorController(SimulationEditorView sev, SimulationEditorModel sem){
@@ -48,7 +49,7 @@ public class SimulationEditorController {
 		simulationEditorView.getSimulationJB().addActionListener(new BtnSetSimulation());
 		simulationEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		simulationEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
-
+		simulationEditorView.getCloseStreetJB().addActionListener(new BtnCloseStreet());
 
 	}
 	
@@ -63,15 +64,20 @@ public class SimulationEditorController {
 
 		public void mouseClicked(MouseEvent e) {
 			
-			System.out.println("klicked");
-			
 			Node knot = new Node(e.getX(), e.getY());
 			
 			Node selectedKnot = clickedOnNode(knot);
 			
+			if(selectedKnot != null) {
+				simulationEditorModel.getMapEditorModel().setSelectedStreet(null);
+			} else {
+				Street selectedStreet = clickedOnStreet(knot);
+				simulationEditorModel.getMapEditorModel().setSelectedStreet(selectedStreet);
+			}
+			
 			simulationEditorModel.getMapEditorModel().setSelectedKnot(selectedKnot);
 			simulationEditorModel.changed(null);
-
+			
 			
 	}
 		private Node clickedOnNode(Node k) {
@@ -103,6 +109,15 @@ public class SimulationEditorController {
 			}
 			
 			return returnKnot;
+		}
+		
+		private Street clickedOnStreet(Node point) {
+			for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
+				if(street.isPointOnStreet(point.getX(), point.getY())) {
+					return street;
+				}
+			}
+			return null;
 		}
 
 
@@ -202,7 +217,10 @@ public class SimulationEditorController {
 			
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 				
-				solver.add(new SolverMapGraph(simulationEditorModel));
+				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
+				
+				simulationEditorModel.addObserver(s);
+				solver.add(s);
 				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
 				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
 			}
@@ -240,6 +258,30 @@ public class SimulationEditorController {
 			simulationEditorModel.getFleetEditorModel().decreaseVehiclePos();
 			simulationEditorModel.changed(null);
 		}
+	}
+	
+	class BtnCloseStreet implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			Street selectedStreet = simulationEditorModel.getMapEditorModel().getSelectedStreet();
+			boolean isVehicleOnStreet = false;
+			
+			for(Vehicle vehicle : simulationEditorModel.getFleetEditorModel().getVehicles()) {
+				if(selectedStreet.getStart().equals(vehicle.getCurrentKnot()) && selectedStreet.getEnd().equals(vehicle.getNextKnot()) ||
+						selectedStreet.getStart().equals(vehicle.getNextKnot()) && selectedStreet.getEnd().equals(vehicle.getCurrentKnot()))
+					
+					isVehicleOnStreet = true;
+			}
+			
+			if(!isVehicleOnStreet) {
+				simulationEditorModel.getMapEditorModel().closeStreet(selectedStreet);
+//				simulationEditorModel.getMapEditorModel().setSelectedStreet(null);
+				simulationEditorModel.changed(new UserDisruption());
+			}
+			
+		}
+		
 	}
 
 }

@@ -85,7 +85,14 @@ public class MapEditorModel extends Observable {
 		super.setChanged();
 		super.notifyObservers();
 	}
-
+	
+	public void closeStreet(Street street) {
+		street.setClosed(true);
+		
+		super.setChanged();
+		super.notifyObservers(new UserDisruption());
+	}
+	
 	public void setSelectedStreet(Street selectedStreet) {
 		this.selectedStreet = selectedStreet;
 		
