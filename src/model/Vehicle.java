@@ -26,6 +26,8 @@ public class Vehicle extends EntityBase {
 	
 	@Transient
 	private Thread thread;
+	@Transient
+	private int simulationOption;
 
 	public Vehicle(){
 		
@@ -171,6 +173,21 @@ public class Vehicle extends EntityBase {
 	public void setThread(Thread thread) {
 		this.thread = thread;
 	}
+
+	/**
+	 * @return the simulationOption
+	 */
+	public int getSimulationOption() {
+		return simulationOption;
+	}
+
+	/**
+	 * @param simulationOption the simulationOption to set
+	 */
+	public void setSimulationOption(int simulationOption) {
+		this.simulationOption = simulationOption;
+	}
+
 	
 	
 	

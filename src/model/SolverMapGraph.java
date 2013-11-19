@@ -28,7 +28,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void startSimulation() {
 			
-			//abfangen falls es keinen k�zesten pfad gibt
+			//TODO: abfangen falls es keinen k�zesten pfad gibt
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			int speedLimit = 0;
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
@@ -81,29 +81,64 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private SimpleWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
 			
-		SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
+		SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Node, DefaultWeightedEdge>(
+				DefaultWeightedEdge.class);
 		
-	    for(Street s :streets){
-	    	
-	    	if(s.isClosed()) {
-	    		continue;
-	    	}
-	    	
-			// add the vertices
-	    	if(!swg.containsVertex(s.getStart())){
-	    		swg.addVertex(s.getStart());}
-			if(!swg.containsVertex(s.getEnd())){
-				swg.addVertex(s.getEnd());}
+		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
+
+		switch (vehicle.getSimulationOption()) {
+		
+		case 1: //shortest path
+
+			for (Street s : streets) {
+				
+				if(s.isClosed()) {
+					continue;
+				}
 
 
-			// add edges to create linking structure
-			if(!swg.containsEdge(s.getStart(), s.getEnd())){
-				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(), s.getEnd());			
-				swg.setEdgeWeight(dwg, s.getLenth());
+				// add the vertices
+				if (!swg.containsVertex(s.getStart())) {
+					swg.addVertex(s.getStart());
+				}
+				if (!swg.containsVertex(s.getEnd())) {
+					swg.addVertex(s.getEnd());
+				}
+
+				// add edges to create linking structure
+				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
+					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
+					swg.setEdgeWeight(dwg, s.getLenth());
+
+				}
+			}
+			
+			//TODO: string constats
+		case 2: // fastestpath
+			
+			for (Street s : streets) {
+				
+				if(s.isClosed()) {
+					continue;
+				}
+
+				// add the vertices
+				if (!swg.containsVertex(s.getStart())) {
+					swg.addVertex(s.getStart());
+				}
+				if (!swg.containsVertex(s.getEnd())) {
+					swg.addVertex(s.getEnd());
+				}
+
+				// add edges to create linking structure
+				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
+					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
+					swg.setEdgeWeight(dwg, s.getLenth()/s.getStreetType().getSpeedLimit());
+				}
 				
 			}
-	    }
+			
+		}
 		return swg;
 	}
 
