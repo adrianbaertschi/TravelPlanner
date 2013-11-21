@@ -153,10 +153,31 @@ public class SolverMapGraph implements Runnable, Observer{
 					swg.addVertex(s.getEnd());
 				}
 
+				//TODO: if car und andere fahrzeugtypen unterscheiden
+				Car c = (Car) vehicle;
 				// add edges to create linking structure
 				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
 					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
-					swg.setEdgeWeight(dwg, s.getLenth()/s.getStreetType().getSpeedLimit());
+					
+					switch (s.getStreetType()){
+					
+					case QUARTIER:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
+						break;
+					case INNERORTS:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
+						break;
+					case AUSSERORTS:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
+						break;
+					case AUTOSTRASSE:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
+						break;
+					case AUTOBAHN:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionHigh()/100 *s.getLenth());
+						break;
+					
+					}
 				}
 				
 			}
