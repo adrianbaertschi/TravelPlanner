@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import model.Car;
 import model.FleetEditorModel;
 import view.FleetEditorView;
 import view.MasterGui;
@@ -41,6 +42,7 @@ public class FleetEditorController implements Controller {
 	private void addListener() {
 		fleetEditorView.getNextFleetVehicleJB().addActionListener(new BtnNextFleetVehicle());
 		fleetEditorView.getPreviousFleetVehicleJB().addActionListener(new BtnPreviousFleetVehicle());
+		fleetEditorView.getSaveVehicleJB().addActionListener(new BtnSaveVehicleActionListener());
 		fleetEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		fleetEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
 		fleetEditorView.getAddVehicleJB().addActionListener(new BtnAddVehicle());
@@ -116,6 +118,35 @@ public class FleetEditorController implements Controller {
 			fleetEditorModel.setName(name);
 			FleetEditorDao.getInstance().saveFleet(fleetEditorModel);
 		}
+	}
+	
+	class BtnSaveVehicleActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+		
+			fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).setName(fleetEditorView.getVehicleNameJTF().getText());;
+			
+			Integer maxSpeed = (Integer) fleetEditorView.getVehicleSpeedJCB().getSelectedItem();
+			fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).setMaxSpeed(maxSpeed.intValue());
+			
+			if(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()) instanceof Car){
+				
+				Car c = (Car) fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
+				
+				Float gasUsage = (Float) fleetEditorView.getVehicleGasUsageLowJCB().getSelectedItem();
+				c.setGasConsumptionLow(gasUsage.floatValue());
+				
+				gasUsage = (Float) fleetEditorView.getVehicleGasUsageMediumJCB().getSelectedItem();
+				c.setGasConsumptionMedium(gasUsage.floatValue());
+				
+				gasUsage = (Float) fleetEditorView.getVehicleGasUsageHighJCB().getSelectedItem();
+				c.setGasConsumptionHigh(gasUsage.floatValue());
+
+			}
+		
+		}
+		
 	}
 	
 	class BtnLoadFleetActionListener implements ActionListener {
