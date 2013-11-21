@@ -23,14 +23,16 @@ public class Vehicle extends EntityBase {
 	private Node finishKnot;
 	private Boolean isSelected;
 	private Boolean isVisible;
-	
+	private SimulationOption simulationOption;
+
 	@Transient
 	private Thread thread;
-	@Transient
-	private int simulationOption;
+	
 
 	public Vehicle(){
 		
+		//default value
+		this.simulationOption = SimulationOption.SHORTEST_PATH;
 	}
 
 	/**
@@ -147,6 +149,20 @@ public class Vehicle extends EntityBase {
 	}
 
 	/**
+	 * @return the simulationOption
+	 */
+	public SimulationOption getSimulationOption() {
+		return simulationOption;
+	}
+
+	/**
+	 * @param simulationOption the simulationOption to set
+	 */
+	public void setSimulationOption(SimulationOption simulationOption) {
+		this.simulationOption = simulationOption;
+	}
+
+	/**
 	 * @return the vehicleTypes
 	 */
 	public VehicleType getVehicleTypes() {
@@ -172,20 +188,6 @@ public class Vehicle extends EntityBase {
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
-	}
-
-	/**
-	 * @return the simulationOption
-	 */
-	public int getSimulationOption() {
-		return simulationOption;
-	}
-
-	/**
-	 * @param simulationOption the simulationOption to set
-	 */
-	public void setSimulationOption(int simulationOption) {
-		this.simulationOption = simulationOption;
 	}
 
 	

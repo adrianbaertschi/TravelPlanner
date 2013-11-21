@@ -24,6 +24,7 @@ import javax.swing.JRadioButton;
 import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
+import model.SimulationOption;
 import model.Street;
 import model.Vehicle;
 
@@ -211,10 +212,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(simulationJB);
 		
 		
-		fastestPathJRB = new JRadioButton("fastest path");
-		fastestPathJRB.setBounds(10,10,200,30);
 		shortestPathJRB = new JRadioButton("shortest path");
-		shortestPathJRB.setBounds(10,50,200,30);
+		shortestPathJRB.setBounds(10,10,200,30);
+		fastestPathJRB = new JRadioButton("fastest path");
+		fastestPathJRB.setBounds(10,50,200,30);
 		lowestGasConsumptionJRB = new JRadioButton("lowest gas consumption");
 		lowestGasConsumptionJRB.setBounds(10, 90, 200, 30);
 		highestGasConsumptionJRB = new JRadioButton("highest gas consumption");
@@ -231,12 +232,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(lowestGasConsumptionJRB);
 		vehicleOptionsArea.add(highestGasConsumptionJRB);
 		
-		fastestPathJRB.setSelected(true);
-		fastestPathJRB.setEnabled(false);
-		shortestPathJRB.setEnabled(false);
-		lowestGasConsumptionJRB.setEnabled(false);
-		highestGasConsumptionJRB.setEnabled(false);
-
 		simulationOptionsArea = new JPanel();
 		simulationOptionsArea.setLayout(null);
 		simulationOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
@@ -299,6 +294,40 @@ public class SimulationEditorView extends JPanel implements Observer{
 			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
+		
+			
+			shortestPathJRB.setEnabled(true);
+			fastestPathJRB.setEnabled(true);
+			lowestGasConsumptionJRB.setEnabled(true);
+			highestGasConsumptionJRB.setEnabled(true);
+
+			
+			
+			switch (model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getSimulationOption()){
+			
+			case SHORTEST_PATH:	
+				shortestPathJRB.setSelected(true);
+				break;
+			case FASTEST_PATH:	
+				fastestPathJRB.setSelected(true);
+				break;
+			case LOWEST_GAS_CONSUMPTION:	
+				lowestGasConsumptionJRB.setSelected(true);
+				break;
+			case HIGHEST_GAS_CONSUMPTION:	
+				highestGasConsumptionJRB.setSelected(true);
+				break;
+				
+				
+			}
+			
+		}else{
+			
+			shortestPathJRB.setEnabled(false);
+			fastestPathJRB.setEnabled(false);
+			lowestGasConsumptionJRB.setEnabled(false);
+			highestGasConsumptionJRB.setEnabled(false);
+
 		}
 //		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 //			

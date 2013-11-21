@@ -88,7 +88,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		switch (vehicle.getSimulationOption()) {
 		
-		case 1: //shortest path
+		case SHORTEST_PATH: 
 
 			for (Street s : streets) {
 				
@@ -113,8 +113,31 @@ public class SolverMapGraph implements Runnable, Observer{
 				}
 			}
 			
-			//TODO: string constats
-		case 2: // fastestpath
+		case FASTEST_PATH:
+			
+			for (Street s : streets) {
+				
+				if(s.isClosed()) {
+					continue;
+				}
+
+				// add the vertices
+				if (!swg.containsVertex(s.getStart())) {
+					swg.addVertex(s.getStart());
+				}
+				if (!swg.containsVertex(s.getEnd())) {
+					swg.addVertex(s.getEnd());
+				}
+
+				// add edges to create linking structure
+				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
+					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
+					swg.setEdgeWeight(dwg, s.getLenth()/s.getStreetType().getSpeedLimit());
+				}
+				
+			}
+		
+		case LOWEST_GAS_CONSUMPTION:
 			
 			for (Street s : streets) {
 				
