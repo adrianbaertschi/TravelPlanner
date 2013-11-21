@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import model.Car;
 import model.FleetEditorModel;
+import model.Vehicle;
 import view.FleetEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;
@@ -43,6 +44,7 @@ public class FleetEditorController implements Controller {
 		fleetEditorView.getNextFleetVehicleJB().addActionListener(new BtnNextFleetVehicle());
 		fleetEditorView.getPreviousFleetVehicleJB().addActionListener(new BtnPreviousFleetVehicle());
 		fleetEditorView.getSaveVehicleJB().addActionListener(new BtnSaveVehicleActionListener());
+		fleetEditorView.getDeleteVehicleJB().addActionListener(new BtnDeleteVehicleActionListener());
 		fleetEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		fleetEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
 		fleetEditorView.getAddVehicleJB().addActionListener(new BtnAddVehicle());
@@ -148,7 +150,15 @@ public class FleetEditorController implements Controller {
 		}
 		
 	}
-	
+	class BtnDeleteVehicleActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			fleetEditorModel.deleteVehicle();
+
+		}
+		
+	}
 	class BtnLoadFleetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {

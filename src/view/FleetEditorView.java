@@ -74,6 +74,7 @@ public class FleetEditorView extends JPanel implements Observer {
 	private Float[] vehicleGasUsage;
 
 	private JButton saveVehicleJB;
+	private JButton deleteVehicleJB;
 	
 	//add vehicle 
 	private JPanel addVehicleArea;
@@ -236,6 +237,13 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		saveVehicleJB = new JButton("Save Vehicle");
 		saveVehicleJB.setBounds(75, 340, 100, 30);
+		saveVehicleJB.setEnabled(false);;
+
+		deleteVehicleJB = new JButton("Delete Vehicle");
+		deleteVehicleJB.setBounds(185, 340, 100, 30);
+		deleteVehicleJB.setEnabled(false);;
+
+		
 		
 		fleetDefinitionOptionsJP.add(vehicleNameJL);
 		fleetDefinitionOptionsJP.add(vehicleNameJTF);
@@ -251,6 +259,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetDefinitionOptionsJP.add(vehicleGasUsageHighJCB);
 
 		fleetDefinitionOptionsJP.add(saveVehicleJB);
+		fleetDefinitionOptionsJP.add(deleteVehicleJB);
 		
 		fleetDefinitionAreJP.add(fleetDefinitionTitleJP);
 		fleetDefinitionAreJP.add(fleetDefinitionOptionsJP);
@@ -358,7 +367,10 @@ public class FleetEditorView extends JPanel implements Observer {
 		//enable user input
 		if(fleetEditorModel.getVehicles().size() > 0){
 			
+			saveVehicleJB.setEnabled(true);
+			deleteVehicleJB.setEnabled(true);
 			enableUserInput();
+
 			if(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()) instanceof Car){
 				
 				Car c = (Car) fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
@@ -370,6 +382,12 @@ public class FleetEditorView extends JPanel implements Observer {
 				vehicleGasUsageHighJCB.setSelectedItem(new Float(c.getGasConsumptionHigh()));
 				
 			}
+			
+		}else{
+			
+			saveVehicleJB.setEnabled(false);
+			deleteVehicleJB.setEnabled(false);
+		
 			
 		}
 		
@@ -415,6 +433,8 @@ public class FleetEditorView extends JPanel implements Observer {
 				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
 				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
 			}
+			
+			fleetPreviousVehicleJL.setIcon(null);
 
 			
 		}else if(fleetEditorModel.getVehicles().size() > 0){
@@ -422,7 +442,16 @@ public class FleetEditorView extends JPanel implements Observer {
 			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
 			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(250, 250,Image.SCALE_DEFAULT));
 			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
+			
+			fleetNextVehicleJL.setIcon(null);
+			fleetPreviousVehicleJL.setIcon(null);
 
+		}else{
+			
+			fleetCurrentVehicleJL.setIcon(null);
+			fleetNextVehicleJL.setIcon(null);
+			fleetPreviousVehicleJL.setIcon(null);
+			
 		}
 		
 		
@@ -663,6 +692,20 @@ public class FleetEditorView extends JPanel implements Observer {
 	 */
 	public void setVehicleGasUsageHighJCB(JComboBox<Float> vehicleGasUsageHighJCB) {
 		this.vehicleGasUsageHighJCB = vehicleGasUsageHighJCB;
+	}
+
+	/**
+	 * @return the deleteVehicleJB
+	 */
+	public JButton getDeleteVehicleJB() {
+		return deleteVehicleJB;
+	}
+
+	/**
+	 * @param deleteVehicleJB the deleteVehicleJB to set
+	 */
+	public void setDeleteVehicleJB(JButton deleteVehicleJB) {
+		this.deleteVehicleJB = deleteVehicleJB;
 	}
 
 

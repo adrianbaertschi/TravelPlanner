@@ -213,4 +213,20 @@ private void createVehicleSelection() {
 		super.notifyObservers(this);
 		
 	}
+
+
+	public void deleteVehicle() {
+
+		this.getVehicles().remove(getVehiclePos());
+	
+		if(vehicles.size() > 0){
+			decreaseVehiclePos();
+
+		}
+		super.setChanged();
+		super.notifyObservers(this);
+
+
+	}
+
 }

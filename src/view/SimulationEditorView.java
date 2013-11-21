@@ -49,6 +49,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JRadioButton fastestPathJRB;
 	private JRadioButton shortestPathJRB;
+	private JRadioButton lowestGasConsumptionJRB;
+	private JRadioButton highestGasConsumptionJRB;
 	
 	private ButtonGroup vehicleOptionBG;
 	
@@ -210,17 +212,31 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		
 		fastestPathJRB = new JRadioButton("fastest path");
-		fastestPathJRB.setBounds(10,10,100,30);
+		fastestPathJRB.setBounds(10,10,200,30);
 		shortestPathJRB = new JRadioButton("shortest path");
-		shortestPathJRB.setBounds(10,60,100,30);
+		shortestPathJRB.setBounds(10,50,200,30);
+		lowestGasConsumptionJRB = new JRadioButton("lowest gas consumption");
+		lowestGasConsumptionJRB.setBounds(10, 90, 200, 30);
+		highestGasConsumptionJRB = new JRadioButton("highest gas consumption");
+		highestGasConsumptionJRB.setBounds(10, 130, 200, 30);
 
 		vehicleOptionBG = new ButtonGroup();
 		vehicleOptionBG.add(fastestPathJRB);
 		vehicleOptionBG.add(shortestPathJRB);
+		vehicleOptionBG.add(lowestGasConsumptionJRB);
+		vehicleOptionBG.add(highestGasConsumptionJRB);
 
 		vehicleOptionsArea.add(fastestPathJRB);
 		vehicleOptionsArea.add(shortestPathJRB);
+		vehicleOptionsArea.add(lowestGasConsumptionJRB);
+		vehicleOptionsArea.add(highestGasConsumptionJRB);
 		
+		fastestPathJRB.setSelected(true);
+		fastestPathJRB.setEnabled(false);
+		shortestPathJRB.setEnabled(false);
+		lowestGasConsumptionJRB.setEnabled(false);
+		highestGasConsumptionJRB.setEnabled(false);
+
 		simulationOptionsArea = new JPanel();
 		simulationOptionsArea.setLayout(null);
 		simulationOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
