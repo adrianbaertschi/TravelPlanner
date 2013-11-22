@@ -188,8 +188,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	private Node shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg, Node currentPosition, Node endPosition){
 		
-		System.out.println("test");
-
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, currentPosition, endPosition);
 		//BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
 		//System.out.println(bfsp.getCost(endPosition));

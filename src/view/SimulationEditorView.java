@@ -351,7 +351,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			if(v.getStartKnot() != null){
 				
 				carII.paintIcon(this, g2d, v.getStartKnot().getX() - carII.getIconWidth()/2, v.getStartKnot().getY() - carII.getIconHeight()/2);
-			
+				
 			}
 			if(v.getFinishKnot() != null){
 				carFinishII = new ImageIcon(v.getVehicleTypes().getUrlFinish());
@@ -453,9 +453,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 * @param inSimulation the inSimulation to set
 	 */
 	public void setInSimulation(boolean inSimulation) {
-		this.inSimulation = inSimulation;
-		this.vehicleArea.setVisible(!inSimulation);
-		this.disruptionPanel.setVisible(inSimulation);
+//		this.inSimulation = inSimulation;
+//		this.vehicleArea.setVisible(!inSimulation);
+//		this.disruptionPanel.setVisible(inSimulation);
 	}
 
 	/**
