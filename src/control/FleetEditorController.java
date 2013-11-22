@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 
 import model.Car;
 import model.FleetEditorModel;
-import model.Vehicle;
 import view.FleetEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;
