@@ -13,6 +13,7 @@ import java.util.List;
 
 import model.Node;
 import model.SimulationEditorModel;
+import model.SimulationOption;
 import model.SolverMapGraph;
 import model.Street;
 import model.UserDisruption;
@@ -290,7 +291,7 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(1);;
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.SHORTEST_PATH);;
 			simulationEditorModel.changed(null);
 		}
 	}
@@ -298,7 +299,7 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(2);;
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.FASTEST_PATH);;
 			simulationEditorModel.changed(null);
 		}
 	}	

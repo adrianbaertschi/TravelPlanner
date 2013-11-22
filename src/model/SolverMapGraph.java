@@ -99,7 +99,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		switch (vehicle.getSimulationOption()) {
 		
-		case 1: //shortest path
+		case SHORTEST_PATH: 
 
 			for (Street s : streets) {
 
@@ -118,8 +118,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 			}
 			
-			//TODO: string constats
-		case 2: // fastestpath
+		case FASTEST_PATH:
 			
 			for (Street s : streets) {
 				
@@ -139,6 +138,51 @@ public class SolverMapGraph implements Runnable, Observer{
 				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
 					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
 					swg.setEdgeWeight(dwg, s.getLenth()/s.getStreetType().getSpeedLimit());
+				}
+				
+			}
+		
+		case LOWEST_GAS_CONSUMPTION:
+			
+			for (Street s : streets) {
+				
+				if(s.isClosed()) {
+					continue;
+				}
+
+				// add the vertices
+				if (!swg.containsVertex(s.getStart())) {
+					swg.addVertex(s.getStart());
+				}
+				if (!swg.containsVertex(s.getEnd())) {
+					swg.addVertex(s.getEnd());
+				}
+
+				//TODO: if car und andere fahrzeugtypen unterscheiden
+				Car c = (Car) vehicle;
+				// add edges to create linking structure
+				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
+					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
+					
+					switch (s.getStreetType()){
+					
+					case QUARTIER:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
+						break;
+					case INNERORTS:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
+						break;
+					case AUSSERORTS:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
+						break;
+					case AUTOSTRASSE:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
+						break;
+					case AUTOBAHN:						
+						swg.setEdgeWeight(dwg, c.getGasConsumptionHigh()/100 *s.getLenth());
+						break;
+					
+					}
 				}
 				
 			}

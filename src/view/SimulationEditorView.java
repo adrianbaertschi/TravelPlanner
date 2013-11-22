@@ -24,6 +24,7 @@ import javax.swing.JRadioButton;
 import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
+import model.SimulationOption;
 import model.Street;
 import model.Vehicle;
 
@@ -49,6 +50,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JRadioButton fastestPathJRB;
 	private JRadioButton shortestPathJRB;
+	private JRadioButton lowestGasConsumptionJRB;
+	private JRadioButton highestGasConsumptionJRB;
 	
 	private ButtonGroup vehicleOptionBG;
 	
@@ -209,17 +212,25 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(simulationJB);
 		
 		
-		fastestPathJRB = new JRadioButton("fastest path");
-		fastestPathJRB.setBounds(10,10,100,30);
 		shortestPathJRB = new JRadioButton("shortest path");
-		shortestPathJRB.setBounds(10,60,100,30);
+		shortestPathJRB.setBounds(10,10,200,30);
+		fastestPathJRB = new JRadioButton("fastest path");
+		fastestPathJRB.setBounds(10,50,200,30);
+		lowestGasConsumptionJRB = new JRadioButton("lowest gas consumption");
+		lowestGasConsumptionJRB.setBounds(10, 90, 200, 30);
+		highestGasConsumptionJRB = new JRadioButton("highest gas consumption");
+		highestGasConsumptionJRB.setBounds(10, 130, 200, 30);
 
 		vehicleOptionBG = new ButtonGroup();
 		vehicleOptionBG.add(fastestPathJRB);
 		vehicleOptionBG.add(shortestPathJRB);
+		vehicleOptionBG.add(lowestGasConsumptionJRB);
+		vehicleOptionBG.add(highestGasConsumptionJRB);
 
 		vehicleOptionsArea.add(fastestPathJRB);
 		vehicleOptionsArea.add(shortestPathJRB);
+		vehicleOptionsArea.add(lowestGasConsumptionJRB);
+		vehicleOptionsArea.add(highestGasConsumptionJRB);
 		
 		simulationOptionsArea = new JPanel();
 		simulationOptionsArea.setLayout(null);
@@ -283,6 +294,40 @@ public class SimulationEditorView extends JPanel implements Observer{
 			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
+		
+			
+			shortestPathJRB.setEnabled(true);
+			fastestPathJRB.setEnabled(true);
+			lowestGasConsumptionJRB.setEnabled(true);
+			highestGasConsumptionJRB.setEnabled(false);
+
+			
+			
+			switch (model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getSimulationOption()){
+			
+			case SHORTEST_PATH:	
+				shortestPathJRB.setSelected(true);
+				break;
+			case FASTEST_PATH:	
+				fastestPathJRB.setSelected(true);
+				break;
+			case LOWEST_GAS_CONSUMPTION:	
+				lowestGasConsumptionJRB.setSelected(true);
+				break;
+			case HIGHEST_GAS_CONSUMPTION:	
+				highestGasConsumptionJRB.setSelected(true);
+				break;
+				
+				
+			}
+			
+		}else{
+			
+			shortestPathJRB.setEnabled(false);
+			fastestPathJRB.setEnabled(false);
+			lowestGasConsumptionJRB.setEnabled(false);
+			highestGasConsumptionJRB.setEnabled(false);
+
 		}
 //		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 //			
@@ -302,7 +347,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
 			
 			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
-			carII.setImage(carII.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
+			carII.setImage(carII.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
 			if(v.getStartKnot() != null){
 				
 				carII.paintIcon(this, g2d, v.getStartKnot().getX() - carII.getIconWidth()/2, v.getStartKnot().getY() - carII.getIconHeight()/2);
@@ -310,7 +355,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			}
 			if(v.getFinishKnot() != null){
 				carFinishII = new ImageIcon(v.getVehicleTypes().getUrlFinish());
-				carFinishII.setImage(carFinishII.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
+				carFinishII.setImage(carFinishII.getImage().getScaledInstance(35, 25,Image.SCALE_DEFAULT));
 
 				carFinishII.paintIcon(this, g2d, v.getFinishKnot().getX() - carFinishII.getIconWidth()/2, v.getFinishKnot().getY() - carFinishII.getIconHeight()/2);
 			
@@ -319,7 +364,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
 				
-				carII.setImage(carII.getImage().getScaledInstance(20, 20,Image.SCALE_DEFAULT));
+				carII.setImage(carII.getImage().getScaledInstance(15, 15,Image.SCALE_DEFAULT));
 				carII.paintIcon(this, g2d, v.getCurrentPosition().getX() - carII.getIconWidth()/2, v.getCurrentPosition().getY() - carII.getIconHeight()/2);			
 		
 			}

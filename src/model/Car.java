@@ -13,27 +13,56 @@ import javax.persistence.Entity;
 @Entity
 public class Car extends Vehicle {
 	
-	private int gasConsumption;
+	private float gasConsumptionLow;
+	private float gasConsumptionMedium;
+	private float gasConsumptionHigh;
 	
 	public Car(){
 		
 	}
-	
-	/**
-	 * @return the gasConsumption
-	 */
-	public int getGasConsumption() {
-		return gasConsumption;
-	}
-
 
 	/**
-	 * @param gasConsumption the gasConsumption to set
+	 * @return the gasConsumptionLow
 	 */
-	public void setGasConsumption(int gasConsumption) {
-		this.gasConsumption = gasConsumption;
+	public float getGasConsumptionLow() {
+		return gasConsumptionLow;
 	}
-	
+
+	/**
+	 * @param gasConsumptionLow the gasConsumptionLow to set
+	 */
+	public void setGasConsumptionLow(float gasConsumptionLow) {
+		this.gasConsumptionLow = gasConsumptionLow;
+	}
+
+	/**
+	 * @return the gasConsumptionMedium
+	 */
+	public float getGasConsumptionMedium() {
+		return gasConsumptionMedium;
+	}
+
+	/**
+	 * @param gasConsumptionMedium the gasConsumptionMedium to set
+	 */
+	public void setGasConsumptionMedium(float gasConsumptionMedium) {
+		this.gasConsumptionMedium = gasConsumptionMedium;
+	}
+
+	/**
+	 * @return the gasConsumptionHigh
+	 */
+	public float getGasConsumptionHigh() {
+		return gasConsumptionHigh;
+	}
+
+	/**
+	 * @param gasConsumptionHigh the gasConsumptionHigh to set
+	 */
+	public void setGasConsumptionHigh(float gasConsumptionHigh) {
+		this.gasConsumptionHigh = gasConsumptionHigh;
+	}
+
 	
 
 }

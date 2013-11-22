@@ -9,16 +9,20 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Car;
 import model.FleetEditorModel;
 
 public class FleetEditorView extends JPanel implements Observer {
@@ -50,10 +54,27 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JLabel fleetDefinitionTitleJL;
 	
 	private JPanel fleetDefinitionOptionsJP;
+	
+	private JLabel vehicleIDJL;
+	private JTextField vehicleIDJTF;
+
 	private JLabel vehicleNameJL;
 	private JTextField vehicleNameJTF;
-	private JLabel maxSpeedJL;
 	
+	private JLabel vehicleSpeedJL;
+	private JComboBox<Integer> vehicleSpeedJCB;
+	private Integer[] vehicleSpeed;
+
+	private JLabel vehicleGasUsageLowJL;
+	private JComboBox<Float> vehicleGasUsageLowJCB;
+	private JLabel vehicleGasUsageMediumJL;
+	private JComboBox<Float> vehicleGasUsageMediumJCB;
+	private JLabel vehicleGasUsageHighJL;
+	private JComboBox<Float> vehicleGasUsageHighJCB;
+	private Float[] vehicleGasUsage;
+
+	private JButton saveVehicleJB;
+	private JButton deleteVehicleJB;
 	
 	//add vehicle 
 	private JPanel addVehicleArea;
@@ -168,20 +189,81 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		fleetDefinitionOptionsJP = new JPanel();
 		fleetDefinitionOptionsJP.setBounds(10, 100, 570, 690);
+		fleetDefinitionOptionsJP.setLayout(null);
 		
 		vehicleNameJL = new JLabel("Vehicle - Name");
-		vehicleNameJL.setPreferredSize(new Dimension(150, 30));
+		vehicleNameJL.setBounds(75, 50, 200, 30);
 		vehicleNameJTF = new JTextField();
-		vehicleNameJTF.setPreferredSize(new Dimension(150, 30));
+		vehicleNameJTF.setBounds(285, 50, 200, 30);
 		vehicleNameJTF.setEnabled(false);
+		
+		vehicleSpeed = new Integer[350];
+		
+		for(int i = 1; i < 350; i++){
+			vehicleSpeed[i] = new Integer(i);
+		}
+		
+		vehicleSpeedJL = new JLabel("Vehicle - Speed");
+		vehicleSpeedJL.setBounds(75, 100, 200, 30);
+		vehicleSpeedJCB = new JComboBox<Integer>(vehicleSpeed);
+		vehicleSpeedJCB.setBounds(285, 100, 200, 30);
+		vehicleSpeedJCB.setSelectedIndex(120);
+	
+		vehicleGasUsage = new Float[290];
+		Float f = new Float(1.0);
+		for(int i = 1; i <= 290; i++){
+			
+			vehicleGasUsage[i-1] = new Float(f);
+			f= new Float (Math.rint((f.floatValue()+0.1)*10)/10);
+			
+		}
+
+		vehicleGasUsageLowJL = new JLabel("Gas usage urban highway");
+		vehicleGasUsageMediumJL = new JLabel("Gas usage rural highway");
+		vehicleGasUsageHighJL = new JLabel("Gas usage highway");
+		vehicleGasUsageLowJL.setBounds(75, 150, 200, 30);
+		vehicleGasUsageMediumJL.setBounds(75, 200, 200, 30);
+		vehicleGasUsageHighJL.setBounds(75, 250, 200, 30);
+		
+		vehicleGasUsageLowJCB = new JComboBox<Float>(vehicleGasUsage);
+		vehicleGasUsageLowJCB.setBounds(285, 150, 200, 30);
+		vehicleGasUsageLowJCB.setSelectedItem(new Float(7.2));
+		vehicleGasUsageMediumJCB = new JComboBox<Float>(vehicleGasUsage); 
+		vehicleGasUsageMediumJCB.setBounds(285, 200, 200, 30);
+		vehicleGasUsageMediumJCB.setSelectedItem(new Float(5.3));
+		vehicleGasUsageHighJCB = new JComboBox<Float>(vehicleGasUsage); 
+		vehicleGasUsageHighJCB.setBounds(285, 250, 200, 30);
+		vehicleGasUsageHighJCB.setSelectedItem(new Float(4.8));
+
+		saveVehicleJB = new JButton("Save Vehicle");
+		saveVehicleJB.setBounds(75, 340, 100, 30);
+		saveVehicleJB.setEnabled(false);;
+
+		deleteVehicleJB = new JButton("Delete Vehicle");
+		deleteVehicleJB.setBounds(185, 340, 100, 30);
+		deleteVehicleJB.setEnabled(false);;
+
+		
 		
 		fleetDefinitionOptionsJP.add(vehicleNameJL);
 		fleetDefinitionOptionsJP.add(vehicleNameJTF);
+		fleetDefinitionOptionsJP.add(vehicleSpeedJL);
+		fleetDefinitionOptionsJP.add(vehicleSpeedJCB);
+	
 		
+		fleetDefinitionOptionsJP.add(vehicleGasUsageLowJL);
+		fleetDefinitionOptionsJP.add(vehicleGasUsageLowJCB);
+		fleetDefinitionOptionsJP.add(vehicleGasUsageMediumJL);
+		fleetDefinitionOptionsJP.add(vehicleGasUsageMediumJCB);
+		fleetDefinitionOptionsJP.add(vehicleGasUsageHighJL);
+		fleetDefinitionOptionsJP.add(vehicleGasUsageHighJCB);
+
+		fleetDefinitionOptionsJP.add(saveVehicleJB);
+		fleetDefinitionOptionsJP.add(deleteVehicleJB);
 		
 		fleetDefinitionAreJP.add(fleetDefinitionTitleJP);
 		fleetDefinitionAreJP.add(fleetDefinitionOptionsJP);
-		
+
 		
 		// Vehicle Area
 		addVehicleArea = new JPanel();
@@ -285,7 +367,27 @@ public class FleetEditorView extends JPanel implements Observer {
 		//enable user input
 		if(fleetEditorModel.getVehicles().size() > 0){
 			
+			saveVehicleJB.setEnabled(true);
+			deleteVehicleJB.setEnabled(true);
 			enableUserInput();
+
+			if(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()) instanceof Car){
+				
+				Car c = (Car) fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
+				
+				vehicleNameJTF.setText(c.getName());
+				vehicleSpeedJCB.setSelectedItem(new Integer(c.getMaxSpeed()));
+				vehicleGasUsageLowJCB.setSelectedItem(new Float(c.getGasConsumptionLow()));
+				vehicleGasUsageMediumJCB.setSelectedItem(new Float(c.getGasConsumptionMedium()));
+				vehicleGasUsageHighJCB.setSelectedItem(new Float(c.getGasConsumptionHigh()));
+				
+			}
+			
+		}else{
+			
+			saveVehicleJB.setEnabled(false);
+			deleteVehicleJB.setEnabled(false);
+		
 			
 		}
 		
@@ -331,6 +433,8 @@ public class FleetEditorView extends JPanel implements Observer {
 				fleetNextVehicleII.setImage(fleetNextVehicleII.getImage().getScaledInstance(150, 150,Image.SCALE_DEFAULT));
 				fleetNextVehicleJL.setIcon(fleetNextVehicleII);
 			}
+			
+			fleetPreviousVehicleJL.setIcon(null);
 
 			
 		}else if(fleetEditorModel.getVehicles().size() > 0){
@@ -338,7 +442,16 @@ public class FleetEditorView extends JPanel implements Observer {
 			fleetCurrentVehicleII = new ImageIcon(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()).getVehicleTypes().getUrlVehicle());
 			fleetCurrentVehicleII.setImage(fleetCurrentVehicleII.getImage().getScaledInstance(250, 250,Image.SCALE_DEFAULT));
 			fleetCurrentVehicleJL.setIcon(fleetCurrentVehicleII);
+			
+			fleetNextVehicleJL.setIcon(null);
+			fleetPreviousVehicleJL.setIcon(null);
 
+		}else{
+			
+			fleetCurrentVehicleJL.setIcon(null);
+			fleetNextVehicleJL.setIcon(null);
+			fleetPreviousVehicleJL.setIcon(null);
+			
 		}
 		
 		
@@ -495,6 +608,106 @@ public class FleetEditorView extends JPanel implements Observer {
 	public void setDeleteCurrentVehcleJB(JButton deleteCurrentVehcleJB) {
 		this.deleteCurrentVehcleJB = deleteCurrentVehcleJB;
 	}
+
+	/**
+	 * @return the saveVehicleJB
+	 */
+	public JButton getSaveVehicleJB() {
+		return saveVehicleJB;
+	}
+
+	/**
+	 * @param saveVehicleJB the saveVehicleJB to set
+	 */
+	public void setSaveVehicleJB(JButton saveVehicleJB) {
+		this.saveVehicleJB = saveVehicleJB;
+	}
+
+	/**
+	 * @return the vehicleNameJTF
+	 */
+	public JTextField getVehicleNameJTF() {
+		return vehicleNameJTF;
+	}
+
+	/**
+	 * @param vehicleNameJTF the vehicleNameJTF to set
+	 */
+	public void setVehicleNameJTF(JTextField vehicleNameJTF) {
+		this.vehicleNameJTF = vehicleNameJTF;
+	}
+
+	/**
+	 * @return the vehicleSpeedJCB
+	 */
+	public JComboBox<Integer> getVehicleSpeedJCB() {
+		return vehicleSpeedJCB;
+	}
+
+	/**
+	 * @param vehicleSpeedJCB the vehicleSpeedJCB to set
+	 */
+	public void setVehicleSpeedJCB(JComboBox<Integer> vehicleSpeedJCB) {
+		this.vehicleSpeedJCB = vehicleSpeedJCB;
+	}
+
+	/**
+	 * @return the vehicleGasUsageLowJCB
+	 */
+	public JComboBox<Float> getVehicleGasUsageLowJCB() {
+		return vehicleGasUsageLowJCB;
+	}
+
+	/**
+	 * @param vehicleGasUsageLowJCB the vehicleGasUsageLowJCB to set
+	 */
+	public void setVehicleGasUsageLowJCB(JComboBox<Float> vehicleGasUsageLowJCB) {
+		this.vehicleGasUsageLowJCB = vehicleGasUsageLowJCB;
+	}
+
+	/**
+	 * @return the vehicleGasUsageMediumJCB
+	 */
+	public JComboBox<Float> getVehicleGasUsageMediumJCB() {
+		return vehicleGasUsageMediumJCB;
+	}
+
+	/**
+	 * @param vehicleGasUsageMediumJCB the vehicleGasUsageMediumJCB to set
+	 */
+	public void setVehicleGasUsageMediumJCB(
+			JComboBox<Float> vehicleGasUsageMediumJCB) {
+		this.vehicleGasUsageMediumJCB = vehicleGasUsageMediumJCB;
+	}
+
+	/**
+	 * @return the vehicleGasUsageHighJCB
+	 */
+	public JComboBox<Float> getVehicleGasUsageHighJCB() {
+		return vehicleGasUsageHighJCB;
+	}
+
+	/**
+	 * @param vehicleGasUsageHighJCB the vehicleGasUsageHighJCB to set
+	 */
+	public void setVehicleGasUsageHighJCB(JComboBox<Float> vehicleGasUsageHighJCB) {
+		this.vehicleGasUsageHighJCB = vehicleGasUsageHighJCB;
+	}
+
+	/**
+	 * @return the deleteVehicleJB
+	 */
+	public JButton getDeleteVehicleJB() {
+		return deleteVehicleJB;
+	}
+
+	/**
+	 * @param deleteVehicleJB the deleteVehicleJB to set
+	 */
+	public void setDeleteVehicleJB(JButton deleteVehicleJB) {
+		this.deleteVehicleJB = deleteVehicleJB;
+	}
+
 
 	
 }
