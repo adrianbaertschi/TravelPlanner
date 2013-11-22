@@ -90,7 +90,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	
-	private SimpleWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
+	protected SimpleWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
 			
 		SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Node, DefaultWeightedEdge>(
 				DefaultWeightedEdge.class);
@@ -225,7 +225,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		return null;
 	}
 	
-	private Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg) {
+	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg) {
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
 		
 		
