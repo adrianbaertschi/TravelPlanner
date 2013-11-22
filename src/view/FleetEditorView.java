@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,7 +17,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -55,9 +53,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	
 	private JPanel fleetDefinitionOptionsJP;
 	
-	private JLabel vehicleIDJL;
-	private JTextField vehicleIDJTF;
-
 	private JLabel vehicleNameJL;
 	private JTextField vehicleNameJTF;
 	
@@ -96,8 +91,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JButton resetCurrentVehicleJB;
 	private JButton deleteCurrentVehcleJB;
 
-
-	private GridBagConstraints gbc;	
 
 	public FleetEditorView() {
 
