@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -32,9 +31,6 @@ import model.Vehicle;
  *
  */
 public class SimulationEditorView extends JPanel implements Observer{
-
-	private static final Color NODE_COLOR = 	Color.DARK_GRAY;
-	private static final Color SELECTED_COLOR = Color.CYAN;
 
 	private SimulationEditorModel model = new SimulationEditorModel();
 	
@@ -246,46 +242,18 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
-		if(inSimulation){
-			
-//			vehicleArea.add(simulationOptionsArea);
-			
-		} else {
-			
-		}
-		
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		for(Street street : model.getMapEditorModel().getStreets()) {
-			
-			
-			g2d.setColor(Color.DARK_GRAY);
-			
-			g2d.fillOval(street.getStart().getX() -5, street.getStart().getY() -5, 10, 10);
-			g2d.fillOval(street.getEnd().getX() -5, street.getEnd().getY() -5, 10, 10);
-			
-			if(model.getMapEditorModel().getSelectedKnot() != null) {
-				g2d.setColor(Color.CYAN);
-				g2d.fillOval(model.getMapEditorModel().getSelectedKnot().getX() -5, model.getMapEditorModel().getSelectedKnot().getY() -5, 10, 10);
-			}
+		DrawingUtil.drawMap(g2d, model.getMapEditorModel());
 
-			
-			// Strassen
-			if(street == model.getMapEditorModel().getSelectedStreet()) {
-				g2d.setColor(SELECTED_COLOR);
-			} else if(street.isClosed()) {
-				g2d.setColor(Color.GREEN);
-			} else {
-				g2d.setColor(street.getStreetType().getColor());
+		for(Street street : model.getMapEditorModel().getStreets()) {
+			if(street.isClosed()) {
+				g2d.drawString("X", street.getMiddle().getX(), street.getMiddle().getY());
+				g2d.setColor(new Color(204, 204, 204));
+				g2d.draw(DrawingUtil.convertStreetToLine(street));
 			}
-			g2d.setStroke(new BasicStroke(3));
-			g2d.drawLine(street.getStart().getX(), street.getStart().getY(), street.getEnd().getX(), street.getEnd().getY());
-		
-		
-		
-		}		
-		
+		}
 		
 		// display selected car in vehicle area
 		if(model.getFleetEditorModel().getVehicles().size() > 0){
@@ -327,19 +295,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 			highestGasConsumptionJRB.setEnabled(false);
 
 		}
-//		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
-//			
-//			if(v.getIsSelected()){
-//				
-//				vehicleII = new ImageIcon(v.getImageURL());
-//
-//				vehicleII.setImage(vehicleII.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-//
-//				vehicleJL = new JLabel(vehicleII, SwingConstants.CENTER);
-//				
-//			}
-//			
-//		}
 		
 		// display cars on mapArea
 		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
@@ -368,11 +323,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 			}
 
 		}
-		
-
-
-		
-
 	}
 	
 	public void update(Observable model, Object value) {

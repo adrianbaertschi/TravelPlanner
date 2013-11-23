@@ -242,7 +242,13 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
 		
+		
+		
 		Queue<Node> nodes = new ArrayDeque<Node>();
+
+		if(dsp.getPathEdgeList() == null) {
+			return nodes;
+		}
 		
 		nodes.add(vehicle.getCurrentKnot());
 		

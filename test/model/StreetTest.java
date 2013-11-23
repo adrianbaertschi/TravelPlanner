@@ -76,4 +76,17 @@ public class StreetTest {
 		assertEquals(0, s3.getIncline(), 0);
 	}
 	
+	@Test
+	public void testGetMiddle() {
+		Node n1 = new Node(100, 100);
+		Node n2 = new Node(200, 200);
+		
+		Street s1 = new Street(n1, n2);
+		assertEquals(new Node(150, 150), s1.getMiddle());
+		
+		Street s2 = new Street(n2, n1);
+		assertEquals(new Node(150, 150), s2.getMiddle());
+		
+	}
+	
 }

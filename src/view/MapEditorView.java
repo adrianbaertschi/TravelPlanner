@@ -1,16 +1,8 @@
 package view;
 
-import static common.Constants.NODE_HEIGHT;
-import static common.Constants.NODE_RADIUS;
-import static common.Constants.NODE_WIDTH;
-
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Observable;
@@ -154,38 +146,7 @@ public class MapEditorView extends JPanel implements Observer{
 	private void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
-		// antialiasing ON
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		for(Street street : model.getStreets()) {
-			
-			// Strassen
-			if(street == model.getSelectedStreet()) {
-				g2d.setColor(SELECTED_COLOR);
-			} else {
-				g2d.setColor(street.getStreetType().getColor());
-			}
-			g2d.setStroke(new BasicStroke(3));
-			g2d.draw(convertStreetToLine(street));
-			
-			
-			// Knoten
-			g2d.setColor(NODE_COLOR);
-			g2d.fill(convertNodeToEllipse(street.getStart()));
-			g2d.fill(convertNodeToEllipse(street.getEnd()));
-		}
-		
-		if(model.getSelectedKnot() != null) {
-			g2d.setColor(SELECTED_COLOR);
-			g2d.fill(convertNodeToEllipse(model.getSelectedKnot()));
-		}
-	}
-	
-	private Ellipse2D.Float convertNodeToEllipse(Node node) {
-		return new Ellipse2D.Float(node.getX() - NODE_RADIUS, node.getY() - NODE_RADIUS, NODE_WIDTH, NODE_HEIGHT);
-	}
-	private Line2D.Float convertStreetToLine(Street s) {
-		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
+		DrawingUtil.drawMap(g2d, model);
 	}
 	
 	private void displayNodeInfo(Node selectedNode) {

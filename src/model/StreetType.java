@@ -4,11 +4,11 @@ import java.awt.Color;
 
 public enum StreetType {
 	
-	QUARTIER(30, Color.LIGHT_GRAY),
-    INNERORTS(50, Color.GRAY),
-    AUSSERORTS(80, Color.BLACK), 
-    AUTOSTRASSE(100, Color.ORANGE),
-    AUTOBAHN(120, Color.RED);
+	QUARTIER(30, new Color(38,4,38)),
+    INNERORTS(50, new Color (111,31,255)),
+    AUSSERORTS(80, new Color(255,170,0)), 
+    AUTOSTRASSE(100, new Color (0,130,76)),
+    AUTOBAHN(120, new Color(174,14,0));
 
     private Integer speedLimit;
     private Color color;

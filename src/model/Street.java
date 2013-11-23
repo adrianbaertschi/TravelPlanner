@@ -153,4 +153,13 @@ public class Street {
 			
 			return (int) Math.sqrt(a*a + b*b);
 	}
+	
+	public Node getMiddle() {
+		int x = (start.getX() + end.getX()) / 2;
+		int y = (start.getY() + end.getY()) / 2;
+		
+		Node middle = new Node(x, y);
+		
+		return middle;
+	}
 }
