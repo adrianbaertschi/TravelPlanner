@@ -24,7 +24,6 @@ import javax.swing.JRadioButton;
 import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
-import model.SimulationOption;
 import model.Street;
 import model.Vehicle;
 
@@ -57,8 +56,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JLabel streetInfo;
 	private JLabel vehicleJL;
-	
-	private ImageIcon finishII;
 	
 	private JButton startJB;
 	private JButton finishJB;		
@@ -198,11 +195,12 @@ public class SimulationEditorView extends JPanel implements Observer{
 		simulationJB = new JButton("Simulation");
 		simulationJB.setBounds(0, 440, 100, 30);
 
-		vehicleArea.add(simulationJB);
+//		vehicleArea.add(simulationJB);
 		
 		disruptionPanel = new JPanel();
 		disruptionPanel.setBorder(BorderFactory.createTitledBorder("Close"));
-		disruptionPanel.setBounds(920, 550, 250, 250); //920, 10, 1200-910-40, 520);
+		disruptionPanel.setBounds(920, 550, 250, 250);
+		disruptionPanel.setVisible(false);
 		this.add(disruptionPanel);
 		
 		closeStreetJB = new JButton("Close street");
@@ -454,8 +452,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 */
 	public void setInSimulation(boolean inSimulation) {
 //		this.inSimulation = inSimulation;
-//		this.vehicleArea.setVisible(!inSimulation);
-//		this.disruptionPanel.setVisible(inSimulation);
+		this.vehicleArea.setVisible(!inSimulation);
+		this.disruptionPanel.setVisible(inSimulation);
 	}
 
 	/**

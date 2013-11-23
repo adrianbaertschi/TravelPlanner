@@ -218,31 +218,26 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
+			solver.clear();
+
 			simulationEditorView.setInSimulation(true);
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
-				
+
 				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
-				
+
 				simulationEditorModel.addObserver(s);
 				solver.add(s);
 				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
 				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
 			}
-			
+
 			for(SolverMapGraph smg: solver) {
-				
+
 				if(smg.getVehicle().getStartKnot() != null && smg.getVehicle().getFinishKnot() != null){
-					
-//					SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
-//					v.setThread(new Thread(new SolverMapGraph(simulationEditorModel)));
+
 					smg.getVehicle().getThread().start();
-//					new SolverMapGraph(simulationEditorModel).startSimulation();;
 				}
-				
 			}
-			
-			
-		
 		}
 	}
 

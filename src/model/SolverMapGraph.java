@@ -31,6 +31,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	private void startSimulation() {
 			
 			//TODO: abfangen falls es keinen k�zesten pfad gibt
+		
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			int speedLimit = 0;
 			
@@ -42,7 +43,6 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 							
 				//getting the nextKnot from Dijkstra
-//				vehicle.setNextKnot(shortestPathDijkstra(vehicle, swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot()));
 				vehicle.setNextKnot(pathForVehicle.poll());
 				
 				for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
@@ -52,18 +52,21 @@ public class SolverMapGraph implements Runnable, Observer{
 					}
 				}
 				
-					driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), speedLimit);
+					try {
+						driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), speedLimit);
+					} catch (InterruptedException e) {
+						return;
+					}
 					vehicle.setCurrentKnot(vehicle.getNextKnot());
-//				}
 			}
-
+			
 			//reinitialize the currentKnot so a new simulation can be performed
 			vehicle.setCurrentKnot(vehicle.getStartKnot());
 
 		
 	}
 	
-	private void driveFromTo(Node from, Node to, int speedLimit) {
+	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
 		
 		
 		// TODO: get speed from car
@@ -82,7 +85,7 @@ public class SolverMapGraph implements Runnable, Observer{
 				vehicle.getThread().sleep(5 * (140-speedLimit)/10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				return;
+				throw e;
 			}
 			updateModelSync();
 
@@ -118,6 +121,8 @@ public class SolverMapGraph implements Runnable, Observer{
 
 			}
 			
+			break;
+			
 		case FASTEST_PATH:
 			
 			for (Street s : streets) {
@@ -141,6 +146,8 @@ public class SolverMapGraph implements Runnable, Observer{
 				}
 				
 			}
+			
+			break;
 		
 		case LOWEST_GAS_CONSUMPTION:
 			
@@ -187,7 +194,13 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 			}
 			
+			break;
+			
+		default:
+			break;
+			
 		}
+		
 		return swg;
 	}
 
@@ -226,8 +239,8 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg) {
-		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
 		
+		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
 		
 		Queue<Node> nodes = new ArrayDeque<Node>();
 		
@@ -236,7 +249,9 @@ public class SolverMapGraph implements Runnable, Observer{
 		for(DefaultWeightedEdge egde : dsp.getPathEdgeList()) {
 
 			Node source = swg.getEdgeSource(egde);
-			nodes.add(source);
+			if(!nodes.contains(source)) {
+				nodes.add(source);
+			}
 
 			Node target = swg.getEdgeTarget(egde);
 			if(!nodes.contains(target)) {
@@ -277,12 +292,30 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void recalculate() {
 		this.vehicle.getThread().interrupt();
-//		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
+		
+		Node temp = vehicle.getCurrentPosition();
+		Street s1 = new Street(temp, vehicle.getCurrentKnot());
+		Street s2 = new Street(temp, vehicle.getNextKnot());
+		
+		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
+			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
+				s1.setStreetType(s.getStreetType());
+				s2.setStreetType(s.getStreetType());
+			}
+		}
+		
+		simulationEditorModel.getMapEditorModel().addStreet(s1);
+		simulationEditorModel.getMapEditorModel().addStreet(s2);
+		
+		//TODO: height etc
+		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
 //		this.vehicle.setCurrentKnot(vehicle.getCurrentPosition());
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
 		smg.setVehicle(vehicle);
 		this.vehicle.setThread(new Thread(smg));
 		this.getVehicle().getThread().start();
+
+		
 	}
 
 	public void update(Observable o, Object arg) {
