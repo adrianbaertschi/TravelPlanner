@@ -191,8 +191,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		simulationJB = new JButton("Simulation");
 		simulationJB.setBounds(0, 440, 100, 30);
 
-//		vehicleArea.add(simulationJB);
-		
 		disruptionPanel = new JPanel();
 		disruptionPanel.setBorder(BorderFactory.createTitledBorder("Close"));
 		disruptionPanel.setBounds(920, 550, 250, 250);
@@ -249,7 +247,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		for(Street street : model.getMapEditorModel().getStreets()) {
 			if(street.isClosed()) {
-				g2d.drawString("X", street.getMiddle().getX(), street.getMiddle().getY());
 				g2d.setColor(new Color(204, 204, 204));
 				g2d.draw(DrawingUtil.convertStreetToLine(street));
 			}

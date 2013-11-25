@@ -27,6 +27,10 @@ public class DrawingUtil {
 		
 		for(Street street : model.getStreets()) {
 			
+			if(street.isTemporary()) {
+				continue;
+			}
+			
 			// Strassen
 			if(street == model.getSelectedStreet()) {
 				g2d.setColor(SELECTED_COLOR);

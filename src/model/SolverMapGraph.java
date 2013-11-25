@@ -35,8 +35,8 @@ public class SolverMapGraph implements Runnable, Observer{
 			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			int speedLimit = 0;
 			
-//			System.out.println(getPathForVehicle(vehicle, swg));
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
+			
 			System.out.println(pathForVehicle);
 			
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
@@ -58,6 +58,7 @@ public class SolverMapGraph implements Runnable, Observer{
 						return;
 					}
 					vehicle.setCurrentKnot(vehicle.getNextKnot());
+					
 			}
 			
 			//reinitialize the currentKnot so a new simulation can be performed
@@ -84,7 +85,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			try {
 				vehicle.getThread().sleep(5 * (140-speedLimit)/10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				// Re-throw
 				throw e;
 			}
 			updateModelSync();
@@ -247,6 +248,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		Queue<Node> nodes = new ArrayDeque<Node>();
 
 		if(dsp.getPathEdgeList() == null) {
+			//TODO: no path exists
 			return nodes;
 		}
 		
@@ -301,7 +303,9 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		Node temp = vehicle.getCurrentPosition();
 		Street s1 = new Street(temp, vehicle.getCurrentKnot());
+		s1.setTemporary(true);
 		Street s2 = new Street(temp, vehicle.getNextKnot());
+		s2.setTemporary(true);
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
@@ -315,18 +319,17 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		//TODO: height etc
 		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
-//		this.vehicle.setCurrentKnot(vehicle.getCurrentPosition());
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
 		smg.setVehicle(vehicle);
 		this.vehicle.setThread(new Thread(smg));
 		this.getVehicle().getThread().start();
-
+		
 		
 	}
 
 	public void update(Observable o, Object arg) {
 		if(arg instanceof UserDisruption) {
-			System.out.println("recalc=======================================================");
+			System.out.println("recalculate route");
 			this.simulationEditorModel = (SimulationEditorModel) o;
 			recalculate();
 		}

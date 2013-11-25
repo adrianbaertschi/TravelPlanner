@@ -37,6 +37,9 @@ public class Street {
 	@Transient
 	private boolean isClosed = false;
 	
+	@Transient
+	private boolean isTemporary = false;
+	
 	public Street() {}
 	
 	public Street(Node start) {
@@ -161,5 +164,13 @@ public class Street {
 		Node middle = new Node(x, y);
 		
 		return middle;
+	}
+
+	public boolean isTemporary() {
+		return isTemporary;
+	}
+
+	public void setTemporary(boolean isTemporary) {
+		this.isTemporary = isTemporary;
 	}
 }
