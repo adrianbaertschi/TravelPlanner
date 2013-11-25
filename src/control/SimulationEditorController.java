@@ -53,6 +53,8 @@ public class SimulationEditorController {
 		simulationEditorView.getCloseStreetJB().addActionListener(new BtnCloseStreet());
 		simulationEditorView.getShortestPathJRB().addActionListener(new BtnShortestPath());
 		simulationEditorView.getFastestPathJRB().addActionListener(new BtnFastestPath());
+		simulationEditorView.getLowestGasConsumptionJRB().addActionListener(new RBtnLowestGasConsumption());
+		simulationEditorView.getDelayJCB().addActionListener(new JCBDelayListener());
 
 
 	}
@@ -290,11 +292,33 @@ public class SimulationEditorController {
 			simulationEditorModel.changed(null);
 		}
 	}
+	
 	class BtnFastestPath implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 
 			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.FASTEST_PATH);;
+			simulationEditorModel.changed(null);
+		}
+	}	
+	
+	class RBtnLowestGasConsumption implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.LOWEST_GAS_CONSUMPTION);;
+			simulationEditorModel.changed(null);
+		}
+	}	
+	
+	class JCBDelayListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			
+			Integer delay = (Integer) simulationEditorView.getDelayJCB().getSelectedItem();
+					
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setDelay(delay.intValue());;
 			simulationEditorModel.changed(null);
 		}
 	}	

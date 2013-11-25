@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -52,6 +53,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JLabel streetInfo;
 	private JLabel vehicleJL;
+	
+	private JLabel	delayJL;
+	private JComboBox<Integer> delayJCB;
+	private Integer[] delay;
+ 
 	
 	private JButton startJB;
 	private JButton finishJB;		
@@ -213,6 +219,19 @@ public class SimulationEditorView extends JPanel implements Observer{
 		highestGasConsumptionJRB = new JRadioButton("highest gas consumption");
 		highestGasConsumptionJRB.setBounds(10, 130, 200, 30);
 
+		delay = new Integer[60];
+		
+		for(int i = 0; i < 60; i++){
+			delay[i] = new Integer(i);
+		}
+
+		delayJL = new JLabel("Delay");
+		delayJL.setBounds(10, 170, 50, 30);
+		delayJCB = new JComboBox<Integer>(delay);
+		delayJCB.setBounds(60, 170, 50, 30);
+		delayJCB.setSelectedIndex(0);
+		
+		
 		vehicleOptionBG = new ButtonGroup();
 		vehicleOptionBG.add(fastestPathJRB);
 		vehicleOptionBG.add(shortestPathJRB);
@@ -223,6 +242,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(shortestPathJRB);
 		vehicleOptionsArea.add(lowestGasConsumptionJRB);
 		vehicleOptionsArea.add(highestGasConsumptionJRB);
+		vehicleOptionsArea.add(delayJL);
+		vehicleOptionsArea.add(delayJCB);
 		
 		simulationOptionsArea = new JPanel();
 		simulationOptionsArea.setLayout(null);
@@ -254,6 +275,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		// display selected car in vehicle area
 		if(model.getFleetEditorModel().getVehicles().size() > 0){
+			
 			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
@@ -281,8 +303,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 				highestGasConsumptionJRB.setSelected(true);
 				break;
 				
-				
 			}
+			
+			
+			delayJCB.setSelectedItem(new Integer(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getDelay()));
+
 			
 		}else{
 			
@@ -431,5 +456,48 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.shortestPathJRB = shortestPathJRB;
 	}
 
+	/**
+	 * @return the lowestGasConsumptionJRB
+	 */
+	public JRadioButton getLowestGasConsumptionJRB() {
+		return lowestGasConsumptionJRB;
+	}
+
+	/**
+	 * @param lowestGasConsumptionJRB the lowestGasConsumptionJRB to set
+	 */
+	public void setLowestGasConsumptionJRB(JRadioButton lowestGasConsumptionJRB) {
+		this.lowestGasConsumptionJRB = lowestGasConsumptionJRB;
+	}
+
+	/**
+	 * @return the highestGasConsumptionJRB
+	 */
+	public JRadioButton getHighestGasConsumptionJRB() {
+		return highestGasConsumptionJRB;
+	}
+
+	/**
+	 * @param highestGasConsumptionJRB the highestGasConsumptionJRB to set
+	 */
+	public void setHighestGasConsumptionJRB(JRadioButton highestGasConsumptionJRB) {
+		this.highestGasConsumptionJRB = highestGasConsumptionJRB;
+	}
+
+	/**
+	 * @return the delayJCB
+	 */
+	public JComboBox<Integer> getDelayJCB() {
+		return delayJCB;
+	}
+
+	/**
+	 * @param delayJCB the delayJCB to set
+	 */
+	public void setDelayJCB(JComboBox<Integer> delayJCB) {
+		this.delayJCB = delayJCB;
+	}
+
+	
 	
 }

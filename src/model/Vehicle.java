@@ -24,6 +24,7 @@ public class Vehicle extends EntityBase {
 	private Boolean isSelected;
 	private Boolean isVisible;
 	private SimulationOption simulationOption;
+	private int delay;
 
 	@Transient
 	private Thread thread;
@@ -33,6 +34,7 @@ public class Vehicle extends EntityBase {
 		
 		//default value
 		this.simulationOption = SimulationOption.SHORTEST_PATH;
+		this.delay = 0;
 	}
 
 	/**
@@ -188,6 +190,20 @@ public class Vehicle extends EntityBase {
 	 */
 	public void setThread(Thread thread) {
 		this.thread = thread;
+	}
+
+	/**
+	 * @return the delay
+	 */
+	public int getDelay() {
+		return delay;
+	}
+
+	/**
+	 * @param delay the delay to set
+	 */
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 
 	
