@@ -51,9 +51,10 @@ public class SimulationEditorController {
 		simulationEditorView.getNextVehicleJB().addActionListener(new BtnNextVehicle());
 		simulationEditorView.getPreviousVehicleJB().addActionListener(new BtnPreviousVehicle());
 		simulationEditorView.getCloseStreetJB().addActionListener(new BtnCloseStreet());
-		simulationEditorView.getShortestPathJRB().addActionListener(new BtnShortestPath());
-		simulationEditorView.getFastestPathJRB().addActionListener(new BtnFastestPath());
+		simulationEditorView.getShortestPathJRB().addActionListener(new RBtnShortestPath());
+		simulationEditorView.getFastestPathJRB().addActionListener(new RBtnFastestPath());
 		simulationEditorView.getLowestGasConsumptionJRB().addActionListener(new RBtnLowestGasConsumption());
+		simulationEditorView.getIgnoreSpeedLimitJRB().addActionListener(new RBtnIgnoreSpeedLimit());
 		simulationEditorView.getDelayJCB().addActionListener(new JCBDelayListener());
 
 
@@ -284,7 +285,7 @@ public class SimulationEditorController {
 		}
 	}
 		
-	class BtnShortestPath implements ActionListener {
+	class RBtnShortestPath implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 
@@ -293,7 +294,7 @@ public class SimulationEditorController {
 		}
 	}
 	
-	class BtnFastestPath implements ActionListener {
+	class RBtnFastestPath implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 
@@ -307,6 +308,14 @@ public class SimulationEditorController {
 		public void actionPerformed(ActionEvent e) {
 
 			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.LOWEST_GAS_CONSUMPTION);;
+			simulationEditorModel.changed(null);
+		}
+	}	
+	class RBtnIgnoreSpeedLimit implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+
+			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setSimulationOption(SimulationOption.IGNORE_SPEEDLIMIT);;
 			simulationEditorModel.changed(null);
 		}
 	}	

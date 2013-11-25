@@ -220,13 +220,10 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		vehicleGasUsageLowJCB = new JComboBox<Float>(vehicleGasUsage);
 		vehicleGasUsageLowJCB.setBounds(285, 150, 200, 30);
-		vehicleGasUsageLowJCB.setSelectedItem(new Float(7.2));
 		vehicleGasUsageMediumJCB = new JComboBox<Float>(vehicleGasUsage); 
 		vehicleGasUsageMediumJCB.setBounds(285, 200, 200, 30);
-		vehicleGasUsageMediumJCB.setSelectedItem(new Float(5.3));
 		vehicleGasUsageHighJCB = new JComboBox<Float>(vehicleGasUsage); 
 		vehicleGasUsageHighJCB.setBounds(285, 250, 200, 30);
-		vehicleGasUsageHighJCB.setSelectedItem(new Float(4.8));
 
 		saveVehicleJB = new JButton("Save Vehicle");
 		saveVehicleJB.setBounds(75, 340, 100, 30);

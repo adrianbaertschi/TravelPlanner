@@ -19,6 +19,13 @@ public class Car extends Vehicle {
 	
 	public Car(){
 		
+		//DefaultValues
+		this.setMaxSpeed(120);
+		this.gasConsumptionLow = 7.2f;
+		this.gasConsumptionMedium = 5.3f;
+		this.gasConsumptionHigh = 4.8f;
+		
+		
 	}
 
 	/**

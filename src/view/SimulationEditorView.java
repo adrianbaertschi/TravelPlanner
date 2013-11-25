@@ -47,7 +47,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JRadioButton fastestPathJRB;
 	private JRadioButton shortestPathJRB;
 	private JRadioButton lowestGasConsumptionJRB;
-	private JRadioButton highestGasConsumptionJRB;
+	private JRadioButton ignoreSpeedLimitJRB;
 	
 	private ButtonGroup vehicleOptionBG;
 	
@@ -216,8 +216,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		fastestPathJRB.setBounds(10,50,200,30);
 		lowestGasConsumptionJRB = new JRadioButton("lowest gas consumption");
 		lowestGasConsumptionJRB.setBounds(10, 90, 200, 30);
-		highestGasConsumptionJRB = new JRadioButton("highest gas consumption");
-		highestGasConsumptionJRB.setBounds(10, 130, 200, 30);
+		ignoreSpeedLimitJRB = new JRadioButton("ignore speedlimit");
+		ignoreSpeedLimitJRB.setBounds(10, 130, 200, 30);
 
 		delay = new Integer[60];
 		
@@ -236,12 +236,12 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionBG.add(fastestPathJRB);
 		vehicleOptionBG.add(shortestPathJRB);
 		vehicleOptionBG.add(lowestGasConsumptionJRB);
-		vehicleOptionBG.add(highestGasConsumptionJRB);
+		vehicleOptionBG.add(ignoreSpeedLimitJRB);
 
 		vehicleOptionsArea.add(fastestPathJRB);
 		vehicleOptionsArea.add(shortestPathJRB);
 		vehicleOptionsArea.add(lowestGasConsumptionJRB);
-		vehicleOptionsArea.add(highestGasConsumptionJRB);
+		vehicleOptionsArea.add(ignoreSpeedLimitJRB);
 		vehicleOptionsArea.add(delayJL);
 		vehicleOptionsArea.add(delayJCB);
 		
@@ -284,7 +284,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			shortestPathJRB.setEnabled(true);
 			fastestPathJRB.setEnabled(true);
 			lowestGasConsumptionJRB.setEnabled(true);
-			highestGasConsumptionJRB.setEnabled(false);
+			ignoreSpeedLimitJRB.setEnabled(true);
 
 			
 			
@@ -299,8 +299,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 			case LOWEST_GAS_CONSUMPTION:	
 				lowestGasConsumptionJRB.setSelected(true);
 				break;
-			case HIGHEST_GAS_CONSUMPTION:	
-				highestGasConsumptionJRB.setSelected(true);
+			case IGNORE_SPEEDLIMIT:	
+				ignoreSpeedLimitJRB.setSelected(true);
 				break;
 				
 			}
@@ -314,7 +314,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			shortestPathJRB.setEnabled(false);
 			fastestPathJRB.setEnabled(false);
 			lowestGasConsumptionJRB.setEnabled(false);
-			highestGasConsumptionJRB.setEnabled(false);
+			ignoreSpeedLimitJRB.setEnabled(false);
 
 		}
 		
@@ -471,17 +471,17 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @return the highestGasConsumptionJRB
+	 * @return the ignoreSpeedLimitJRB
 	 */
-	public JRadioButton getHighestGasConsumptionJRB() {
-		return highestGasConsumptionJRB;
+	public JRadioButton getIgnoreSpeedLimitJRB() {
+		return ignoreSpeedLimitJRB;
 	}
 
 	/**
-	 * @param highestGasConsumptionJRB the highestGasConsumptionJRB to set
+	 * @param ignoreSpeedLimitJRB the ignoreSpeedLimitJRB to set
 	 */
-	public void setHighestGasConsumptionJRB(JRadioButton highestGasConsumptionJRB) {
-		this.highestGasConsumptionJRB = highestGasConsumptionJRB;
+	public void setIgnoreSpeedLimitJRB(JRadioButton ignoreSpeedLimitJRB) {
+		this.ignoreSpeedLimitJRB = ignoreSpeedLimitJRB;
 	}
 
 	/**

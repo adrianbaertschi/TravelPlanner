@@ -84,12 +84,14 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			try {
 				
-				if(vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0){
+				if((vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0) || 
+						(vehicle.getMaxSpeed() > speedLimit && vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT))){
 				
-					vehicle.getThread().sleep((1000/vehicle.getMaxSpeed()));
+					vehicle.getThread().sleep((3000/vehicle.getMaxSpeed()));
+					
 				}else{
 					
-					vehicle.getThread().sleep((1000/speedLimit));
+					vehicle.getThread().sleep((3000/speedLimit));
 
 				}
 			
@@ -214,7 +216,27 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 			
 			break;
+		case IGNORE_SPEEDLIMIT: 
+
+			for (Street s : streets) {
+
+				if(s.isClosed()) {
+					continue;
+				}
+
+
+				// add the vertices
+				swg.addVertex(s.getStart());
+				swg.addVertex(s.getEnd());
+
+				// add edges to create linking structure
+				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
+				swg.setEdgeWeight(dwg, s.getLenth());
+
+			}
 			
+			break;
+
 		default:
 			break;
 			

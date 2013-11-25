@@ -12,7 +12,7 @@ public enum SimulationOption {
 	SHORTEST_PATH(1),
 	FASTEST_PATH(2),
 	LOWEST_GAS_CONSUMPTION(3),
-	HIGHEST_GAS_CONSUMPTION(4);
+	IGNORE_SPEEDLIMIT(4);
 	
 	private int simulationOption;
 	
