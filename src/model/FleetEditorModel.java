@@ -71,7 +71,9 @@ private void createVehicleSelection() {
 
 	public void addVehicle(Vehicle vehicle){
 		
+//		vehicle.setId(vehicles.size()+1);
 		vehicles.add(vehicle);
+		
 		
 		super.setChanged();
 		super.notifyObservers(this);

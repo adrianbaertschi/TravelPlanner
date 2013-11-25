@@ -56,6 +56,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JLabel vehicleNameJL;
 	private JTextField vehicleNameJTF;
 	
+	private JLabel vehicleIDJL;
+	private JTextField vehicleIDJTF;
+
+	
 	private JLabel vehicleSpeedJL;
 	private JComboBox<Integer> vehicleSpeedJCB;
 	private Integer[] vehicleSpeed;
@@ -174,7 +178,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetAreaJP.add(fleetDefinitionAreJP);
 		
 		fleetDefinitionAreJP.setLayout(null);
-
+		
 		fleetDefinitionTitleJP = new JPanel();
 		fleetDefinitionTitleJP.setBounds(10, 10, 570, 50);
 		fleetDefinitionTitleJL = new JLabel("Fleet - Vehicle Options");
@@ -184,10 +188,16 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetDefinitionOptionsJP.setBounds(10, 100, 570, 690);
 		fleetDefinitionOptionsJP.setLayout(null);
 		
+		vehicleIDJL = new JLabel("Vehicle - ID");
+		vehicleIDJL.setBounds(75, 50, 200, 30);
+		vehicleIDJTF = new JTextField();
+		vehicleIDJTF.setBounds(285, 50, 200, 30);
+		vehicleIDJTF.setEnabled(false);
+		
 		vehicleNameJL = new JLabel("Vehicle - Name");
-		vehicleNameJL.setBounds(75, 50, 200, 30);
+		vehicleNameJL.setBounds(75, 100, 200, 30);
 		vehicleNameJTF = new JTextField();
-		vehicleNameJTF.setBounds(285, 50, 200, 30);
+		vehicleNameJTF.setBounds(285, 100, 200, 30);
 		vehicleNameJTF.setEnabled(false);
 		
 		vehicleSpeed = new Integer[350];
@@ -197,9 +207,9 @@ public class FleetEditorView extends JPanel implements Observer {
 		}
 		
 		vehicleSpeedJL = new JLabel("Vehicle - Speed");
-		vehicleSpeedJL.setBounds(75, 100, 200, 30);
+		vehicleSpeedJL.setBounds(75, 150, 200, 30);
 		vehicleSpeedJCB = new JComboBox<Integer>(vehicleSpeed);
-		vehicleSpeedJCB.setBounds(285, 100, 200, 30);
+		vehicleSpeedJCB.setBounds(285, 150, 200, 30);
 		vehicleSpeedJCB.setSelectedIndex(120);
 	
 		vehicleGasUsage = new Float[290];
@@ -214,27 +224,29 @@ public class FleetEditorView extends JPanel implements Observer {
 		vehicleGasUsageLowJL = new JLabel("Gas usage urban highway");
 		vehicleGasUsageMediumJL = new JLabel("Gas usage rural highway");
 		vehicleGasUsageHighJL = new JLabel("Gas usage highway");
-		vehicleGasUsageLowJL.setBounds(75, 150, 200, 30);
-		vehicleGasUsageMediumJL.setBounds(75, 200, 200, 30);
-		vehicleGasUsageHighJL.setBounds(75, 250, 200, 30);
+		vehicleGasUsageLowJL.setBounds(75, 200, 200, 30);
+		vehicleGasUsageMediumJL.setBounds(75, 250, 200, 30);
+		vehicleGasUsageHighJL.setBounds(75, 300, 200, 30);
 		
 		vehicleGasUsageLowJCB = new JComboBox<Float>(vehicleGasUsage);
-		vehicleGasUsageLowJCB.setBounds(285, 150, 200, 30);
+		vehicleGasUsageLowJCB.setBounds(285, 200, 200, 30);
 		vehicleGasUsageMediumJCB = new JComboBox<Float>(vehicleGasUsage); 
-		vehicleGasUsageMediumJCB.setBounds(285, 200, 200, 30);
+		vehicleGasUsageMediumJCB.setBounds(285, 250, 200, 30);
 		vehicleGasUsageHighJCB = new JComboBox<Float>(vehicleGasUsage); 
-		vehicleGasUsageHighJCB.setBounds(285, 250, 200, 30);
+		vehicleGasUsageHighJCB.setBounds(285, 300, 200, 30);
 
 		saveVehicleJB = new JButton("Save Vehicle");
-		saveVehicleJB.setBounds(75, 340, 100, 30);
+		saveVehicleJB.setBounds(75, 350, 100, 30);
 		saveVehicleJB.setEnabled(false);;
 
 		deleteVehicleJB = new JButton("Delete Vehicle");
-		deleteVehicleJB.setBounds(185, 340, 100, 30);
+		deleteVehicleJB.setBounds(185, 350, 100, 30);
 		deleteVehicleJB.setEnabled(false);;
 
 		
 		
+		fleetDefinitionOptionsJP.add(vehicleIDJL);
+		fleetDefinitionOptionsJP.add(vehicleIDJTF);
 		fleetDefinitionOptionsJP.add(vehicleNameJL);
 		fleetDefinitionOptionsJP.add(vehicleNameJTF);
 		fleetDefinitionOptionsJP.add(vehicleSpeedJL);
@@ -365,6 +377,7 @@ public class FleetEditorView extends JPanel implements Observer {
 				
 				Car c = (Car) fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
 				
+				vehicleIDJTF.setText(String.valueOf(c.getId()));
 				vehicleNameJTF.setText(c.getName());
 				vehicleSpeedJCB.setSelectedItem(new Integer(c.getMaxSpeed()));
 				vehicleGasUsageLowJCB.setSelectedItem(new Float(c.getGasConsumptionLow()));
