@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Color;
 import java.awt.geom.Line2D;
 
 import javax.persistence.CascadeType;
@@ -30,9 +29,6 @@ public class Street {
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private StreetType streetType;
-	
-	// TODO: remove from model
-	private Color streetColor = Color.BLUE;
 	
 	@Transient
 	private boolean isClosed = false;
@@ -64,20 +60,6 @@ public class Street {
 		this.end = end;
 	}
 	
-	/**
-	 * @return the streetColor
-	 */
-	public Color getStreetColor() {
-		return streetColor;
-	}
-
-	/**
-	 * @param streetColor the streetColor to set
-	 */
-	public void setStreetColor(Color streetColor) {
-		this.streetColor = streetColor;
-	}
-
 	public StreetType getStreetType() {
 		return streetType;
 	}
