@@ -50,15 +50,15 @@ public class StreetTest {
 	@Test
 	public void testIsPointOnStreet() {
 		Node k1 = new Node(0, 0);
-		Node k2 = new Node(4, 4);
+		Node k2 = new Node(400, 400);
 		
 		Street s = new Street(k1, k2);
 		
-		assertTrue(s.isPointOnStreet(2, 2));
-		assertTrue(s.isPointOnStreet(2, 1));
+		assertTrue(s.isPointOnStreet(200, 200));
+		assertTrue(s.isPointOnStreet(200, 199));
 		
-		assertFalse(s.isPointOnStreet(10, 4));
-		assertFalse(s.isPointOnStreet(10, 10));
+		assertFalse(s.isPointOnStreet(1000, 400));
+		assertFalse(s.isPointOnStreet(1000, 1000));
 	}
 	
 	@Test
