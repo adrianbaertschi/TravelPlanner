@@ -89,4 +89,11 @@ public class StreetTest {
 		
 	}
 	
+	@Test
+	public void testGetAtEnd() {
+		Street s1 = new Street(new Node(10, 10), new Node(100, 100));
+		
+		assertEquals(new Node(85, 85), s1.getAtEnd());
+	}
+	
 }
