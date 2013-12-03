@@ -245,40 +245,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		return swg;
 	}
 
-	private Node shortestPathDijkstra(Vehicle v, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg, Node currentPosition, Node endPosition){
-		
-//		System.out.println("test");
-
-		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, currentPosition, endPosition);
-		//BellmanFordShortestPath<Knot, DefaultWeightedEdge> bfsp = new BellmanFordShortestPath<Knot, DefaultWeightedEdge>(swg, startPosition);
-		//System.out.println(bfsp.getCost(endPosition));
-		System.out.println(dsp.getPathEdgeList());
-
-		List<DefaultWeightedEdge> shortestPath = dsp.getPathEdgeList();
-		System.out.println("pathlength " + dsp.getPathLength());
-
-		
-		if (shortestPath != null) {
-			
-			for (DefaultWeightedEdge d1 : shortestPath) {
-
-				// return the nextKnot (could be the source or the target of the
-				// edge )
-				if (swg.getEdgeSource(d1).equals(v.getCurrentKnot())) {
-
-					return swg.getEdgeTarget(d1);
-				}
-				if (swg.getEdgeTarget(d1).equals(v.getCurrentKnot())) {
-
-					return swg.getEdgeSource(d1);
-				}
-
-			}
-		}
-		
-		return null;
-	}
-	
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg) {
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
