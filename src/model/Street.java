@@ -167,7 +167,7 @@ public class Street {
 	}
 	
 	public Node getAtEnd() {
-		float beta = 20 / (float)this.getFlatLength();
+		float beta = 30 / (float)this.getFlatLength();
 		
 		int x = (int) (end.getX() + beta * (start.getX() - end.getX()));
 		int y = (int) (end.getY() + beta * (start.getY() - end.getY()));

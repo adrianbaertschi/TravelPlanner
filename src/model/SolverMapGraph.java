@@ -175,7 +175,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 			
 			DefaultWeightedEdge edgeOne = swg.addEdge(s.getStart(), s.getEnd());
-			swg.setEdgeWeight(edgeOne, s.getLenth());
+			swg.setEdgeWeight(edgeOne, weight);
 			
 			if(!s.isOneWay()) {
 				DefaultWeightedEdge edgeTwo = swg.addEdge(s.getEnd(), s.getStart());
