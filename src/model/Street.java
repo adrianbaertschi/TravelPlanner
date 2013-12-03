@@ -36,6 +36,8 @@ public class Street {
 	@Transient
 	private boolean isTemporary = false;
 	
+	private boolean isOneWay = false;
+	
 	public Street() {}
 	
 	public Street(Node start) {
@@ -147,12 +149,30 @@ public class Street {
 		
 		return middle;
 	}
-
+	
 	public boolean isTemporary() {
 		return isTemporary;
 	}
 
 	public void setTemporary(boolean isTemporary) {
 		this.isTemporary = isTemporary;
+	}
+
+	public boolean isOneWay() {
+		return isOneWay;
+	}
+
+	public void setOneWay(boolean isOneWay) {
+		this.isOneWay = isOneWay;
+	}
+	
+	public Node getAtEnd() {
+		float beta = 20 / (float)this.getFlatLength();
+		
+		int x = (int) (end.getX() + beta * (start.getX() - end.getX()));
+		int y = (int) (end.getY() + beta * (start.getY() - end.getY()));
+		
+		
+		return new Node(x, y);
 	}
 }

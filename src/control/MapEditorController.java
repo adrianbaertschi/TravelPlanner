@@ -42,6 +42,7 @@ public class MapEditorController implements Controller {
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
 		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
 		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
+		view.getChxOneWay().addActionListener(new ChxOneWayActionListener());
 	}
 
 	@Override
@@ -122,6 +123,7 @@ public class MapEditorController implements Controller {
 					if(clickedOnStreet(point) == null) {
 						currentStreet.setEnd(point);
 						currentStreet.setStreetType(view.getSelectedStreetType());
+						currentStreet.setOneWay(view.getChxOneWay().isSelected());
 						try {
 							model.addStreet(currentStreet);
 							
@@ -149,6 +151,7 @@ public class MapEditorController implements Controller {
 					}
 					currentStreet.setEnd(selectedKnot);
 					currentStreet.setStreetType(view.getSelectedStreetType());
+					currentStreet.setOneWay(view.getChxOneWay().isSelected());
 					try {
 						model.addStreet(currentStreet);
 						
@@ -256,6 +259,15 @@ public class MapEditorController implements Controller {
 		public void actionPerformed(ActionEvent e) {
 			int height = getInputNodeHeightValue();
 			model.getSelectedKnot().setHeight(height);
+			
+		}
+		
+	}
+	
+	class ChxOneWayActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
 		
