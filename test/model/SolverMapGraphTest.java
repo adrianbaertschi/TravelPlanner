@@ -1,5 +1,6 @@
 package model;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -7,12 +8,21 @@ import java.util.List;
 import java.util.Queue;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SolverMapGraphTest {
 	SimulationEditorModel simulationEditorModel;
+	private Street s1;
+	private Street s2;
+	private Street s3;
+	private Street s4;
+	
+	private Node n1;
+	private Node n2;
+	private Node n3;
+	private Node n4;
 	
 	@Before
 	public void setUp() {
@@ -37,18 +47,18 @@ public class SolverMapGraphTest {
 	
 		
 		// Map
-		Node n1 = new Node(10, 10);
-		Node n2 = new Node(100, 10);
-		Node n3 = new Node(10, 100);
-		Node n4 = new Node(100, 110);
+		n1 = new Node(10, 10);
+		n2 = new Node(100, 10);
+		n3 = new Node(10, 100);
+		n4 = new Node(80, 110);
 		
-		Street s1 = new Street(n1, n2);
+		s1 = new Street(n1, n2);
 		s1.setStreetType(StreetType.AUSSERORTS);
-		Street s2 = new Street(n1, n3);
+		s2 = new Street(n1, n3);
 		s2.setStreetType(StreetType.INNERORTS);
-		Street s3 = new Street(n2, n4);
+		s3 = new Street(n4, n2);
 		s3.setStreetType(StreetType.QUARTIER);
-		Street s4 = new Street(n3, n4);
+		s4 = new Street(n4, n3);
 		s4.setStreetType(StreetType.AUTOBAHN);
 		
 		car1.setCurrentKnot(n1);
@@ -73,10 +83,10 @@ public class SolverMapGraphTest {
 		SolverMapGraph solver = new SolverMapGraph(simulationEditorModel);
 		solver.setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(0));
 		
-		SimpleWeightedGraph<Node,DefaultWeightedEdge> graph = solver.createMapGraph();
+		SimpleDirectedWeightedGraph<Node,DefaultWeightedEdge> graph = solver.createMapGraph();
 		
 		assertEquals(4, graph.vertexSet().size());
-		assertEquals(4, graph.edgeSet().size());
+		assertEquals(8, graph.edgeSet().size());
 		
 		System.out.println(graph);
 		for(DefaultWeightedEdge e : graph.edgeSet()) {
@@ -84,14 +94,11 @@ public class SolverMapGraphTest {
 		}
 		
 		// Close Street
-		simulationEditorModel.getMapEditorModel().closeStreet(simulationEditorModel.getMapEditorModel().getStreets().get(0));
+		simulationEditorModel.getMapEditorModel().closeStreet(s1);
 		
 		graph = solver.createMapGraph();
 		assertEquals(4, graph.vertexSet().size());
-		assertEquals(3, graph.edgeSet().size());
-		
-		
-		
+		assertEquals(6, graph.edgeSet().size());
 	}
 	
 	@Test
@@ -105,6 +112,13 @@ public class SolverMapGraphTest {
 		System.out.println(pathForVehicle);
 		
 		assertEquals(3, pathForVehicle.size());
+		
+		assertArrayEquals(new Node[]{n1, n3, n4}, pathForVehicle.toArray());
+		
+		s4.setOneWay(true);
+		
+		pathForVehicle = solver.getPathForVehicle(v, solver.createMapGraph());
+		assertArrayEquals(new Node[]{n1, n2, n4}, pathForVehicle.toArray());
 		
 	}
 

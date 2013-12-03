@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 /**
  * @author dimitri.haemmerli
@@ -32,7 +32,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			//TODO: abfangen falls es keinen k�zesten pfad gibt
 		
-			SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
+			SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			int speedLimit = 0;
 			
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
@@ -105,147 +105,88 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	
-	protected SimpleWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
+	protected SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> createMapGraph(){
 			
-		SimpleWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleWeightedGraph<Node, DefaultWeightedEdge>(
-				DefaultWeightedEdge.class);
+		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = new SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		
 		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
-
-		switch (vehicle.getSimulationOption()) {
 		
-		case SHORTEST_PATH: 
+		for (Street s : streets) {
 
-			for (Street s : streets) {
+			if(s.isClosed()) {
+				continue;
+			}
 
-				if(s.isClosed()) {
-					continue;
+
+			// add the vertices
+			swg.addVertex(s.getStart());
+			swg.addVertex(s.getEnd());
+
+			// add edges to create linking structure
+			
+			int weight = 0;
+			switch (vehicle.getSimulationOption()) {
+
+			case FASTEST_PATH:
+
+				if(vehicle.getMaxSpeed() < s.getStreetType().getSpeedLimit()){
+					weight = s.getLenth() / vehicle.getMaxSpeed();
+				} else {
+					weight =  s.getLenth() / s.getStreetType().getSpeedLimit();
 				}
 
-
-				// add the vertices
-				swg.addVertex(s.getStart());
-				swg.addVertex(s.getEnd());
-
-				// add edges to create linking structure
-				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
-				swg.setEdgeWeight(dwg, s.getLenth());
+				break;
+				
+			case IGNORE_SPEEDLIMIT:
+				weight = s.getLenth();
+				break;
+				
+			case LOWEST_GAS_CONSUMPTION:
+				
+				Car car = (Car)vehicle;
+				
+				switch (s.getStreetType()) {
+				
+				case QUARTIER:						
+					weight = (int) (car.getGasConsumptionLow()/100 *s.getLenth());
+					break;
+				case INNERORTS:						
+					weight = (int) (car.getGasConsumptionLow()/100 *s.getLenth());
+					break;
+				case AUSSERORTS:						
+					weight = (int) (car.getGasConsumptionMedium()/100 *s.getLenth());
+					break;
+				case AUTOSTRASSE:						
+					weight = (int) (car.getGasConsumptionMedium()/100 *s.getLenth());
+					break;
+				case AUTOBAHN:						
+					weight = (int) (car.getGasConsumptionHigh()/100 *s.getLenth());
+					break;
+				}
+				
+				break;
+			case SHORTEST_PATH:
+				weight = s.getLenth();
+				break;
+				
+			default:
+				break;
 
 			}
 			
-			break;
+			DefaultWeightedEdge edgeOne = swg.addEdge(s.getStart(), s.getEnd());
+			swg.setEdgeWeight(edgeOne, s.getLenth());
 			
-		case FASTEST_PATH:
-			
-			for (Street s : streets) {
-				
-				if(s.isClosed()) {
-					continue;
-				}
-
-				// add the vertices
-				if (!swg.containsVertex(s.getStart())) {
-					swg.addVertex(s.getStart());
-				}
-				if (!swg.containsVertex(s.getEnd())) {
-					swg.addVertex(s.getEnd());
-				}
-
-				// add edges to create linking structure
-				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
-					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
-					
-					if(vehicle.getMaxSpeed() < s.getStreetType().getSpeedLimit()){
-					
-						swg.setEdgeWeight(dwg, s.getLenth()/vehicle.getMaxSpeed());
-						
-					}else{
-						
-						swg.setEdgeWeight(dwg, s.getLenth()/s.getStreetType().getSpeedLimit());
-
-					}
-				}
-				
+			if(!s.isOneWay()) {
+				DefaultWeightedEdge edgeTwo = swg.addEdge(s.getEnd(), s.getStart());
+				swg.setEdgeWeight(edgeTwo, weight);
 			}
-			
-			break;
-		
-		case LOWEST_GAS_CONSUMPTION:
-			
-			for (Street s : streets) {
-				
-				if(s.isClosed()) {
-					continue;
-				}
 
-				// add the vertices
-				if (!swg.containsVertex(s.getStart())) {
-					swg.addVertex(s.getStart());
-				}
-				if (!swg.containsVertex(s.getEnd())) {
-					swg.addVertex(s.getEnd());
-				}
-
-				//TODO: if car und andere fahrzeugtypen unterscheiden
-				Car c = (Car) vehicle;
-				// add edges to create linking structure
-				if (!swg.containsEdge(s.getStart(), s.getEnd())) {
-					DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
-					
-					switch (s.getStreetType()){
-					
-					case QUARTIER:						
-						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
-						break;
-					case INNERORTS:						
-						swg.setEdgeWeight(dwg, c.getGasConsumptionLow()/100 *s.getLenth());
-						break;
-					case AUSSERORTS:						
-						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
-						break;
-					case AUTOSTRASSE:						
-						swg.setEdgeWeight(dwg, c.getGasConsumptionMedium()/100 *s.getLenth());
-						break;
-					case AUTOBAHN:						
-						swg.setEdgeWeight(dwg, c.getGasConsumptionHigh()/100 *s.getLenth());
-						break;
-					
-					}
-				}
-				
-			}
-			
-			break;
-		case IGNORE_SPEEDLIMIT: 
-
-			for (Street s : streets) {
-
-				if(s.isClosed()) {
-					continue;
-				}
-
-
-				// add the vertices
-				swg.addVertex(s.getStart());
-				swg.addVertex(s.getEnd());
-
-				// add edges to create linking structure
-				DefaultWeightedEdge dwg = swg.addEdge(s.getStart(),	s.getEnd());
-				swg.setEdgeWeight(dwg, s.getLenth());
-
-			}
-			
-			break;
-
-		default:
-			break;
-			
 		}
-		
 		return swg;
 	}
 
-	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleWeightedGraph<Node, DefaultWeightedEdge> swg) {
+	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg) {
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
 		
