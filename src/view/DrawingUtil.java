@@ -11,6 +11,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
+import javax.swing.ImageIcon;
+
 import model.MapEditorModel;
 import model.Node;
 import model.Street;
@@ -40,6 +42,12 @@ public class DrawingUtil {
 			g2d.setStroke(new BasicStroke(3));
 			g2d.draw(convertStreetToLine(street));
 			
+			if(street.isOneWay()) {
+			    ImageIcon oneWay = new ImageIcon("images/oneway.gif");
+			    oneWay.paintIcon(null, g2d, street.getAtEnd().getX(), street.getAtEnd().getY());
+				
+			}
+			
 			
 			// Knoten
 			g2d.setColor(NODE_COLOR);
@@ -60,7 +68,5 @@ public class DrawingUtil {
 	static Line2D.Float convertStreetToLine(Street s) {
 		return new Line2D.Float(s.getStart().getX(), s.getStart().getY(), s.getEnd().getX(), s.getEnd().getY());
 	}
-		
-	
 
 }

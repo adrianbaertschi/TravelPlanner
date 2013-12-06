@@ -6,14 +6,16 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import model.Node;
 import model.MapEditorModel;
+import model.Node;
 import model.Street;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MapEditorDaoTest {
 	
+	@Ignore
 	@Test
 	public void testSaveMap() {
 		MapEditorModel map = new MapEditorModel();
@@ -38,12 +40,14 @@ public class MapEditorDaoTest {
 
 	}
 	
+	@Ignore
 	@Test
 	public void testGetMap() {
 		List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
 		assertFalse(maps.isEmpty());
 	}
 	
+	@Ignore
 	@Test
 	public void testGetModelById() {
 		MapEditorModel modelById = MapEditorDao.getInstance().getModelById(1);

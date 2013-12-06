@@ -10,6 +10,7 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -24,9 +25,6 @@ import model.StreetType;
 
 public class MapEditorView extends JPanel implements Observer{
 	
-	private static final Color NODE_COLOR = 	Color.DARK_GRAY;
-	private static final Color SELECTED_COLOR = Color.CYAN;
-	
 	private MapEditorModel model = new MapEditorModel();
 	
 	private JPanel mapArea;
@@ -37,11 +35,14 @@ public class MapEditorView extends JPanel implements Observer{
 	private JLabel lblNodeHeight;
 	private JFormattedTextField txfNodeHeight;
 	private JButton btnSetHeight;
+
+	private JButton btnDelete;
+	private JCheckBox chxOneWay;
+	
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
 	private JButton btnReset;
-	private JButton btnDelete;
 
 	public MapEditorView() {
 		
@@ -91,9 +92,13 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		// Delete Street
 		btnDelete = new JButton("Delete selected street");
-		btnDelete.setBounds(920, 280, 200, 30);
+		btnDelete.setBounds(920, 310, 200, 30);
 		btnDelete.setEnabled(false);
 		this.add(btnDelete);
+		
+		chxOneWay = new JCheckBox("One Way");
+		chxOneWay.setBounds(920, 270, 100, 30);
+		this.add(chxOneWay);
 		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
@@ -141,6 +146,10 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	public JButton getBtnSetHeight() {
 		return this.btnSetHeight;
+	}
+	
+	public JCheckBox getChxOneWay() {
+		return this.chxOneWay;
 	}
 	
 	private void draw(Graphics g) {

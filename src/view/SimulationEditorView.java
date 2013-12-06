@@ -269,6 +269,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		for(Street street : model.getMapEditorModel().getStreets()) {
 			if(street.isClosed()) {
+				g2d.drawString("X", street.getMiddle().getX(), street.getMiddle().getY());
 				g2d.setColor(new Color(204, 204, 204));
 				g2d.draw(DrawingUtil.convertStreetToLine(street));
 			}

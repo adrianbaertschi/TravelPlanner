@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -23,7 +24,12 @@ public class LoaderDialog extends JDialog {
 		this.setModal(true);
 		this.setLocationRelativeTo(frame);
 		
-		final ReadOnlyJTable table = new ReadOnlyJTable(rowData, columns);
+		final JTable table = new JTable(rowData, columns) {
+			@Override
+			public boolean isCellEditable(int rowIndex, int colIndex) {
+				return false;
+			};
+		};
 		table.removeColumn(table.getColumn(columns[0]));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);

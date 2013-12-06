@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Color;
 import java.awt.geom.Line2D;
 
 import javax.persistence.CascadeType;
@@ -31,14 +30,13 @@ public class Street {
 	@Enumerated(EnumType.STRING)
 	private StreetType streetType;
 	
-	// TODO: remove from model
-	private Color streetColor = Color.BLUE;
-	
 	@Transient
 	private boolean isClosed = false;
 	
 	@Transient
 	private boolean isTemporary = false;
+	
+	private boolean isOneWay = false;
 	
 	public Street() {}
 	
@@ -64,20 +62,6 @@ public class Street {
 		this.end = end;
 	}
 	
-	/**
-	 * @return the streetColor
-	 */
-	public Color getStreetColor() {
-		return streetColor;
-	}
-
-	/**
-	 * @param streetColor the streetColor to set
-	 */
-	public void setStreetColor(Color streetColor) {
-		this.streetColor = streetColor;
-	}
-
 	public StreetType getStreetType() {
 		return streetType;
 	}
@@ -165,12 +149,30 @@ public class Street {
 		
 		return middle;
 	}
-
+	
 	public boolean isTemporary() {
 		return isTemporary;
 	}
 
 	public void setTemporary(boolean isTemporary) {
 		this.isTemporary = isTemporary;
+	}
+
+	public boolean isOneWay() {
+		return isOneWay;
+	}
+
+	public void setOneWay(boolean isOneWay) {
+		this.isOneWay = isOneWay;
+	}
+	
+	public Node getAtEnd() {
+		float beta = 30 / (float)this.getFlatLength();
+		
+		int x = (int) (end.getX() + beta * (start.getX() - end.getX()));
+		int y = (int) (end.getY() + beta * (start.getY() - end.getY()));
+		
+		
+		return new Node(x, y);
 	}
 }
