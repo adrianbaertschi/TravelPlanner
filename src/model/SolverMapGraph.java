@@ -87,11 +87,11 @@ public class SolverMapGraph implements Runnable, Observer{
 				if((vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0) || 
 						(vehicle.getMaxSpeed() > speedLimit && vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT))){
 				
-					vehicle.getThread().sleep((3000/vehicle.getMaxSpeed()));
+					vehicle.getThread().sleep((2000/vehicle.getMaxSpeed()));
 					
 				}else{
 					
-					vehicle.getThread().sleep((3000/speedLimit));
+					vehicle.getThread().sleep((2000/speedLimit));
 
 				}
 			
