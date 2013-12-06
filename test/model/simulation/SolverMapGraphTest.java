@@ -1,4 +1,4 @@
-package model;
+package model.simulation;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -6,6 +6,16 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+
+import model.FleetEditorModel;
+import model.MapEditorModel;
+import model.SimulationEditorModel;
+import model.config.SimulationOption;
+import model.config.StreetType;
+import model.entity.Car;
+import model.entity.Node;
+import model.entity.Street;
+import model.entity.Vehicle;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;

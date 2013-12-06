@@ -1,6 +1,8 @@
 package model;
 
 import static org.junit.Assert.assertTrue;
+import model.entity.Node;
+import model.entity.Street;
 
 import org.junit.Test;
 

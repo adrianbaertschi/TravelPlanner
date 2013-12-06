@@ -7,8 +7,8 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import model.MapEditorModel;
-import model.Node;
-import model.Street;
+import model.entity.Node;
+import model.entity.Street;
 
 import org.junit.Ignore;
 import org.junit.Test;

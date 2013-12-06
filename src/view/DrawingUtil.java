@@ -14,8 +14,8 @@ import java.awt.geom.Line2D;
 import javax.swing.ImageIcon;
 
 import model.MapEditorModel;
-import model.Node;
-import model.Street;
+import model.entity.Node;
+import model.entity.Street;
 
 public class DrawingUtil {
 	

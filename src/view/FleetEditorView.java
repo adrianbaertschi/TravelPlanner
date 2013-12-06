@@ -20,8 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.Car;
 import model.FleetEditorModel;
+import model.entity.Car;
 
 public class FleetEditorView extends JPanel implements Observer {
 

@@ -1,8 +1,10 @@
-package model;
+package model.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.entity.Node;
+import model.entity.Street;
 
 import org.junit.Test;
 

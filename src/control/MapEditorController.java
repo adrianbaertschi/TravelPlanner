@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 
 import model.MapEditorModel;
 import model.MapEditorModelException;
-import model.Node;
-import model.Street;
+import model.entity.Node;
+import model.entity.Street;
 import view.MapEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;

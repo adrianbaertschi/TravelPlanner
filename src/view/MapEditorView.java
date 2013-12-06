@@ -19,9 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.text.NumberFormatter;
 
 import model.MapEditorModel;
-import model.Node;
-import model.Street;
-import model.StreetType;
+import model.config.StreetType;
+import model.entity.Node;
+import model.entity.Street;
 
 public class MapEditorView extends JPanel implements Observer{
 	
