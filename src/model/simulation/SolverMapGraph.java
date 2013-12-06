@@ -1,13 +1,21 @@
 /**
  * 
  */
-package model;
+package model.simulation;
 
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
+
+import model.SimulationEditorModel;
+import model.UserDisruption;
+import model.config.SimulationOption;
+import model.entity.Car;
+import model.entity.Node;
+import model.entity.Street;
+import model.entity.Vehicle;
 
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;

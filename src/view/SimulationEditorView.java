@@ -24,8 +24,8 @@ import javax.swing.JRadioButton;
 import model.FleetEditorModel;
 import model.MapEditorModel;
 import model.SimulationEditorModel;
-import model.Street;
-import model.Vehicle;
+import model.entity.Street;
+import model.entity.Vehicle;
 
 /**
  * @author dimitri.haemmerli

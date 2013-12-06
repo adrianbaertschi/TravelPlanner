@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 import java.util.Calendar;
 import java.util.Observable;
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//TODO: entity package etc.
 @Entity
 public class EntityBase extends Observable {
 	@Id

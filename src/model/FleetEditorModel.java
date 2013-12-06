@@ -11,6 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import model.config.VehicleType;
+import model.entity.Car;
+import model.entity.EntityBase;
+import model.entity.Vehicle;
+
 /**
  * @author dimitri.haemmerli
  *

@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 import java.awt.geom.Line2D;
 
@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import model.config.StreetType;
 
 @Entity
 public class Street {

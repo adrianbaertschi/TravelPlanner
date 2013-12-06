@@ -16,6 +16,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import model.entity.Node;
+import model.entity.Street;
+
 @Entity
 public class MapEditorModel extends Observable {
 	
