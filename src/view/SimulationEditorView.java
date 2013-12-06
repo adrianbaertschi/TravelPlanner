@@ -20,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.Border;
 
 import model.FleetEditorModel;
 import model.MapEditorModel;
@@ -324,10 +325,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
 			carII.setImage(carII.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
+			
+			Border b = BorderFactory.createLineBorder(Color.black);
+			
 			if(v.getStartKnot() != null){
 				
 				carII.paintIcon(this, g2d, v.getStartKnot().getX() - carII.getIconWidth()/2, v.getStartKnot().getY() - carII.getIconHeight()/2);
-				
+//				carII.
 			}
 			if(v.getFinishKnot() != null){
 				carFinishII = new ImageIcon(v.getVehicleTypes().getUrlFinish());
