@@ -38,7 +38,7 @@ public class MapEditorView extends JPanel implements Observer{
 
 	private JButton btnDelete;
 	private JCheckBox chxOneWay;
-	
+	private JCheckBox chxNoPassing;
 	
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
@@ -92,13 +92,17 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		// Delete Street
 		btnDelete = new JButton("Delete selected street");
-		btnDelete.setBounds(920, 310, 200, 30);
+		btnDelete.setBounds(920, 330, 200, 30);
 		btnDelete.setEnabled(false);
 		this.add(btnDelete);
 		
 		chxOneWay = new JCheckBox("One Way");
-		chxOneWay.setBounds(920, 270, 100, 30);
+		chxOneWay.setBounds(920, 270, 200, 30);
 		this.add(chxOneWay);
+		
+		chxNoPassing = new JCheckBox("No passing");
+		chxNoPassing.setBounds(920, 300, 200, 30);
+		this.add(chxNoPassing);
 		
 		// Save Button
 		btnSaveMap = new JButton("Save Map");
@@ -150,6 +154,10 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	public JCheckBox getChxOneWay() {
 		return this.chxOneWay;
+	}
+	
+	public JCheckBox getChxNoPassing() {
+		return this.chxNoPassing;
 	}
 	
 	private void draw(Graphics g) {

@@ -48,6 +48,11 @@ public class DrawingUtil {
 				
 			}
 			
+			if(street.isNoPassing()) {
+				ImageIcon noPassing = new ImageIcon("images/nopassing.gif");
+				noPassing.paintIcon(null, g2d, street.getMiddle().getX(), street.getMiddle().getY());
+			}
+			
 			
 			// Knoten
 			g2d.setColor(NODE_COLOR);

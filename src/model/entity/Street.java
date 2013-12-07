@@ -40,6 +40,8 @@ public class Street {
 	
 	private boolean isOneWay = false;
 	
+	private boolean isNoPassing = false;
+	
 	public Street() {}
 	
 	public Street(Node start) {
@@ -176,5 +178,13 @@ public class Street {
 		
 		
 		return new Node(x, y);
+	}
+
+	public boolean isNoPassing() {
+		return isNoPassing;
+	}
+
+	public void setNoPassing(boolean isNoPassing) {
+		this.isNoPassing = isNoPassing;
 	}
 }

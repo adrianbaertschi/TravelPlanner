@@ -124,6 +124,7 @@ public class MapEditorController implements Controller {
 						currentStreet.setEnd(point);
 						currentStreet.setStreetType(view.getSelectedStreetType());
 						currentStreet.setOneWay(view.getChxOneWay().isSelected());
+						currentStreet.setNoPassing(view.getChxNoPassing().isSelected());
 						try {
 							model.addStreet(currentStreet);
 							
@@ -152,6 +153,7 @@ public class MapEditorController implements Controller {
 					currentStreet.setEnd(selectedKnot);
 					currentStreet.setStreetType(view.getSelectedStreetType());
 					currentStreet.setOneWay(view.getChxOneWay().isSelected());
+					currentStreet.setNoPassing(view.getChxNoPassing().isSelected());
 					try {
 						model.addStreet(currentStreet);
 						
