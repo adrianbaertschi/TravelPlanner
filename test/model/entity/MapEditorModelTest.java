@@ -1,6 +1,8 @@
-package model;
+package model.entity;
 
 import static org.junit.Assert.assertTrue;
+import model.MapEditorModelException;
+import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 

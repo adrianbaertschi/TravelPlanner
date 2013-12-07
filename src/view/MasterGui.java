@@ -5,9 +5,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.FleetEditorModel;
-import model.MapEditorModel;
-import model.SimulationEditorModel;
+import model.entity.FleetEditorModel;
+import model.entity.MapEditorModel;
+import model.entity.SimulationEditorModel;
 import control.FleetEditorController;
 import control.MapEditorController;
 import control.SimulationEditorController;

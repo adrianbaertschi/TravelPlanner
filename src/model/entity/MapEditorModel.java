@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,8 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import model.entity.Node;
-import model.entity.Street;
+import model.MapEditorModelException;
+import model.UserDisruption;
 
 @Entity
 public class MapEditorModel extends Observable {

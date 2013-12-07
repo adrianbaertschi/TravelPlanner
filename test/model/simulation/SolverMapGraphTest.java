@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import model.FleetEditorModel;
-import model.MapEditorModel;
-import model.SimulationEditorModel;
 import model.config.SimulationOption;
 import model.config.StreetType;
 import model.entity.Car;
+import model.entity.FleetEditorModel;
+import model.entity.MapEditorModel;
 import model.entity.Node;
+import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
 

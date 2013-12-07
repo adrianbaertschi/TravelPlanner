@@ -13,7 +13,7 @@ import java.awt.geom.Line2D;
 
 import javax.swing.ImageIcon;
 
-import model.MapEditorModel;
+import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 

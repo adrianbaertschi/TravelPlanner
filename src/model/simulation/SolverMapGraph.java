@@ -9,11 +9,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
-import model.SimulationEditorModel;
 import model.UserDisruption;
 import model.config.SimulationOption;
 import model.entity.Car;
 import model.entity.Node;
+import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
 

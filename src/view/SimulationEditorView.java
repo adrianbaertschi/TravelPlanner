@@ -22,9 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
-import model.FleetEditorModel;
-import model.MapEditorModel;
-import model.SimulationEditorModel;
+import model.entity.FleetEditorModel;
+import model.entity.MapEditorModel;
+import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
 

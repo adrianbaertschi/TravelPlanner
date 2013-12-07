@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import model.FleetEditorModel;
+import model.entity.FleetEditorModel;
 
 public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 	private static FleetEditorDao instance;

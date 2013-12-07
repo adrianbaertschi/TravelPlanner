@@ -13,8 +13,8 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import model.MapEditorModel;
 import model.MapEditorModelException;
+import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 import view.MapEditorView;

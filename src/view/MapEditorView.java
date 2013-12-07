@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.text.NumberFormatter;
 
-import model.MapEditorModel;
 import model.config.StreetType;
+import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 

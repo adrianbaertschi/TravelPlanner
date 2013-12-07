@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import model.MapEditorModel;
+import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 
