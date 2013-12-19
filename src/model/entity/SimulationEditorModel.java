@@ -30,12 +30,10 @@ public class SimulationEditorModel extends Observable {
 	
 	public static void incRunningSimulations() {
 		runningSimulations++;
-		System.out.println("Started " + runningSimulations);
 	}
 	
 	public static void decRunningSimulations() {
 		runningSimulations--;
-		System.out.println("Fertig " + runningSimulations);
 		
 		if(runningSimulations == 0) {
 			model.changed(Constants.SIMULATION_FINISHED);
