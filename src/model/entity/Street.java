@@ -1,6 +1,8 @@
 package model.entity;
 
 import java.awt.geom.Line2D;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,6 +43,9 @@ public class Street {
 	private boolean isOneWay = false;
 	
 	private boolean isNoPassing = false;
+	
+	@Transient
+	private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 	
 	public Street() {}
 	
@@ -186,5 +191,13 @@ public class Street {
 
 	public void setNoPassing(boolean isNoPassing) {
 		this.isNoPassing = isNoPassing;
+	}
+
+	public Set<Vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(Set<Vehicle> vehicles) {
+		this.vehicles = vehicles;
 	}
 }
