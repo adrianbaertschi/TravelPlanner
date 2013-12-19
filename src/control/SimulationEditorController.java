@@ -73,11 +73,10 @@ public class SimulationEditorController{
 
 	class SimulationKeyListener implements KeyListener {
 
-		@Override
+
 		public void keyPressed(KeyEvent e) {
 			
 			int key = e.getKeyCode();
-			System.out.println(e.getKeyCode());
 			
 			if(key == KeyEvent.VK_S){
 				
@@ -91,13 +90,11 @@ public class SimulationEditorController{
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			System.out.println(e.getKeyCode());
 			
 		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println(e.getKeyCode());
 			
 		}
 		

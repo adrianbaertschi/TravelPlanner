@@ -84,10 +84,4 @@ public class SimulationEditorModel extends Observable {
 
 		}
 	}
-
-
-
-
-
-
 }
