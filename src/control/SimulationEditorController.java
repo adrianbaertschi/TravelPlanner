@@ -6,10 +6,14 @@ package control;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hsqldb.SetFunction;
 
 import model.UserDisruption;
 import model.config.SimulationOption;
@@ -25,7 +29,7 @@ import view.SimulationEditorView;
  *
  */
 //TODO: implement coltroller
-public class SimulationEditorController {
+public class SimulationEditorController{
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
@@ -44,6 +48,7 @@ public class SimulationEditorController {
 		
 	}
 	private void addListener() {
+		simulationEditorView.addKeyListener(new SimulationKeyListener());
 		simulationEditorView.getMapArea().addMouseListener(new MapMouseListener());
 		simulationEditorView.getStartJB().addActionListener(new BtnSetStart());
 		simulationEditorView.getFinishJB().addActionListener(new BtnSetFinish());
@@ -66,7 +71,41 @@ public class SimulationEditorController {
 	}
 	
 
+	class SimulationKeyListener implements KeyListener {
 
+		@Override
+		public void keyPressed(KeyEvent e) {
+			
+			int key = e.getKeyCode();
+			System.out.println(e.getKeyCode());
+			
+			if(key == KeyEvent.VK_S){
+				
+				setStartPosition();
+				
+			}else if(key == KeyEvent.VK_F){
+			
+				setFinishPosition();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			System.out.println(e.getKeyCode());
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			System.out.println(e.getKeyCode());
+			
+		}
+		
+		
+	}
+
+
+	
 	class MapMouseListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
@@ -86,7 +125,7 @@ public class SimulationEditorController {
 			simulationEditorModel.changed(null);
 			
 			
-	}
+		}
 		private Node clickedOnNode(Node k) {
 			
 			int x = k.getX();
@@ -157,30 +196,10 @@ public class SimulationEditorController {
 	class BtnSetStart implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-
-								
-					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
-						
-						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
-							
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
-							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed(null);
-							
-						}						
-						
-						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
-							
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
-							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed(null);
-
-						}						
-					}
-
-				}
+		
+			setStartPosition();			
+				
+		}
 					
 			
 
@@ -190,29 +209,7 @@ public class SimulationEditorController {
 
 		public void actionPerformed(ActionEvent e) {
 
-									
-					for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
-						
-						if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
-							
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
-							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed(null);
-							
-						}						
-						
-						if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
-							
-							simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
-							simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
-							simulationEditorModel.changed(null);
-
-						}						
-	
-
-				
-			}
-			
+			setFinishPosition();					
 		
 		}
 	}
@@ -330,9 +327,62 @@ public class SimulationEditorController {
 			Integer delay = (Integer) simulationEditorView.getDelayJCB().getSelectedItem();
 					
 			simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setDelay(delay.intValue());;
-			simulationEditorModel.changed(null);
+			//simulationEditorModel.changed(null);
 		}
-	}	
+	}
+
+		
+	private void setStartPosition() {
+		
+		
+		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
+			
+			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+				
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
+				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.changed(null);
+				
+			}						
+			
+			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+				
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
+				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.changed(null);
+
+			}						
+		}
+		
+	}
+	
+	private void setFinishPosition() {
+		
+		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
+			
+			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+				
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
+				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.changed(null);
+				
+			}						
+			
+			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+				
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
+				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.changed(null);
+
+			}						
+
+		}
+
+		
+	}
+
 	
 
 }
