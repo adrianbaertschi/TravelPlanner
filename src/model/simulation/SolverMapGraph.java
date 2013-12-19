@@ -36,7 +36,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 	}
 	
-	private void startSimulation() {
+	private void startSimulation() throws InterruptedException {
 			
 			//TODO: abfangen falls es keinen k�zesten pfad gibt
 		
@@ -53,12 +53,22 @@ public class SolverMapGraph implements Runnable, Observer{
 				//getting the nextKnot from Dijkstra
 				vehicle.setNextKnot(pathForVehicle.poll());
 				
+				
+				Street currentStreet = new Street();
 				for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
 					if(s.getStart().equals(vehicle.getCurrentKnot()) && s.getEnd().equals(vehicle.getNextKnot()) ||
 							s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
 						speedLimit = s.getStreetType().getSpeedLimit();
+						currentStreet = s;
 					}
 				}
+				for(Vehicle veh : currentStreet.getVehicles()) {
+					if(speedLimit > veh.getMaxSpeed())
+					System.out.println(veh.getName() + " BREMSEN");
+				}
+				
+				currentStreet.getVehicles().add(vehicle);
+				
 				
 					try {
 						driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), speedLimit);
@@ -66,6 +76,7 @@ public class SolverMapGraph implements Runnable, Observer{
 						return;
 					}
 					vehicle.setCurrentKnot(vehicle.getNextKnot());
+				currentStreet.getVehicles().remove(vehicle);
 					
 			}
 			
@@ -77,10 +88,10 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
 		
+//		System.out.println("Drive from " + from + " to " + to);
 		
-		// TODO: get speed from car
-		int speed = 1; 
-		float ticks = new Street(from, to).getLenth() / speed;
+		
+		float ticks = new Street(from, to).getLenth();
 		
 		
 		for(int i=1; i<=ticks; i++){
@@ -119,8 +130,10 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
-		for (Street s : streets) {
-
+//		for (Street s : streets) {
+		for(int i = 0; i<streets.size(); i++) {
+			Street s = streets.get(i);
+			
 			if(s.isClosed()) {
 				continue;
 			}
@@ -240,19 +253,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		this.vehicle = vehicle;
 	}
 
-	@Override
-	public void run() {
-
-		try {
-			Thread.sleep(vehicle.getDelay()*1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		startSimulation();
-		
-	}
-    
 	private void updateModelSync() {
 		
 		simulationEditorModel.changed(vehicle);
@@ -261,6 +261,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void recalculate() {
 		this.vehicle.getThread().interrupt();
+		SimulationEditorModel.incRunningSimulations();
 		
 		Node temp = vehicle.getCurrentPosition();
 		Street s1 = new Street(temp, vehicle.getCurrentKnot());
@@ -280,8 +281,10 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		//TODO: height etc
 		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
+		
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
 		smg.setVehicle(vehicle);
+		
 		this.vehicle.setThread(new Thread(smg));
 		this.getVehicle().getThread().start();
 		
@@ -295,6 +298,18 @@ public class SolverMapGraph implements Runnable, Observer{
 			recalculate();
 		}
 	}
+
+	public void run() {
+		try {
+			Thread.sleep(vehicle.getDelay()*1000);
+			startSimulation();
+		} catch (InterruptedException e) {
+//			e.printStackTrace();
+		} finally {
+			SimulationEditorModel.decRunningSimulations();
+		}
+	}
+
 
 
 }

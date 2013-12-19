@@ -36,7 +36,7 @@ public class SolverMapGraphTest {
 	
 	@Before
 	public void setUp() {
-		simulationEditorModel = new SimulationEditorModel();
+		simulationEditorModel = SimulationEditorModel.getInstance();
 
 		// Fleet
 		FleetEditorModel fleetEditorModel = new FleetEditorModel();

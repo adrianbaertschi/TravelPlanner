@@ -7,6 +7,8 @@ import java.util.Observable;
 
 import model.UserDisruption;
 
+import common.Constants;
+
 /**
  * @author dimitri.haemmerli
  *
@@ -15,9 +17,29 @@ public class SimulationEditorModel extends Observable {
 	
 	private MapEditorModel mapEditorModel = new MapEditorModel();
 	private FleetEditorModel fleetEditorModel= new FleetEditorModel();
+	private static int runningSimulations = 0;
+	private static SimulationEditorModel model = new SimulationEditorModel();
 
-	public SimulationEditorModel(){
+	private SimulationEditorModel(){
 		
+	}
+	
+	public static SimulationEditorModel getInstance() {
+		return model;
+	}
+	
+	public static void incRunningSimulations() {
+		runningSimulations++;
+		System.out.println("Started " + runningSimulations);
+	}
+	
+	public static void decRunningSimulations() {
+		runningSimulations--;
+		System.out.println("Fertig " + runningSimulations);
+		
+		if(runningSimulations == 0) {
+			model.changed(Constants.SIMULATION_FINISHED);
+		}
 	}
 
 	/**
@@ -54,17 +76,20 @@ public class SimulationEditorModel extends Observable {
 		
 		super.setChanged();
 		
-		if(o instanceof Vehicle){
-//			System.out.println("Vehicle");
+		if(o instanceof Vehicle || o instanceof UserDisruption) {
 			super.notifyObservers(o);
-		} else if(o instanceof UserDisruption) {
-			System.out.println("user disruption");
-			super.notifyObservers(o);
-		} else{
-			super.notifyObservers(this);
+		} else if(Constants.SIMULATION_FINISHED.equals(o)) {
+				super.notifyObservers(o);
+			
+		} else {
+			super.notifyObservers(this); //is this used?
 
 		}
 	}
+
+
+
+
 
 
 }

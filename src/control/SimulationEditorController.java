@@ -224,6 +224,9 @@ public class SimulationEditorController {
 			solver.clear();
 
 			simulationEditorView.setInSimulation(true);
+			
+
+			// TODO: one loop?
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 
 				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
@@ -231,16 +234,13 @@ public class SimulationEditorController {
 				simulationEditorModel.addObserver(s);
 				solver.add(s);
 				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
+				
 				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
+				solver.get(i).getVehicle().getThread().start();
+				SimulationEditorModel.incRunningSimulations();
+				
 			}
 
-			for(SolverMapGraph smg: solver) {
-
-				if(smg.getVehicle().getStartKnot() != null && smg.getVehicle().getFinishKnot() != null){
-
-					smg.getVehicle().getThread().start();
-				}
-			}
 		}
 	}
 
@@ -270,6 +270,8 @@ public class SimulationEditorController {
 			boolean isVehicleOnStreet = false;
 			
 			for(Vehicle vehicle : simulationEditorModel.getFleetEditorModel().getVehicles()) {
+				
+				
 				if(selectedStreet.getStart().equals(vehicle.getCurrentKnot()) && selectedStreet.getEnd().equals(vehicle.getNextKnot()) ||
 						selectedStreet.getStart().equals(vehicle.getNextKnot()) && selectedStreet.getEnd().equals(vehicle.getCurrentKnot()))
 					
@@ -277,8 +279,8 @@ public class SimulationEditorController {
 			}
 			
 			if(!isVehicleOnStreet) {
+//				SimulationEditorModel.incRunningSimulations();
 				simulationEditorModel.getMapEditorModel().closeStreet(selectedStreet);
-//				simulationEditorModel.getMapEditorModel().setSelectedStreet(null);
 				simulationEditorModel.changed(new UserDisruption());
 			}
 			
