@@ -260,6 +260,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 		
 	private void draw(Graphics g) {
+		
+		this.requestFocusInWindow();
+		
 		Graphics2D g2d = (Graphics2D)g;
 		
 		// antialiasing ON
@@ -356,7 +359,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		if (model instanceof SimulationEditorModel) {
 			
 			this.model = (SimulationEditorModel) model; 
-			
+			System.out.println("repaint:");
 			repaint();
 //			vehicleArea.repaint();
 //			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
