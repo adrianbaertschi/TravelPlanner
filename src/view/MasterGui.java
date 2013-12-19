@@ -45,7 +45,7 @@ public class MasterGui extends JFrame {
 		FleetEditorController fleetEditorController = new FleetEditorController(new FleetEditorView(), fleetEditorModel);
 		
 		
-		SimulationEditorModel simulationEditorModel = new SimulationEditorModel();
+		SimulationEditorModel simulationEditorModel = SimulationEditorModel.getInstance();
 		simulationEditorModel.setMapEditorModel(mapEditorModel);
 		simulationEditorModel.setFleetEditorModel(fleetEditorModel);
 		SimulationEditorController simulationEditorController = new SimulationEditorController(new SimulationEditorView(), simulationEditorModel);

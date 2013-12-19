@@ -28,13 +28,15 @@ import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
 
+import common.Constants;
+
 /**
  * @author dimitri.haemmerli
  *
  */
 public class SimulationEditorView extends JPanel implements Observer{
 
-	private SimulationEditorModel model = new SimulationEditorModel();
+	private SimulationEditorModel model = SimulationEditorModel.getInstance();
 	
 	private JPanel mapArea;
 	private JPanel vehicleArea;
@@ -265,6 +267,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		Graphics2D g2d = (Graphics2D)g;
 		
+//		System.out.println(System.currentTimeMillis());
+		
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -365,6 +369,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 //			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 		
+		if(Constants.SIMULATION_FINISHED.equals(value)) {
+			setInSimulation(false);
+		}
 	}
 
 	/**
