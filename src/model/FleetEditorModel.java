@@ -65,6 +65,11 @@ private void createVehicleSelection() {
 	Car cy = new Car();
 	cy.setVehicleTypes(VehicleType.YELLOWCAR);
 	vehicleSelection.add(cy);
+	
+	//mountain bike
+	Bicycle bm = new Bicycle();
+	bm.setVehicleTypes(VehicleType.MOUNTAINBIKE);
+	vehicleSelection.add(bm);
 
 	}
 

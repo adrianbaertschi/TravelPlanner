@@ -20,8 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Bicycle;
 import model.Car;
 import model.FleetEditorModel;
+import model.Vehicle;
 
 public class FleetEditorView extends JPanel implements Observer {
 
@@ -373,19 +375,35 @@ public class FleetEditorView extends JPanel implements Observer {
 			deleteVehicleJB.setEnabled(true);
 			enableUserInput();
 
-			if(fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos()) instanceof Car){
-				
-				Car c = (Car) fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
-				
-				vehicleIDJTF.setText(String.valueOf(c.getId()));
-				vehicleNameJTF.setText(c.getName());
-				vehicleSpeedJCB.setSelectedItem(new Integer(c.getMaxSpeed()));
-				vehicleGasUsageLowJCB.setSelectedItem(new Float(c.getGasConsumptionLow()));
-				vehicleGasUsageMediumJCB.setSelectedItem(new Float(c.getGasConsumptionMedium()));
-				vehicleGasUsageHighJCB.setSelectedItem(new Float(c.getGasConsumptionHigh()));
-				
-			}
+			//for all vehicles
+			Vehicle vehicle = fleetEditorModel.getVehicles().get(fleetEditorModel.getVehiclePos());
 			
+			vehicleIDJTF.setText(String.valueOf(vehicle.getId()));
+			vehicleNameJTF.setText(vehicle.getName());
+			vehicleSpeedJCB.setSelectedItem(new Integer(vehicle.getMaxSpeed()));
+
+			//if car
+			if(vehicle instanceof Car){
+				
+				Car c = (Car) vehicle;
+				
+				vehicleGasUsageLowJCB.setSelectedItem(new Float(c.getGasConsumptionLow()));
+				vehicleGasUsageLowJCB.setEnabled(true);
+				vehicleGasUsageMediumJCB.setSelectedItem(new Float(c.getGasConsumptionMedium()));
+				vehicleGasUsageMediumJCB.setEnabled(true);
+				vehicleGasUsageHighJCB.setSelectedItem(new Float(c.getGasConsumptionHigh()));
+				vehicleGasUsageHighJCB.setEnabled(true);
+				
+			//if bicycle
+			}else if(vehicle instanceof Bicycle){
+				
+				vehicleGasUsageLowJCB.setSelectedIndex(-1);
+				vehicleGasUsageLowJCB.setEnabled(false);
+				vehicleGasUsageMediumJCB.setSelectedIndex(-1);
+				vehicleGasUsageMediumJCB.setEnabled(false);
+				vehicleGasUsageHighJCB.setSelectedIndex(-1);
+				vehicleGasUsageHighJCB.setEnabled(false);
+			}			
 		}else{
 			
 			saveVehicleJB.setEnabled(false);
@@ -393,6 +411,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 			
 		}
+		
 		
 		// draw vehicles in fleetSelection
 		if(fleetEditorModel.getVehicles().size() > 2){
