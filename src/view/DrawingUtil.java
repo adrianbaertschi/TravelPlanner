@@ -13,9 +13,9 @@ import java.awt.geom.Line2D;
 
 import javax.swing.ImageIcon;
 
-import model.MapEditorModel;
-import model.Node;
-import model.Street;
+import model.entity.MapEditorModel;
+import model.entity.Node;
+import model.entity.Street;
 
 public class DrawingUtil {
 	
@@ -46,6 +46,11 @@ public class DrawingUtil {
 			    ImageIcon oneWay = new ImageIcon("images/oneway.gif");
 			    oneWay.paintIcon(null, g2d, street.getAtEnd().getX(), street.getAtEnd().getY());
 				
+			}
+			
+			if(street.isNoPassing()) {
+				ImageIcon noPassing = new ImageIcon("images/nopassing.gif");
+				noPassing.paintIcon(null, g2d, street.getMiddle().getX(), street.getMiddle().getY());
 			}
 			
 			

@@ -11,13 +11,13 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Node;
-import model.SimulationEditorModel;
-import model.SimulationOption;
-import model.SolverMapGraph;
-import model.Street;
 import model.UserDisruption;
-import model.Vehicle;
+import model.config.SimulationOption;
+import model.entity.Node;
+import model.entity.SimulationEditorModel;
+import model.entity.Street;
+import model.entity.Vehicle;
+import model.simulation.SolverMapGraph;
 import view.SimulationEditorView;
 
 /**

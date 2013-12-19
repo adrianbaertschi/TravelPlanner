@@ -1,7 +1,7 @@
 /**
  * 
  */
-package model;
+package model.config;
 
 /**
  * @author dimitri.haemmerli

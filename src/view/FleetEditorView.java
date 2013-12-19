@@ -21,9 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.Bicycle;
-import model.Car;
 import model.FleetEditorModel;
-import model.Vehicle;
+import model.entity.Car;
+import model.entity.Vehicle;
 
 public class FleetEditorView extends JPanel implements Observer {
 

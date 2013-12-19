@@ -3,6 +3,8 @@
  */
 package model;
 
+import model.entity.Vehicle;
+
 /**
  * @author dimitri.haemmerli
  *

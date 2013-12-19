@@ -1,10 +1,13 @@
 /**
  * 
  */
-package model;
+package model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+
+import model.config.SimulationOption;
+import model.config.VehicleType;
 
 
 /**

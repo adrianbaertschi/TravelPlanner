@@ -1,9 +1,11 @@
 /**
  * 
  */
-package model;
+package model.entity;
 
 import java.util.Observable;
+
+import model.UserDisruption;
 
 /**
  * @author dimitri.haemmerli

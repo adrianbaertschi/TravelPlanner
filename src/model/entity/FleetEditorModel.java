@@ -1,7 +1,7 @@
 /**
  * 
  */
-package model;
+package model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import model.config.VehicleType;
-import model.entity.Car;
-import model.entity.EntityBase;
-import model.entity.Vehicle;
 
 /**
  * @author dimitri.haemmerli
@@ -54,7 +51,6 @@ private void createVehicleSelection() {
 	//green Car
 	Car cg = new Car();
 	cg.setVehicleTypes(VehicleType.GREENCAR);
-	cg.setVehicleTypes(VehicleType.GREENCAR);
 	vehicleSelection.add(cg);
 	
 	//blue Car
@@ -71,11 +67,6 @@ private void createVehicleSelection() {
 	Car cy = new Car();
 	cy.setVehicleTypes(VehicleType.YELLOWCAR);
 	vehicleSelection.add(cy);
-	
-	//mountain bike
-	Bicycle bm = new Bicycle();
-	bm.setVehicleTypes(VehicleType.MOUNTAINBIKE);
-	vehicleSelection.add(bm);
 
 	}
 

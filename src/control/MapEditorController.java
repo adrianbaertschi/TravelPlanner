@@ -13,10 +13,10 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import model.MapEditorModel;
 import model.MapEditorModelException;
-import model.Node;
-import model.Street;
+import model.entity.MapEditorModel;
+import model.entity.Node;
+import model.entity.Street;
 import view.MapEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;
@@ -124,6 +124,7 @@ public class MapEditorController implements Controller {
 						currentStreet.setEnd(point);
 						currentStreet.setStreetType(view.getSelectedStreetType());
 						currentStreet.setOneWay(view.getChxOneWay().isSelected());
+						currentStreet.setNoPassing(view.getChxNoPassing().isSelected());
 						try {
 							model.addStreet(currentStreet);
 							
@@ -152,6 +153,7 @@ public class MapEditorController implements Controller {
 					currentStreet.setEnd(selectedKnot);
 					currentStreet.setStreetType(view.getSelectedStreetType());
 					currentStreet.setOneWay(view.getChxOneWay().isSelected());
+					currentStreet.setNoPassing(view.getChxNoPassing().isSelected());
 					try {
 						model.addStreet(currentStreet);
 						

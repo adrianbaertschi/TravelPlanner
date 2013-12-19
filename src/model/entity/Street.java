@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 import java.awt.geom.Line2D;
 
@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import model.config.StreetType;
 
 @Entity
 public class Street {
@@ -37,6 +39,8 @@ public class Street {
 	private boolean isTemporary = false;
 	
 	private boolean isOneWay = false;
+	
+	private boolean isNoPassing = false;
 	
 	public Street() {}
 	
@@ -174,5 +178,13 @@ public class Street {
 		
 		
 		return new Node(x, y);
+	}
+
+	public boolean isNoPassing() {
+		return isNoPassing;
+	}
+
+	public void setNoPassing(boolean isNoPassing) {
+		this.isNoPassing = isNoPassing;
 	}
 }

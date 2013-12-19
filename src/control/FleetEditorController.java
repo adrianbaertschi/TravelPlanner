@@ -12,8 +12,8 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import model.Car;
-import model.FleetEditorModel;
+import model.entity.Car;
+import model.entity.FleetEditorModel;
 import view.FleetEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;
