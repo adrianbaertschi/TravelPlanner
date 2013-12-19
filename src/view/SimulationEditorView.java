@@ -202,9 +202,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		disruptionPanel = new JPanel();
 		disruptionPanel.setBorder(BorderFactory.createTitledBorder("Close"));
-		disruptionPanel.setBounds(920, 550, 250, 250);
+		disruptionPanel.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
 		disruptionPanel.setVisible(false);
-		this.add(disruptionPanel);
+		vehicleArea.add(disruptionPanel);
 		
 		closeStreetJB = new JButton("Close street");
 		closeStreetJB.setBounds(10, 10, 100, 30);
@@ -438,7 +438,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 */
 	public void setInSimulation(boolean inSimulation) {
 //		this.inSimulation = inSimulation;
-		this.vehicleArea.setVisible(!inSimulation);
+		this.vehicleOptionsArea.setVisible(!inSimulation);
 		this.disruptionPanel.setVisible(inSimulation);
 	}
 
