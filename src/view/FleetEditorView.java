@@ -20,9 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.Bicycle;
-import model.FleetEditorModel;
+import model.entity.Bicycle;
 import model.entity.Car;
+import model.entity.FleetEditorModel;
 import model.entity.Vehicle;
 
 public class FleetEditorView extends JPanel implements Observer {
@@ -492,6 +492,7 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	public void update(Observable model, Object value) {
+		
 		if (model instanceof FleetEditorModel) {
 			
 			System.out.println("im update");

@@ -1,9 +1,8 @@
 /**
  * 
  */
-package model;
+package model.entity;
 
-import model.entity.Vehicle;
 
 /**
  * @author dimitri.haemmerli
