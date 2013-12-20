@@ -42,9 +42,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JPanel vehicleArea;
 	private JPanel vehicleOptionsArea;
 	private JPanel vehicleSelectionArea;
-	private JPanel simulationOptionsArea;
+	private JPanel simulationOptionsJP;
 	
-	private JPanel disruptionPanel;
+	private JPanel userDisruptionJP;
+	private JPanel buttonsJP;
+	private JPanel statisticsJP;
 
 	
 	private JRadioButton fastestPathJRB;
@@ -173,54 +175,32 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.add(vehicleArea);
 		
 		
-		//vehicel options 
+		//vehicel options area
 		
 		vehicleOptionsArea = new JPanel();
 		vehicleOptionsArea.setLayout(null);
-		vehicleOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
-		vehicleOptionsArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		
+		vehicleOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), 160);
+		vehicleOptionsArea.setBorder(BorderFactory.createTitledBorder("Simulation Options"));
+
+		//vehicleOptionsArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1), "Simulation Options"));	
 		vehicleArea.add(vehicleOptionsArea);
-		// Start Button
-		
-		startJB = new JButton("start");
-		startJB.setBounds(0, 480, 100, 30);
 
-		vehicleOptionsArea.add(startJB);
 		
-		
-		// Finish JButton
-		finishJB = new JButton("finish");
-		finishJB.setBounds(110, 480, 100, 30);
+		statisticsJP = new JPanel();
+		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
+		statisticsJP.setBounds(0, 425, vehicleArea.getWidth(),300);
+		statisticsJP.setVisible(true);
+		vehicleArea.add(statisticsJP);
 
-		vehicleOptionsArea.add(finishJB);
-		
-		//Simulation JButton
-		simulationJB = new JButton("Simulation");
-		simulationJB.setBounds(0, 440, 100, 30);
-
-		disruptionPanel = new JPanel();
-		disruptionPanel.setBorder(BorderFactory.createTitledBorder("Close"));
-		disruptionPanel.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
-		disruptionPanel.setVisible(false);
-		vehicleArea.add(disruptionPanel);
-		
-		closeStreetJB = new JButton("Close street");
-		closeStreetJB.setBounds(10, 10, 100, 30);
-		disruptionPanel.add(closeStreetJB);
-		
-		vehicleOptionsArea.add(simulationJB);
-		
 		
 		shortestPathJRB = new JRadioButton("shortest path");
-		shortestPathJRB.setBounds(10,10,200,30);
+		shortestPathJRB.setBounds(15,25,200,15);
 		fastestPathJRB = new JRadioButton("fastest path");
-		fastestPathJRB.setBounds(10,50,200,30);
+		fastestPathJRB.setBounds(15,50,200,15);
 		lowestGasConsumptionJRB = new JRadioButton("lowest gas consumption");
-		lowestGasConsumptionJRB.setBounds(10, 90, 200, 30);
+		lowestGasConsumptionJRB.setBounds(15, 75, 200, 15);
 		ignoreSpeedLimitJRB = new JRadioButton("ignore speedlimit");
-		ignoreSpeedLimitJRB.setBounds(10, 130, 200, 30);
+		ignoreSpeedLimitJRB.setBounds(15, 100, 200, 15);
 
 		delay = new Integer[60];
 		
@@ -228,12 +208,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 			delay[i] = new Integer(i);
 		}
 
-		delayJL = new JLabel("Delay");
-		delayJL.setBounds(10, 170, 50, 30);
 		delayJCB = new JComboBox<Integer>(delay);
-		delayJCB.setBounds(60, 170, 50, 30);
+		delayJCB.setBounds(20, 125, 40, 20);
 		delayJCB.setSelectedIndex(0);
-		
+
+		delayJL = new JLabel("Delay");
+		delayJL.setBounds(70, 125, 50, 20);
+
 		
 		vehicleOptionBG = new ButtonGroup();
 		vehicleOptionBG.add(fastestPathJRB);
@@ -248,10 +229,52 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(delayJL);
 		vehicleOptionsArea.add(delayJCB);
 		
-		simulationOptionsArea = new JPanel();
-		simulationOptionsArea.setLayout(null);
-		simulationOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
-		vehicleArea.add(simulationOptionsArea);
+		simulationOptionsJP = new JPanel();
+		simulationOptionsJP.setLayout(null);
+		simulationOptionsJP.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
+		vehicleArea.add(simulationOptionsJP);
+		
+		setVehicleOptionsEnabled();
+
+		userDisruptionJP = new JPanel();
+		userDisruptionJP.setBorder(BorderFactory.createTitledBorder("User Disruption"));
+		userDisruptionJP.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
+		userDisruptionJP.setVisible(false);
+
+		vehicleArea.add(userDisruptionJP);
+		
+		closeStreetJB = new JButton("Close street");
+		closeStreetJB.setBounds(10, 10, 100, 30);
+		userDisruptionJP.add(closeStreetJB);
+
+		
+		buttonsJP = new JPanel();
+		buttonsJP.setLayout(null);
+		buttonsJP.setBounds(0, 730, vehicleArea.getWidth(), vehicleArea.getHeight() - 730);
+		buttonsJP.setBackground(Color.BLACK);
+		buttonsJP.setVisible(true);
+
+		// Start Button
+		
+		startJB = new JButton("start");
+		startJB.setBounds(0, 0, 100, 30);
+
+		buttonsJP.add(startJB);
+		
+		
+		// Finish JButton
+		finishJB = new JButton("finish");
+		finishJB.setBounds(110, 0, 100, 30);
+
+		buttonsJP.add(finishJB);
+		
+		//Simulation JButton
+		simulationJB = new JButton("Simulation");
+		simulationJB.setBounds(0, 35, 100, 30);
+		buttonsJP.add(simulationJB);
+		
+
+		vehicleArea.add(buttonsJP);
 
 		
 	}
@@ -287,15 +310,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
-		
-			
-			shortestPathJRB.setEnabled(true);
-			fastestPathJRB.setEnabled(true);
-			lowestGasConsumptionJRB.setEnabled(true);
-			ignoreSpeedLimitJRB.setEnabled(true);
-
-			
-			
+					
 			switch (model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getSimulationOption()){
 			
 			case SHORTEST_PATH:	
@@ -311,20 +326,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 				ignoreSpeedLimitJRB.setSelected(true);
 				break;
 				
-			}
+			}	
 			
-			
-			delayJCB.setSelectedItem(new Integer(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getDelay()));
-
-			
-		}else{
-			
-			shortestPathJRB.setEnabled(false);
-			fastestPathJRB.setEnabled(false);
-			lowestGasConsumptionJRB.setEnabled(false);
-			ignoreSpeedLimitJRB.setEnabled(false);
-
+			delayJCB.setSelectedItem(new Integer(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getDelay()));			
+		
 		}
+		
+		setVehicleOptionsEnabled();
 		
 		// display cars on mapArea
 		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
@@ -360,6 +368,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	public void update(Observable model, Object value) {
 
+		if(Constants.SIMULATION_FINISHED.equals(value)) {
+			setInSimulation(false);
+		}
 		if (model instanceof SimulationEditorModel) {
 			
 			this.model = (SimulationEditorModel) model; 
@@ -369,9 +380,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 //			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 		
-		if(Constants.SIMULATION_FINISHED.equals(value)) {
-			setInSimulation(false);
-		}
 	}
 
 	/**
@@ -437,9 +445,34 @@ public class SimulationEditorView extends JPanel implements Observer{
 	 * @param inSimulation the inSimulation to set
 	 */
 	public void setInSimulation(boolean inSimulation) {
-//		this.inSimulation = inSimulation;
-		this.vehicleOptionsArea.setVisible(!inSimulation);
-		this.disruptionPanel.setVisible(inSimulation);
+		this.inSimulation = inSimulation;
+		this.userDisruptionJP.setVisible(inSimulation);
+	
+	}
+
+	private void setVehicleOptionsEnabled() {
+
+		if(!inSimulation && model.getFleetEditorModel().getVehicles().size() > 0){
+			
+			//disable VehicleOptions
+			shortestPathJRB.setEnabled(true);
+			fastestPathJRB.setEnabled(true);
+			lowestGasConsumptionJRB.setEnabled(true);
+			ignoreSpeedLimitJRB.setEnabled(true);
+			delayJCB.setEnabled(true);
+
+			
+		}else{
+			
+			shortestPathJRB.setEnabled(false);
+			fastestPathJRB.setEnabled(false);
+			lowestGasConsumptionJRB.setEnabled(false);
+			ignoreSpeedLimitJRB.setEnabled(false);
+			delayJCB.setEnabled(false);
+
+		
+		}
+		
 	}
 
 	/**
