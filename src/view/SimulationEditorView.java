@@ -40,13 +40,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JPanel mapArea;
 	private JPanel vehicleArea;
-	private JPanel vehicleOptionsArea;
 	private JPanel vehicleSelectionArea;
-	private JPanel simulationOptionsJP;
-	
-	private JPanel userDisruptionJP;
-	private JPanel buttonsJP;
+	private JPanel vehicleOptionsArea;
 	private JPanel statisticsJP;
+
+	
+	private JPanel buttonsJP;
+	private JPanel userDisruptionJP;
+
+
 
 	
 	private JRadioButton fastestPathJRB;
@@ -113,19 +115,20 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		this.add(streetInfo);
 		
-		
+		//TODO: layout mit konstanten
 		// Vehicle Area
 		vehicleArea = new JPanel();
-		vehicleArea.setBounds(920, 0, 250, 800);
-		vehicleArea.setBackground(Color.WHITE);
-//		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		vehicleArea.setBounds(920, 10, 250, 800);
+//		vehicleArea.setBackground(Color.WHITE);
+		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		vehicleArea.setLayout(null);
 
 		
 		// VehicleSelectionArea
 		vehicleSelectionArea = new JPanel();
-		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth(), 250));
-		vehicleSelectionArea.setBounds(0, 0, vehicleArea.getWidth(), 250);
+		vehicleSelectionArea.setBorder(BorderFactory.createTitledBorder("Your Vehicles"));
+		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth()-10, 250));
+		vehicleSelectionArea.setBounds(5, 5, vehicleArea.getWidth()-10, 255);
 
 //		vehicleSelectionArea.setBackground(Color.BLACK);
 //		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -166,7 +169,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 				vehicleJL = new JLabel(vehicleII);
 		}else{
 			vehicleJL = new JLabel();
-			vehicleJL.setPreferredSize(new Dimension(200, 200));;
+			vehicleJL.setPreferredSize(new Dimension(100, 200));;
 		}
 		vehicleSelectionArea.add (vehicleJL, gbc);
 
@@ -179,19 +182,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		vehicleOptionsArea = new JPanel();
 		vehicleOptionsArea.setLayout(null);
-		vehicleOptionsArea.setBounds(0, 260, vehicleArea.getWidth(), 160);
+		vehicleOptionsArea.setBounds(5, 265, vehicleArea.getWidth()-10, 160);
 		vehicleOptionsArea.setBorder(BorderFactory.createTitledBorder("Simulation Options"));
 
 		//vehicleOptionsArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1), "Simulation Options"));	
 		vehicleArea.add(vehicleOptionsArea);
-
-		
-		statisticsJP = new JPanel();
-		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
-		statisticsJP.setBounds(0, 425, vehicleArea.getWidth(),300);
-		statisticsJP.setVisible(true);
-		vehicleArea.add(statisticsJP);
-
 		
 		shortestPathJRB = new JRadioButton("shortest path");
 		shortestPathJRB.setBounds(15,25,200,15);
@@ -228,53 +223,58 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleOptionsArea.add(ignoreSpeedLimitJRB);
 		vehicleOptionsArea.add(delayJL);
 		vehicleOptionsArea.add(delayJCB);
-		
-		simulationOptionsJP = new JPanel();
-		simulationOptionsJP.setLayout(null);
-		simulationOptionsJP.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
-		vehicleArea.add(simulationOptionsJP);
-		
+				
 		setVehicleOptionsEnabled();
 
+		//statistics jpanel
+		statisticsJP = new JPanel();
+		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
+		statisticsJP.setBounds(5, 430, vehicleArea.getWidth()-10,280);
+		statisticsJP.setVisible(true);
+		vehicleArea.add(statisticsJP);
+		
 		userDisruptionJP = new JPanel();
+		userDisruptionJP.setLayout(null);
 		userDisruptionJP.setBorder(BorderFactory.createTitledBorder("User Disruption"));
-		userDisruptionJP.setBounds(0, 260, vehicleArea.getWidth(), vehicleArea.getHeight() - 260);
+		userDisruptionJP.setBounds(5, 715, vehicleArea.getWidth()-10, vehicleArea.getHeight() - 715-5);
 		userDisruptionJP.setVisible(false);
 
 		vehicleArea.add(userDisruptionJP);
 		
 		closeStreetJB = new JButton("Close street");
-		closeStreetJB.setBounds(10, 10, 100, 30);
+		closeStreetJB.setBounds(5, 15, 110, 30);
 		userDisruptionJP.add(closeStreetJB);
 
 		
 		buttonsJP = new JPanel();
 		buttonsJP.setLayout(null);
-		buttonsJP.setBounds(0, 730, vehicleArea.getWidth(), vehicleArea.getHeight() - 730);
-		buttonsJP.setBackground(Color.BLACK);
+		//TODO: set title
+		buttonsJP.setBorder(BorderFactory.createTitledBorder("Titel"));
+		buttonsJP.setBounds(5, 715, vehicleArea.getWidth()-10, vehicleArea.getHeight() - 715-5);
 		buttonsJP.setVisible(true);
+
 
 		// Start Button
 		
 		startJB = new JButton("start");
-		startJB.setBounds(0, 0, 100, 30);
+		startJB.setBounds(5, 15, 110, 30);
 
-		buttonsJP.add(startJB);
-		
+		buttonsJP.add(startJB);		
 		
 		// Finish JButton
 		finishJB = new JButton("finish");
-		finishJB.setBounds(110, 0, 100, 30);
+		finishJB.setBounds(125, 15, 110, 30);
 
 		buttonsJP.add(finishJB);
 		
 		//Simulation JButton
 		simulationJB = new JButton("Simulation");
-		simulationJB.setBounds(0, 35, 100, 30);
+		simulationJB.setBounds(5, 50, 110, 30);
 		buttonsJP.add(simulationJB);
 		
 
 		vehicleArea.add(buttonsJP);
+
 
 		
 	}
@@ -447,6 +447,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	public void setInSimulation(boolean inSimulation) {
 		this.inSimulation = inSimulation;
 		this.userDisruptionJP.setVisible(inSimulation);
+		this.buttonsJP.setVisible(!inSimulation);
 	
 	}
 
@@ -470,6 +471,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 			ignoreSpeedLimitJRB.setEnabled(false);
 			delayJCB.setEnabled(false);
 
+			
 		
 		}
 		
