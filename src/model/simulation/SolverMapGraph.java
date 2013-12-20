@@ -3,7 +3,6 @@
  */
 package model.simulation;
 
-import java.sql.Time;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Observable;
@@ -47,12 +46,13 @@ public class SolverMapGraph implements Runnable, Observer{
 //			int speedLimit = 0;
 			
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
+			pathForVehicle.poll();
 			
 			//Statistics
 			if(vehicle.getPath() == null){
 				
 				vehicle.setPath(pathForVehicle);
-			}//TODO:falls path neu berechnet wurde, das neue teilstück hinzufügen.
+			}//TODO:falls path neu berechnet wurde, das neue teilstï¿½ck hinzufï¿½gen.
 			
 			
 			System.out.println("path for Vehicle " + pathForVehicle);
@@ -64,10 +64,10 @@ public class SolverMapGraph implements Runnable, Observer{
 				vehicle.setNextKnot(pathForVehicle.poll());
 				
 				
-				Street currentStreet = new Street();
+				Street currentStreet = null;
 				for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
 					if(s.getStart().equals(vehicle.getCurrentKnot()) && s.getEnd().equals(vehicle.getNextKnot()) ||
-							s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
+					   s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
 						currentStreet = s;
 					}
 				}
@@ -75,7 +75,10 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				currentStreet.getVehicles().add(vehicle);
 				
-				int speedLimit = calculateSpeed();
+				int speedLimit = calculateSpeed(currentStreet);
+				System.out.println("Limit: " + speedLimit);
+				
+				vehicle.setCurrentSpeed(speedLimit);
 				
 				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), speedLimit);
 				
@@ -90,26 +93,19 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 	}
 	
-	private int calculateSpeed() {
+	private int calculateSpeed(Street currentStreet) {
 		
-		int speedLimit = 0;
-		Street currentStreet = new Street();
+		int speedLimit = vehicle.getMaxSpeed();
 		
-		for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
-			if(s.getStart().equals(vehicle.getCurrentKnot()) && s.getEnd().equals(vehicle.getNextKnot()) ||
-					s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
-				speedLimit = s.getStreetType().getSpeedLimit();
-				currentStreet = s;
+		if(!vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT)) {
+			if(currentStreet.getStreetType().getSpeedLimit() < speedLimit) {
+				speedLimit = currentStreet.getStreetType().getSpeedLimit();
 			}
 		}
 		
-		for(Vehicle veh : currentStreet.getVehicles()) {
-			if(currentStreet.isNoPassing() && speedLimit > veh.getMaxSpeed()) {
-				System.out.println(vehicle.getName() + " BREMSEN");
-				speedLimit = veh.getMaxSpeed();
-				catchUp();
-				
-				
+		if(currentStreet.isNoPassing()) {
+			for(Vehicle others : currentStreet.getVehicles()) {
+				speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), others.getMaxSpeed());
 			}
 		}
 		
@@ -117,12 +113,12 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	private void catchUp() {
-		
+		// TODO
 	}
 	
 	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
 		
-//		System.out.println("Drive from " + from + " to " + to);
+		System.out.println("Drive from " + from + " to " + to);
 		
 		float ticks = new Street(from, to).getLenth();
 		
@@ -141,16 +137,16 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			try {
 				
-				if((vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0) || 
-						(vehicle.getMaxSpeed() > speedLimit && vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT))){
-				
-					vehicle.getThread().sleep((2000/vehicle.getMaxSpeed()));
-					
-				}else{
+//				if((vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0) || 
+//						(vehicle.getMaxSpeed() > speedLimit && vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT))){
+//				
+//					vehicle.getThread().sleep((2000/vehicle.getMaxSpeed()));
+//					
+//				}else{
 					
 					vehicle.getThread().sleep((2000/speedLimit));
 
-				}
+//				}
 			
 			} catch (InterruptedException e) {
 				// Re-throw
@@ -181,7 +177,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			swg.addVertex(s.getEnd());
 
 			// add edges to create linking structure
-			
 			int weight = 0;
 			switch (vehicle.getSimulationOption()) {
 
