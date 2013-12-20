@@ -3,6 +3,8 @@
  */
 package model.entity;
 
+import java.util.Queue;
+
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
@@ -28,7 +30,21 @@ public class Vehicle extends EntityBase {
 	private Boolean isVisible;
 	private SimulationOption simulationOption;
 	private int delay;
+	
+	//statistics
+	@Transient
+	private double pathLength;	
+	@Transient
+	private Queue<Node> path;
+	@Transient
+	private double expectedTime;
+	@Transient
+	private double actualTime;
+	@Transient
+	private double actualTimeTemp;
 
+	
+	
 	@Transient
 	private Thread thread;
 	
@@ -209,9 +225,74 @@ public class Vehicle extends EntityBase {
 		this.delay = delay;
 	}
 
-	
-	
-	
-	
+	/**
+	 * @return the pathLength
+	 */
+	public double getPathLength() {
+		return pathLength;
+	}
+
+	/**
+	 * @param pathLength the pathLength to set
+	 */
+	public void setPathLength(double pathLength) {
+		this.pathLength = pathLength;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public Queue<Node> getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(Queue<Node> path) {
+		this.path = path;
+	}
+
+	/**
+	 * @return the expectedTime
+	 */
+	public double getExpectedTime() {
+		return expectedTime;
+	}
+
+	/**
+	 * @param expectedTime the expectedTime to set
+	 */
+	public void setExpectedTime(double expectedTime) {
+		this.expectedTime = expectedTime;
+	}
+
+	/**
+	 * @return the actualTime
+	 */
+	public double getActualTime() {
+		return actualTime;
+	}
+
+	/**
+	 * @param actualTime the actualTime to set
+	 */
+	public void setActualTime(double actualTime) {
+		this.actualTime = actualTime;
+	}
+
+	/**
+	 * @return the actualTimeTemp
+	 */
+	public double getActualTimeTemp() {
+		return actualTimeTemp;
+	}
+
+	/**
+	 * @param actualTimeTemp the actualTimeTemp to set
+	 */
+	public void setActualTimeTemp(double actualTimeTemp) {
+		this.actualTimeTemp = actualTimeTemp;
+	}
 
 }

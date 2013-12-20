@@ -214,7 +214,7 @@ public class SimulationEditorController{
 	class BtnSetSimulation implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-
+		
 			solver.clear();
 
 			simulationEditorView.setInSimulation(true);
@@ -223,6 +223,11 @@ public class SimulationEditorController{
 			// TODO: one loop?
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 
+				//initialize statistics
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTime(0.0);
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTimeTemp(0.0);
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setPathLength(0.0);
+				
 				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
 
 				simulationEditorModel.addObserver(s);

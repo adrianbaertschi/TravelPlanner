@@ -3,6 +3,7 @@
  */
 package model.simulation;
 
+import java.sql.Time;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Observable;
@@ -29,6 +30,8 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private SimulationEditorModel simulationEditorModel;
 	private Vehicle vehicle;
+	private long start;
+	private long end;
 	
 	public SolverMapGraph(SimulationEditorModel simulationEditorModel){
 		
@@ -45,7 +48,14 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
 			
-			System.out.println(pathForVehicle);
+			//Statistics
+			if(vehicle.getPath() == null){
+				
+				vehicle.setPath(pathForVehicle);
+			}//TODO:falls path neu berechnet wurde, das neue teilstück hinzufügen.
+			
+			
+			System.out.println("path for Vehicle " + pathForVehicle);
 			
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
 				
@@ -114,7 +124,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 //		System.out.println("Drive from " + from + " to " + to);
 		
-		
 		float ticks = new Street(from, to).getLenth();
 		
 		
@@ -124,6 +133,11 @@ public class SolverMapGraph implements Runnable, Observer{
 			currentPosition.setX((int) (from.getX() + (to.getX() - from.getX())*(i*(1/ticks))));
 			currentPosition.setY((int) (from.getY() + (to.getY() - from.getY())*(i*(1/ticks))));
 			vehicle.setCurrentPosition(currentPosition);
+			
+			//statistics
+			end = System.currentTimeMillis();
+			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
+
 			
 			try {
 				
@@ -232,8 +246,10 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg) {
 		
-		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());
+		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());			
 		
+		//statistics
+		vehicle.setPathLength(dsp.getPathLength());
 		
 		
 		Queue<Node> nodes = new ArrayDeque<Node>();
@@ -258,6 +274,9 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 		}
 		
+		//statistics
+		vehicle.setPathLength(dsp.getPathLength());
+
 		return nodes;
 	}
 
@@ -284,6 +303,8 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void recalculate() {
 		this.vehicle.getThread().interrupt();
+		end = System.currentTimeMillis();
+		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
 		SimulationEditorModel.incRunningSimulations();
 		
 		Node temp = vehicle.getCurrentPosition();
@@ -325,7 +346,9 @@ public class SolverMapGraph implements Runnable, Observer{
 	public void run() {
 		try {
 			Thread.sleep(vehicle.getDelay()*1000);
+			start = System.currentTimeMillis();
 			startSimulation();
+			
 		} catch (InterruptedException e) {
 			// Nothinig to do here
 		} finally {

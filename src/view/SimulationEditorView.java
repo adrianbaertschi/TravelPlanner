@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
@@ -27,7 +28,6 @@ import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
-
 import common.Constants;
 
 /**
@@ -47,9 +47,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JPanel buttonsJP;
 	private JPanel userDisruptionJP;
-
-
-
 	
 	private JRadioButton fastestPathJRB;
 	private JRadioButton shortestPathJRB;
@@ -82,6 +79,14 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private boolean inSimulation = false;
 
+	private JLabel expectedTimeJL;
+	private JLabel actualTimeJL;
+	private JLabel pathLengthJL;
+	private JLabel pathJL;
+	
+	private JLabel expectedTimeValueJL;
+	private JLabel actualTimeValueJL;
+	private JLabel pathLengthValueJL;
 	
 	public SimulationEditorView() {
 		
@@ -227,11 +232,32 @@ public class SimulationEditorView extends JPanel implements Observer{
 		setVehicleOptionsEnabled();
 
 		//statistics jpanel
+		
 		statisticsJP = new JPanel();
 		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
+		statisticsJP.setLayout(new GridLayout(4, 2));
 		statisticsJP.setBounds(5, 430, vehicleArea.getWidth()-10,280);
 		statisticsJP.setVisible(true);
 		vehicleArea.add(statisticsJP);
+		
+		expectedTimeJL = new JLabel("Expected Time");
+		actualTimeJL= new JLabel("Used Time");
+		pathLengthJL = new JLabel("Path Length");
+		pathJL = new JLabel("Path");
+
+		expectedTimeValueJL = new JLabel("0");
+		actualTimeValueJL= new JLabel("0");
+		pathLengthValueJL = new JLabel("0");
+
+		statisticsJP.add(expectedTimeJL);
+		statisticsJP.add(expectedTimeValueJL);
+		statisticsJP.add(actualTimeJL);
+		statisticsJP.add(actualTimeValueJL);
+		statisticsJP.add(pathLengthJL);
+		statisticsJP.add(pathLengthValueJL);
+		
+		
+		//user disruption
 		
 		userDisruptionJP = new JPanel();
 		userDisruptionJP.setLayout(null);
@@ -307,7 +333,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		// display selected car in vehicle area
 		if(model.getFleetEditorModel().getVehicles().size() > 0){
 			
-			vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getVehicleTypes().getUrlVehicle());	
+			Vehicle vehicle = model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos());
+			vehicleII = new ImageIcon(vehicle.getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
 					
@@ -330,6 +357,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 			
 			delayJCB.setSelectedItem(new Integer(model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getDelay()));			
 		
+			
+			//statistics
+			updateStatistics(vehicle);
+
 		}
 		
 		setVehicleOptionsEnabled();
@@ -362,10 +393,18 @@ public class SimulationEditorView extends JPanel implements Observer{
 				carII.paintIcon(this, g2d, v.getCurrentPosition().getX() - carII.getIconWidth()/2, v.getCurrentPosition().getY() - carII.getIconHeight()/2);			
 		
 			}
-
+			
 		}
+		
 	}
 	
+	private void updateStatistics(Vehicle v) {
+
+		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
+		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*1867.4840839424663994340957321386/3600));
+//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()));
+	}
+
 	public void update(Observable model, Object value) {
 
 		if(Constants.SIMULATION_FINISHED.equals(value)) {
