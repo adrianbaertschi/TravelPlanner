@@ -91,19 +91,10 @@ public class SimulationEditorController{
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e) {
-			
-		}
-
+		public void keyReleased(KeyEvent e) {		}
 		@Override
-		public void keyTyped(KeyEvent e) {
-			
-		}
-		
-		
+		public void keyTyped(KeyEvent e) {		}
 	}
-
-
 	
 	class MapMouseListener implements MouseListener {
 
@@ -125,6 +116,7 @@ public class SimulationEditorController{
 			
 			
 		}
+		
 		private Node clickedOnNode(Node k) {
 			
 			int x = k.getX();
@@ -165,31 +157,14 @@ public class SimulationEditorController{
 			return null;
 		}
 
-
-
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mouseEntered(MouseEvent e) {		}
 		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mouseExited(MouseEvent e) {		}
 		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mousePressed(MouseEvent e) {	}
 		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void mouseReleased(MouseEvent e) {	}
 
 	}
 	class BtnSetStart implements ActionListener {
@@ -197,9 +172,7 @@ public class SimulationEditorController{
 		public void actionPerformed(ActionEvent e) {
 		
 			setStartPosition();			
-				
 		}
-					
 			
 
 	}

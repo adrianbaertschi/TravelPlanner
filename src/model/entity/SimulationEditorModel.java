@@ -70,16 +70,14 @@ public class SimulationEditorModel extends Observable {
 
 	public void changed(Object o){
 		
-		
 		super.setChanged();
 		
 		if(o instanceof Vehicle || o instanceof UserDisruption) {
 			super.notifyObservers(o);
 		} else if(Constants.SIMULATION_FINISHED.equals(o)) {
-				super.notifyObservers(o);
-			
+			super.notifyObservers(o);
 		} else {
-			super.notifyObservers(this); //is this used?
+			super.notifyObservers(this);
 
 		}
 	}

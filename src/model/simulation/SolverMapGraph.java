@@ -124,41 +124,26 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
 		
-//		System.out.println("Drive from " + from + " to " + to);
+		System.out.println("Drive from " + from + " to " + to);
 		
 		float ticks = new Street(from, to).getLenth();
 		
 		
-		for(int i=1; i<=ticks; i++){
-			
+		for(int i=1; i<=ticks; i++) {
+
 			Node currentPosition = new Node();
 			currentPosition.setX((int) (from.getX() + (to.getX() - from.getX())*(i*(1/ticks))));
 			currentPosition.setY((int) (from.getY() + (to.getY() - from.getY())*(i*(1/ticks))));
 			vehicle.setCurrentPosition(currentPosition);
-			
+
 			//statistics
 			end = System.currentTimeMillis();
 			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
 
-			
-			try {
-				
-//				if((vehicle.getMaxSpeed() < speedLimit && vehicle.getMaxSpeed() != 0) || 
-//						(vehicle.getMaxSpeed() > speedLimit && vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT))){
-//				
-//					vehicle.getThread().sleep((2000/vehicle.getMaxSpeed()));
-//					
-//				}else{
-					
-					vehicle.getThread().sleep((2000/speedLimit));
 
-//				}
-			
-			} catch (InterruptedException e) {
-				// Re-throw
-				throw e;
-			}
-			updateModelSync();
+			vehicle.getThread().sleep((2000/speedLimit));
+
+			simulationEditorModel.changed(vehicle);
 
 		}
 	}
@@ -300,12 +285,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		this.vehicle = vehicle;
 	}
 
-	private void updateModelSync() {
-		
-		simulationEditorModel.changed(vehicle);
-				
-	}
-	
 	private void recalculate() {
 		SimulationEditorModel.incRunningSimulations();
 		this.vehicle.getThread().interrupt();
@@ -313,6 +292,8 @@ public class SolverMapGraph implements Runnable, Observer{
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
 		
 		Node temp = vehicle.getCurrentPosition();
+		//TODO: height of temp
+		
 		Street s1 = new Street(temp, vehicle.getCurrentKnot());
 		s1.setTemporary(true);
 		Street s2 = new Street(temp, vehicle.getNextKnot());
@@ -328,7 +309,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		simulationEditorModel.getMapEditorModel().addStreet(s1);
 		simulationEditorModel.getMapEditorModel().addStreet(s2);
 		
-		//TODO: height etc
 		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
 		
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
