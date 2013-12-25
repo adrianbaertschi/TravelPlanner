@@ -34,7 +34,6 @@ public class SimulationEditorModel extends Observable {
 	
 	public static void decRunningSimulations() {
 		runningSimulations--;
-		
 		if(runningSimulations == 0) {
 			model.changed(Constants.SIMULATION_FINISHED);
 		}

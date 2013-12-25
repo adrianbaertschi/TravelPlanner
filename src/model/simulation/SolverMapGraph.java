@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
+import model.SimulationEditorModelException;
 import model.UserDisruption;
 import model.config.SimulationOption;
 import model.entity.Car;
@@ -20,6 +21,8 @@ import model.entity.Vehicle;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+
+import common.Constants;
 
 /**
  * @author dimitri.haemmerli
@@ -40,12 +43,15 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void startSimulation() throws InterruptedException {
 			
-			//TODO: abfangen falls es keinen k�zesten pfad gibt
 		
 			SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
-//			int speedLimit = 0;
 			
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
+			
+			if(pathForVehicle.isEmpty()) {
+				throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
+			}
+			
 			pathForVehicle.poll();
 			
 			//Statistics
@@ -118,7 +124,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
 		
-		System.out.println("Drive from " + from + " to " + to);
+//		System.out.println("Drive from " + from + " to " + to);
 		
 		float ticks = new Street(from, to).getLenth();
 		
@@ -241,6 +247,10 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg) {
 		
+		if(!swg.containsVertex(vehicle.getCurrentKnot()) || !swg.containsVertex(vehicle.getFinishKnot())) {
+			throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
+		}
+		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());			
 		
 		//statistics
@@ -250,7 +260,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		Queue<Node> nodes = new ArrayDeque<Node>();
 
 		if(dsp.getPathEdgeList() == null) {
-			//TODO: no path exists
+			// no path exists, return empty queue
 			return nodes;
 		}
 		
@@ -297,10 +307,10 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	private void recalculate() {
+		SimulationEditorModel.incRunningSimulations();
 		this.vehicle.getThread().interrupt();
 		end = System.currentTimeMillis();
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
-		SimulationEditorModel.incRunningSimulations();
 		
 		Node temp = vehicle.getCurrentPosition();
 		Street s1 = new Street(temp, vehicle.getCurrentKnot());
