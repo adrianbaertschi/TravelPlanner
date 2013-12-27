@@ -1,10 +1,14 @@
 package view;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import model.SimulationEditorModelException;
 import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
@@ -35,8 +39,10 @@ public class MasterGui extends JFrame {
 			e.printStackTrace();
 		}
 		
+
 		
-		JTabbedPane tabPane = new JTabbedPane();
+		
+		final JTabbedPane tabPane = new JTabbedPane();
 		
 		MapEditorModel mapEditorModel = new MapEditorModel();
 		MapEditorController mapEditorController = new MapEditorController(new MapEditorView(), mapEditorModel);
@@ -54,6 +60,18 @@ public class MasterGui extends JFrame {
 		tabPane.addTab("Map Editor", mapEditorController.showView());
 		tabPane.addTab("Fleet Editor", fleetEditorController.showView());
 		tabPane.addTab("Simulation Editor", simulationEditorController.showView());
+		
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+
+			public void uncaughtException(Thread t, Throwable e) {
+				if(e instanceof SimulationEditorModelException) {
+					JOptionPane.showMessageDialog(tabPane.getSelectedComponent(), e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(tabPane, e.getMessage(), "unexpexted error", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+				}
+			}
+		});
 
 		
 		this.setContentPane(tabPane);

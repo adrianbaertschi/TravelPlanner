@@ -14,9 +14,22 @@ import javax.swing.event.ListSelectionListener;
 
 import control.Controller;
 import dao.BaseDao;
-
+/**
+ * Generic Dialog for loading saved models.
+ * Shows a table containing the records available for loading
+ * and a Button to confirm the selection.
+ *
+ */
 public class LoaderDialog extends JDialog {
 	
+	/**
+	 * 
+	 * @param frame Root frame
+	 * @param controller Reference to controller instance
+	 * @param dao DAO implementation
+	 * @param rowData Array containing the data in the table (First column must be the ID)
+	 * @param columns Header captions, first item (ID) is not visible
+	 */
 	public LoaderDialog(Frame frame, final Controller controller, final BaseDao<?> dao, Object[][] rowData, String[] columns) {
 		super(frame);
 		this.setLayout(null);

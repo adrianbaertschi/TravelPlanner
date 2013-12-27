@@ -10,13 +10,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import model.SimulationEditorModelException;
 import model.UserDisruption;
 import model.config.SimulationOption;
 import model.entity.Node;
@@ -30,8 +26,7 @@ import view.SimulationEditorView;
  * @author dimitri.haemmerli
  *
  */
-//TODO: implement coltroller
-public class SimulationEditorController{
+public class SimulationEditorController implements Controller{
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
@@ -67,6 +62,7 @@ public class SimulationEditorController{
 
 	}
 	
+	@Override
 	public Component showView() {
 		this.simulationEditorView.setVisible(true);
 		return this.simulationEditorView;
@@ -193,17 +189,6 @@ public class SimulationEditorController{
 			solver.clear();
 
 			simulationEditorView.setInSimulation(true);
-			Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-
-				public void uncaughtException(Thread t, Throwable e) {
-					if(e instanceof SimulationEditorModelException) {
-						JOptionPane.showMessageDialog(simulationEditorView, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-					} else {
-						e.printStackTrace();
-					}
-				}
-			});
-			
 			
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 
@@ -365,6 +350,11 @@ public class SimulationEditorController{
 		}
 
 		
+	}
+	
+	@Override
+	public void setModel(Object o) {
+		// no implementation needed
 	}
 
 	

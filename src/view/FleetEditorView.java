@@ -360,7 +360,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	private void draw(Graphics g) {
-		long start = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D) g;
 
 		// antialiasing ON

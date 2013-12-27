@@ -42,7 +42,6 @@ public class MapEditorController implements Controller {
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
 		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
 		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
-		view.getChxOneWay().addActionListener(new ChxOneWayActionListener());
 	}
 
 	@Override
@@ -231,7 +230,6 @@ public class MapEditorController implements Controller {
 				rowData[i][1] = maps.get(i).getName();
 				rowData[i][2] = maps.get(i).getStreets().size();
 				
-				//TODO format util?
 				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
 				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
 			}
@@ -253,7 +251,6 @@ public class MapEditorController implements Controller {
 		public void actionPerformed(ActionEvent arg0) {
 			model.removeStreet(model.getSelectedStreet());
 		}
-		
 	}
 	
 	class BtnSetHeightActionListener implements ActionListener {
@@ -261,18 +258,7 @@ public class MapEditorController implements Controller {
 		public void actionPerformed(ActionEvent e) {
 			int height = getInputNodeHeightValue();
 			model.getSelectedKnot().setHeight(height);
-			
 		}
-		
-	}
-	
-	class ChxOneWayActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 
 }
