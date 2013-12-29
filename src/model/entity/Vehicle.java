@@ -30,6 +30,7 @@ public class Vehicle extends EntityBase {
 	private Boolean isVisible;
 	private SimulationOption simulationOption;
 	private int delay;
+	private int currentSpeed;
 	
 	//statistics
 	@Transient
@@ -293,6 +294,14 @@ public class Vehicle extends EntityBase {
 	 */
 	public void setActualTimeTemp(double actualTimeTemp) {
 		this.actualTimeTemp = actualTimeTemp;
+	}
+
+	public int getCurrentSpeed() {
+		return currentSpeed;
+	}
+
+	public void setCurrentSpeed(int currentSpeed) {
+		this.currentSpeed = currentSpeed;
 	}
 
 }

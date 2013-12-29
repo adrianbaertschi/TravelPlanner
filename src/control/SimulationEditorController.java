@@ -13,8 +13,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hsqldb.SetFunction;
-
 import model.UserDisruption;
 import model.config.SimulationOption;
 import model.entity.Node;
@@ -28,8 +26,7 @@ import view.SimulationEditorView;
  * @author dimitri.haemmerli
  *
  */
-//TODO: implement coltroller
-public class SimulationEditorController{
+public class SimulationEditorController implements Controller{
 	
 	private SimulationEditorView simulationEditorView;
 	private SimulationEditorModel simulationEditorModel;
@@ -65,6 +62,7 @@ public class SimulationEditorController{
 
 	}
 	
+	@Override
 	public Component showView() {
 		this.simulationEditorView.setVisible(true);
 		return this.simulationEditorView;
@@ -89,19 +87,10 @@ public class SimulationEditorController{
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e) {
-			
-		}
-
+		public void keyReleased(KeyEvent e) {		}
 		@Override
-		public void keyTyped(KeyEvent e) {
-			
-		}
-		
-		
+		public void keyTyped(KeyEvent e) {		}
 	}
-
-
 	
 	class MapMouseListener implements MouseListener {
 
@@ -123,6 +112,7 @@ public class SimulationEditorController{
 			
 			
 		}
+		
 		private Node clickedOnNode(Node k) {
 			
 			int x = k.getX();
@@ -163,31 +153,14 @@ public class SimulationEditorController{
 			return null;
 		}
 
-
-
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mouseEntered(MouseEvent e) {		}
 		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mouseExited(MouseEvent e) {		}
 		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mousePressed(MouseEvent e) {	}
 		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void mouseReleased(MouseEvent e) {	}
 
 	}
 	class BtnSetStart implements ActionListener {
@@ -195,9 +168,7 @@ public class SimulationEditorController{
 		public void actionPerformed(ActionEvent e) {
 		
 			setStartPosition();			
-				
 		}
-					
 			
 
 	}
@@ -219,25 +190,21 @@ public class SimulationEditorController{
 
 			simulationEditorView.setInSimulation(true);
 			
-
-			// TODO: one loop?
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 
 				//initialize statistics
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTime(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTimeTemp(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setPathLength(0.0);
-				
+
 				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
 
 				simulationEditorModel.addObserver(s);
 				solver.add(s);
 				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
-				
 				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
 				solver.get(i).getVehicle().getThread().start();
 				SimulationEditorModel.incRunningSimulations();
-				
 			}
 
 		}
@@ -383,6 +350,11 @@ public class SimulationEditorController{
 		}
 
 		
+	}
+	
+	@Override
+	public void setModel(Object o) {
+		// no implementation needed
 	}
 
 	

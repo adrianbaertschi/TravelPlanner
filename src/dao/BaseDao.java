@@ -5,10 +5,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Base class for all DAO Objects.
+ * Base class for all DAO Implementations.
  * 
- * @author adrian
- *
+ * @param <T> Model class
  */
 public abstract class BaseDao<T> {
 	private String PERSISTENCE_UNIT = "travelDB";
@@ -16,6 +15,12 @@ public abstract class BaseDao<T> {
 	EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
 	EntityManager em = factory.createEntityManager();
 	
+	/**
+	 * Get model instance by primary key
+	 * 
+	 * @param id ID
+	 * @return Model instance
+	 */
 	public abstract T getModelById(long id);
 	
 }

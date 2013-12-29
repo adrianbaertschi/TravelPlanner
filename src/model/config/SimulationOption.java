@@ -9,15 +9,8 @@ package model.config;
  */
 public enum SimulationOption {
 
-	SHORTEST_PATH(1),
-	FASTEST_PATH(2),
-	LOWEST_GAS_CONSUMPTION(3),
-	IGNORE_SPEEDLIMIT(4);
-	
-	private int simulationOption;
-	
-	private SimulationOption(int simulationOption){
-		
-		this.simulationOption = simulationOption;
-	}
+	SHORTEST_PATH,
+	FASTEST_PATH,
+	LOWEST_GAS_CONSUMPTION,
+	IGNORE_SPEEDLIMIT;
 }
