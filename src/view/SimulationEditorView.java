@@ -401,8 +401,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private void updateStatistics(Vehicle v) {
 
 		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
-		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*1867.4840839424663994340957321386/3600));
-//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()));
+//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
+		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()));
 	}
 
 	public void update(Observable model, Object value) {

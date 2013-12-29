@@ -3,6 +3,7 @@
  */
 package model.simulation;
 
+import java.lang.management.ManagementFactory;
 import java.sql.Time;
 import java.util.ArrayDeque;
 import java.util.List;
@@ -57,6 +58,9 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			System.out.println("path for Vehicle " + pathForVehicle);
 			
+			//statistics
+			start = System.currentTimeMillis();
+			
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
 				
 							
@@ -83,7 +87,7 @@ public class SolverMapGraph implements Runnable, Observer{
 				currentStreet.getVehicles().remove(vehicle);
 					
 			}
-			
+						
 			//reinitialize the currentKnot so a new simulation can be performed
 			vehicle.setCurrentKnot(vehicle.getStartKnot());
 
@@ -133,11 +137,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			currentPosition.setX((int) (from.getX() + (to.getX() - from.getX())*(i*(1/ticks))));
 			currentPosition.setY((int) (from.getY() + (to.getY() - from.getY())*(i*(1/ticks))));
 			vehicle.setCurrentPosition(currentPosition);
-			
-			//statistics
-			end = System.currentTimeMillis();
-			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
-
+					
 			
 			try {
 				
@@ -156,6 +156,15 @@ public class SolverMapGraph implements Runnable, Observer{
 				// Re-throw
 				throw e;
 			}
+			
+			//statistics
+//			end = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+			end = System.currentTimeMillis();
+			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
+
+//			System.out.println("is cpu type enabled: " + ManagementFactory.getThreadMXBean().isThreadCpuTimeEnabled());
+//			System.out.println("is cpu supported: " + ManagementFactory.getThreadMXBean().isCurrentThreadCpuTimeSupported());
+			
 			updateModelSync();
 
 		}
@@ -346,7 +355,8 @@ public class SolverMapGraph implements Runnable, Observer{
 	public void run() {
 		try {
 			Thread.sleep(vehicle.getDelay()*1000);
-			start = System.currentTimeMillis();
+			
+//			start = System.currentTimeMillis();
 			startSimulation();
 			
 		} catch (InterruptedException e) {
