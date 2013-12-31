@@ -156,7 +156,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			int speedLimit = calculateSpeed(currentStreet);
 
-			vehicle.getThread().sleep((2000/speedLimit));
+			Thread.sleep((2000/speedLimit));
 
 			simulationEditorModel.changed(vehicle);
 		}
