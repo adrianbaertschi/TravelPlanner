@@ -30,7 +30,6 @@ public class Vehicle extends EntityBase {
 	private Boolean isVisible;
 	private SimulationOption simulationOption;
 	private int delay;
-	private int currentSpeed;
 	
 	//statistics
 	@Transient
@@ -295,13 +294,18 @@ public class Vehicle extends EntityBase {
 	public void setActualTimeTemp(double actualTimeTemp) {
 		this.actualTimeTemp = actualTimeTemp;
 	}
-
-	public int getCurrentSpeed() {
-		return currentSpeed;
+	
+	public int getDistToNext() {
+		if(currentPosition == null) {
+			return -1;
+		}
+		int a = currentPosition.getX() - nextKnot.getX();
+		int b = currentPosition.getY() - nextKnot.getY();
+		
+		int c = nextKnot.getHeight() - currentPosition.getHeight();
+		
+		return (int) Math.sqrt(a*a + b*b + c*c);
+		
+//		return 0;
 	}
-
-	public void setCurrentSpeed(int currentSpeed) {
-		this.currentSpeed = currentSpeed;
-	}
-
 }

@@ -17,6 +17,11 @@ public interface Constants {
 	 */
 	public static final int NODE_RADIUS = 	NODE_HEIGHT / 2;
 	
+	/**
+	 * Distance if driving behind slower vehicle on no-passing street
+	 */
+	public static final int DISTANCE_NO_PASSING = 20;
+	
 	public static final String SIMULATION_FINISHED = "SIMULATION_FINISHED";
 	
 	public static final double TIME_RATIO = 1800.0;

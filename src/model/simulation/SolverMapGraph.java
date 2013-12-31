@@ -3,8 +3,6 @@
  */
 package model.simulation;
 
-import java.lang.management.ManagementFactory;
-import java.sql.Time;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Observable;
@@ -86,12 +84,10 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				currentStreet.getVehicles().add(vehicle);
 				
-				int speedLimit = calculateSpeed(currentStreet);
-				System.out.println("Limit: " + speedLimit);
+//				int speedLimit = calculateSpeed(currentStreet);
+//				System.out.println("Limit: " + speedLimit);
 				
-				vehicle.setCurrentSpeed(speedLimit);
-				
-				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), speedLimit);
+				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
 				
 				vehicle.setCurrentKnot(vehicle.getNextKnot());
 				currentStreet.getVehicles().remove(vehicle);
@@ -104,30 +100,40 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 	}
 	
-	private int calculateSpeed(Street currentStreet) {
+	private int calculateSpeed(Street currentStreet) throws InterruptedException {
 		
-		int speedLimit = vehicle.getMaxSpeed();
+		int speedLimit = 0;
 		
-		if(!vehicle.getSimulationOption().equals(SimulationOption.IGNORE_SPEEDLIMIT)) {
-			if(currentStreet.getStreetType().getSpeedLimit() < speedLimit) {
-				speedLimit = currentStreet.getStreetType().getSpeedLimit();
-			}
+		// Limit by street type
+		if(!SimulationOption.IGNORE_SPEEDLIMIT.equals(vehicle.getSimulationOption())) {
+			
+			speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), vehicle.getMaxSpeed());
 		}
 		
+		// Limitation for no-passing streets	
 		if(currentStreet.isNoPassing()) {
-			for(Vehicle others : currentStreet.getVehicles()) {
-				speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), others.getMaxSpeed());
+			for(Vehicle other : currentStreet.getVehicles()) {
+				
+				int abstand =  this.vehicle.getDistToNext() - other.getDistToNext();
+				if(other == this.vehicle || abstand < 0) {
+					// Don't check myself and only look forward
+					continue;
+				}
+				
+				if(abstand == Constants.DISTANCE_NO_PASSING) { //TODO constant
+					// speed of other vehicle
+					speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), other.getMaxSpeed());
+				} else if(abstand < Constants.DISTANCE_NO_PASSING) {
+					// slow a bit down
+					speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), other.getMaxSpeed()) - 10;
+				}
 			}
 		}
 		
 		return speedLimit;
 	}
 	
-	private void catchUp() {
-		// TODO
-	}
-	
-	private void driveFromTo(Node from, Node to, int speedLimit) throws InterruptedException {
+	private void driveFromTo(Node from, Node to, Street currentStreet) throws InterruptedException {
 		
 		
 		System.out.println("Drive from " + from + " to " + to);
@@ -140,12 +146,15 @@ public class SolverMapGraph implements Runnable, Observer{
 			Node currentPosition = new Node();
 			currentPosition.setX((int) (from.getX() + (to.getX() - from.getX())*(i*(1/ticks))));
 			currentPosition.setY((int) (from.getY() + (to.getY() - from.getY())*(i*(1/ticks))));
+			
+			// TODO current position height
 			vehicle.setCurrentPosition(currentPosition);
 
 			//statistics
 			end = System.currentTimeMillis();
 			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
-
+			
+			int speedLimit = calculateSpeed(currentStreet);
 
 			vehicle.getThread().sleep((2000/speedLimit));
 
