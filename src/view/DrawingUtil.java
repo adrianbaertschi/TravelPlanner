@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
+import model.entity.TemporaryStreet;
 
 public class DrawingUtil {
 	
@@ -29,7 +30,7 @@ public class DrawingUtil {
 		
 		for(Street street : model.getStreets()) {
 			
-			if(street.isTemporary()) {
+			if(street instanceof TemporaryStreet) {
 				continue;
 			}
 			

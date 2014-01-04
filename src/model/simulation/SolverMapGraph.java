@@ -16,6 +16,7 @@ import model.entity.Car;
 import model.entity.Node;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
+import model.entity.TemporaryStreet;
 import model.entity.Vehicle;
 
 import org.jgrapht.alg.DijkstraShortestPath;
@@ -74,18 +75,33 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				
 				Street currentStreet = null;
-				for(Street s : simulationEditorModel.getMapEditorModel().getStreets() ){
-					if(s.getStart().equals(vehicle.getCurrentKnot()) && s.getEnd().equals(vehicle.getNextKnot()) ||
-					   s.getStart().equals(vehicle.getNextKnot()) && s.getEnd().equals(vehicle.getCurrentKnot())){
-						currentStreet = s;
-					}
-				}
 				
+				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+					if(street.getStart().equals(vehicle.getCurrentKnot()) && street.getEnd().equals(vehicle.getNextKnot()) ||
+							   street.getStart().equals(vehicle.getNextKnot()) && street.getEnd().equals(vehicle.getCurrentKnot())){
+								currentStreet = street;
+								break;
+							}
+					
+				}
 				
 				currentStreet.getVehicles().add(vehicle);
 				
-//				int speedLimit = calculateSpeed(currentStreet);
-//				System.out.println("Limit: " + speedLimit);
+				// remove unused temporary streets during simulation
+				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+					if(street instanceof TemporaryStreet) {
+						TemporaryStreet tempStreet = (TemporaryStreet)street;
+						System.out.println(tempStreet.getVehicles());
+						if(tempStreet.getVehicles().isEmpty()) {
+							System.out.println("remove " + tempStreet);
+							simulationEditorModel.getMapEditorModel().removeStreet(tempStreet);
+						}
+					}
+					
+				}
+				
 				
 				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
 				
@@ -120,7 +136,7 @@ public class SolverMapGraph implements Runnable, Observer{
 					continue;
 				}
 				
-				if(abstand == Constants.DISTANCE_NO_PASSING) { //TODO constant
+				if(abstand == Constants.DISTANCE_NO_PASSING) {
 					// speed of other vehicle
 					speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), other.getMaxSpeed());
 				} else if(abstand < Constants.DISTANCE_NO_PASSING) {
@@ -174,6 +190,14 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			if(s.isClosed()) {
 				continue;
+			}
+			
+			// Temp streets can only be used for corresponding vehicle
+			if(s instanceof TemporaryStreet) {
+				TemporaryStreet tempStreet = (TemporaryStreet)s;
+				if(tempStreet.getAllowedVehicle() != vehicle) {
+					continue;
+				}
 			}
 
 
@@ -301,6 +325,15 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	private void recalculate() {
 		SimulationEditorModel.incRunningSimulations();
+		
+		// Clear temporary Streets from model
+		for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+			if(street instanceof TemporaryStreet) {
+				simulationEditorModel.getMapEditorModel().removeStreet(street);
+			}
+		}
+		
 		this.vehicle.getThread().interrupt();
 		end = System.currentTimeMillis();
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
@@ -308,10 +341,10 @@ public class SolverMapGraph implements Runnable, Observer{
 		Node temp = vehicle.getCurrentPosition();
 		//TODO: height of temp
 		
-		Street s1 = new Street(temp, vehicle.getCurrentKnot());
-		s1.setTemporary(true);
-		Street s2 = new Street(temp, vehicle.getNextKnot());
-		s2.setTemporary(true);
+		TemporaryStreet s1 = new TemporaryStreet(temp, vehicle.getCurrentKnot());
+		s1.setAllowedVehicle(vehicle);
+		TemporaryStreet s2 = new TemporaryStreet(temp, vehicle.getNextKnot());
+		s2.setAllowedVehicle(vehicle);
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {

@@ -37,9 +37,6 @@ public class Street {
 	@Transient
 	private boolean isClosed = false;
 	
-	@Transient
-	private boolean isTemporary = false;
-	
 	private boolean isOneWay = false;
 	
 	private boolean isNoPassing = false;
@@ -159,14 +156,6 @@ public class Street {
 		return middle;
 	}
 	
-	public boolean isTemporary() {
-		return isTemporary;
-	}
-
-	public void setTemporary(boolean isTemporary) {
-		this.isTemporary = isTemporary;
-	}
-
 	public boolean isOneWay() {
 		return isOneWay;
 	}
