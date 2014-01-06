@@ -117,7 +117,7 @@ public class SolverMapGraphTest {
 		SolverMapGraph solver = new SolverMapGraph(simulationEditorModel);
 		Vehicle v = simulationEditorModel.getFleetEditorModel().getVehicles().get(0);
 		solver.setVehicle(v);
-		Queue<Node> pathForVehicle = solver.getPathForVehicle(v, solver.createMapGraph());
+		Queue<Node> pathForVehicle = solver.getPathForVehicle(v, solver.createMapGraph(), null);
 		
 		System.out.println(pathForVehicle);
 		
@@ -127,7 +127,7 @@ public class SolverMapGraphTest {
 		
 		s4.setOneWay(true);
 		
-		pathForVehicle = solver.getPathForVehicle(v, solver.createMapGraph());
+		pathForVehicle = solver.getPathForVehicle(v, solver.createMapGraph(), null);
 		assertArrayEquals(new Node[]{n1, n2, n4}, pathForVehicle.toArray());
 		
 	}

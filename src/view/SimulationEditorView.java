@@ -22,12 +22,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import model.entity.Car;
 import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
-
 import common.Constants;
 
 /**
@@ -83,10 +83,12 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private JLabel actualTimeJL;
 	private JLabel pathLengthJL;
 	private JLabel pathJL;
+	private JLabel gasUsageJL;
 	
 	private JLabel expectedTimeValueJL;
 	private JLabel actualTimeValueJL;
 	private JLabel pathLengthValueJL;
+	private JLabel gasUsageValueJL;
 	
 	public SimulationEditorView() {
 		
@@ -243,11 +245,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 		expectedTimeJL = new JLabel("Expected Time");
 		actualTimeJL= new JLabel("Used Time");
 		pathLengthJL = new JLabel("Path Length");
+		gasUsageJL = new JLabel("Gas Usage");
 		pathJL = new JLabel("Path");
 
 		expectedTimeValueJL = new JLabel("0");
 		actualTimeValueJL= new JLabel("0");
 		pathLengthValueJL = new JLabel("0");
+		gasUsageValueJL = new JLabel("0");
 
 		statisticsJP.add(expectedTimeJL);
 		statisticsJP.add(expectedTimeValueJL);
@@ -255,6 +259,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		statisticsJP.add(actualTimeValueJL);
 		statisticsJP.add(pathLengthJL);
 		statisticsJP.add(pathLengthValueJL);
+		statisticsJP.add(gasUsageJL);
+		statisticsJP.add(gasUsageValueJL);
 		
 		
 		//user disruption
@@ -400,6 +406,11 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
 //		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
 		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()));
+		if(v instanceof Car){
+			
+			this.gasUsageValueJL.setText(Double.toString(((Car) v).getGasUsage()));
+
+		}
 	}
 
 	public void update(Observable model, Object value) {

@@ -3,6 +3,7 @@
  */
 package model.entity;
 
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 import javax.persistence.Entity;
@@ -54,6 +55,11 @@ public class Vehicle extends EntityBase {
 		//default value
 		this.simulationOption = SimulationOption.SHORTEST_PATH;
 		this.delay = 0;
+		
+		//init values
+		this.pathLength = 0.0;
+		this.actualTime = 0.0;
+		this.path = new ArrayDeque<Node>();
 	}
 
 	/**
@@ -251,6 +257,13 @@ public class Vehicle extends EntityBase {
 	 */
 	public void setPath(Queue<Node> path) {
 		this.path = path;
+	}
+	
+	/**
+	 * @param node to add to the path
+	 */
+	public void addNode(Node n){
+		path.add(n);
 	}
 
 	/**

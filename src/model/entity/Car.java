@@ -4,6 +4,7 @@
 package model.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 
 /**
@@ -17,6 +18,11 @@ public class Car extends Vehicle {
 	private float gasConsumptionMedium;
 	private float gasConsumptionHigh;
 	
+	//Statistic
+	@Transient
+	private double gasUsage;	
+
+	
 	public Car(){
 		
 		//DefaultValues
@@ -25,6 +31,8 @@ public class Car extends Vehicle {
 		this.gasConsumptionMedium = 5.3f;
 		this.gasConsumptionHigh = 4.8f;
 		
+		//init value
+		this.gasUsage = 0.0;
 		
 	}
 
@@ -68,6 +76,20 @@ public class Car extends Vehicle {
 	 */
 	public void setGasConsumptionHigh(float gasConsumptionHigh) {
 		this.gasConsumptionHigh = gasConsumptionHigh;
+	}
+
+	/**
+	 * @return the gasUsage
+	 */
+	public double getGasUsage() {
+		return gasUsage;
+	}
+
+	/**
+	 * @param gasUsage the gasUsage to set
+	 */
+	public void setGasUsage(double gasUsage) {
+		this.gasUsage = gasUsage;
 	}
 
 	

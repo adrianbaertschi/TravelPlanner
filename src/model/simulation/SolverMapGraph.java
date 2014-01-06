@@ -4,6 +4,8 @@
 package model.simulation;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,11 +37,12 @@ public class SolverMapGraph implements Runnable, Observer{
 	private Vehicle vehicle;
 	private long start;
 	private long end;
+	private boolean statistics;
 	
 	public SolverMapGraph(SimulationEditorModel simulationEditorModel){
 		
 		this.simulationEditorModel = simulationEditorModel;
-		
+		this.statistics = false;
 	}
 	
 	private void startSimulation() throws InterruptedException {
@@ -47,21 +50,21 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 			SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
 			
-			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg);
+			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg, null);
 			
 			if(pathForVehicle.isEmpty()) {
 				throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
 			}
 			
-			pathForVehicle.poll();
+			Node n = pathForVehicle.poll();
 			
-			//Statistics
-			if(vehicle.getPath() == null){
+			//statistics
+			if(n!=null){
 				
-				vehicle.setPath(pathForVehicle);
-			}//TODO:falls path neu berechnet wurde, das neue teilst�ck hinzuf�gen.
-			
-			
+				vehicle.addNode(n);
+
+			}
+						
 			System.out.println("path for Vehicle " + pathForVehicle);
 			
 			//statistics
@@ -112,10 +115,39 @@ public class SolverMapGraph implements Runnable, Observer{
 						
 			//reinitialize the currentKnot so a new simulation can be performed
 			vehicle.setCurrentKnot(vehicle.getStartKnot());
-
-		
+			
+			
+			//statistics
+			vehicle.addNode(vehicle.getFinishKnot());
+			System.out.println(vehicle.getPath());
+			updateStatistics();
 	}
 	
+	private void updateStatistics() {
+
+		statistics = true;
+		SimulationOption simulationOption = vehicle.getSimulationOption();
+		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg;
+		
+		if(vehicle.getPath().size() > 0){
+			
+			vehicle.setSimulationOption(SimulationOption.SHORTEST_PATH);
+			swg = createMapGraph();
+			getPathForVehicle(vehicle, swg, SimulationOption.SHORTEST_PATH);
+			
+			if(vehicle instanceof Car){
+				
+				vehicle.setSimulationOption(SimulationOption.LOWEST_GAS_CONSUMPTION);
+				swg = createMapGraph();
+				getPathForVehicle(vehicle, swg, SimulationOption.LOWEST_GAS_CONSUMPTION);
+
+			}
+		}
+		
+		statistics = false;
+		vehicle.setSimulationOption(simulationOption);
+	}
+
 	private int calculateSpeed(Street currentStreet) throws InterruptedException {
 		
 		int speedLimit = 0;
@@ -188,6 +220,34 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		List<Street> streets = simulationEditorModel.getMapEditorModel().getStreets();
 		
+		//statistics
+		if(statistics){
+			
+			Iterator<Node> pathIterator = vehicle.getPath().iterator();
+			Node n1 = pathIterator.next();
+			
+			List<Street> statisticStreets = new ArrayList<Street>();
+			
+			while (pathIterator.hasNext()){
+				
+				Node n2 = pathIterator.next();
+				
+				for(int y = 0; y < streets.size(); y++){
+					if(streets.get(y).getStart().equals(n1) && streets.get(y).getEnd().equals(n2) ||
+							streets.get(y).getEnd().equals(n1) && streets.get(y).getStart().equals(n2)){
+						
+						statisticStreets.add(streets.get(y));
+					}
+
+				}
+				
+				n1 = n2;
+			}
+		
+			streets = statisticStreets;
+		}
+		
+		
 		for(int i = 0; i<streets.size(); i++) {
 			Street s = streets.get(i);
 			
@@ -209,49 +269,60 @@ public class SolverMapGraph implements Runnable, Observer{
 			swg.addVertex(s.getEnd());
 
 			// add edges to create linking structure
-			int weight = 0;
+			int weightAB = 0;
+			int weightBA = 0;
 			switch (vehicle.getSimulationOption()) {
 
 			case FASTEST_PATH:
 
 				if(vehicle.getMaxSpeed() < s.getStreetType().getSpeedLimit()){
-					weight = s.getLenth() / vehicle.getMaxSpeed();
+					weightAB = s.getLenth() / vehicle.getMaxSpeed();
+					weightBA = weightAB;
 				} else {
-					weight =  s.getLenth() / s.getStreetType().getSpeedLimit();
+					weightAB =  s.getLenth() / s.getStreetType().getSpeedLimit();
+					weightBA = weightAB;
 				}
 
 				break;
 				
 			case IGNORE_SPEEDLIMIT:
-				weight = s.getLenth();
+				weightAB = s.getLenth();
+				weightBA = weightAB;
 				break;
 				
 			case LOWEST_GAS_CONSUMPTION:
 				
 				Car car = (Car)vehicle;
-				
+				System.out.println(car.getVehicleTypes().getUrlVehicle() +" incline " + s.getIncline());
+
 				switch (s.getStreetType()) {
 				
 				case QUARTIER:						
-					weight = (int) (car.getGasConsumptionLow()/100 *s.getLenth());
+					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
+					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
 				case INNERORTS:						
-					weight = (int) (car.getGasConsumptionLow()/100 *s.getLenth());
+					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
+					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
 				case AUSSERORTS:						
-					weight = (int) (car.getGasConsumptionMedium()/100 *s.getLenth());
+					weightAB = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * getInclineFactor(s));
+					weightBA = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
 				case AUTOSTRASSE:						
-					weight = (int) (car.getGasConsumptionMedium()/100 *s.getLenth());
+					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
+					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
 				case AUTOBAHN:						
-					weight = (int) (car.getGasConsumptionHigh()/100 *s.getLenth());
+					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
+					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
 				}
 				
 				break;
 			case SHORTEST_PATH:
-				weight = s.getLenth();
+				weightAB = s.getLenth();
+				weightBA = weightAB;
 				break;
 				
 			default:
@@ -260,18 +331,33 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 			
 			DefaultWeightedEdge edgeOne = swg.addEdge(s.getStart(), s.getEnd());
-			swg.setEdgeWeight(edgeOne, weight);
+			swg.setEdgeWeight(edgeOne, weightAB);
 			
 			if(!s.isOneWay()) {
 				DefaultWeightedEdge edgeTwo = swg.addEdge(s.getEnd(), s.getStart());
-				swg.setEdgeWeight(edgeTwo, weight);
+				swg.setEdgeWeight(edgeTwo, weightBA);
 			}
 
 		}
 		return swg;
 	}
 
-	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg) {
+	private double getInclineFactor(Street s) {
+		
+		double incline = s.getIncline();
+		
+		if(incline < 0){
+			incline = 1/(-1 * incline +1);
+		}else {
+			incline+=1;
+		}
+		
+		System.out.println("incline " +incline);
+
+		return incline;
+	}
+
+	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg, SimulationOption simulationStatistic) {
 		
 		if(!swg.containsVertex(vehicle.getCurrentKnot()) || !swg.containsVertex(vehicle.getFinishKnot())) {
 			throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
@@ -279,9 +365,22 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());			
 		
-		//statistics
-		vehicle.setPathLength(dsp.getPathLength());
-		
+		if(statistics){
+			
+			switch (simulationStatistic) {
+			
+			case SHORTEST_PATH:						
+				
+				vehicle.setPathLength(dsp.getPathLength());
+					
+			
+			case LOWEST_GAS_CONSUMPTION:
+			
+				Car car = (Car) vehicle;
+				car.setGasUsage(dsp.getPathLength());
+			
+			}	
+		}
 		
 		Queue<Node> nodes = new ArrayDeque<Node>();
 
@@ -305,9 +404,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 		}
 		
-		//statistics
-		vehicle.setPathLength(dsp.getPathLength());
-
 		return nodes;
 	}
 
@@ -383,6 +479,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			Thread.sleep(vehicle.getDelay()*1000);
 			
 //			start = System.currentTimeMillis();
+			vehicle.setPath(new ArrayDeque<Node>());
 			startSimulation();
 			
 		} catch (InterruptedException e) {
