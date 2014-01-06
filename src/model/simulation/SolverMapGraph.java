@@ -124,6 +124,9 @@ public class SolverMapGraph implements Runnable, Observer{
 		if(!SimulationOption.IGNORE_SPEEDLIMIT.equals(vehicle.getSimulationOption())) {
 			
 			speedLimit = Math.min(currentStreet.getStreetType().getSpeedLimit(), vehicle.getMaxSpeed());
+		}else{
+			
+			speedLimit = vehicle.getMaxSpeed();
 		}
 		
 		// Limitation for no-passing streets	

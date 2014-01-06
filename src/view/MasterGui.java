@@ -65,7 +65,7 @@ public class MasterGui extends JFrame {
 
 			public void uncaughtException(Thread t, Throwable e) {
 				if(e instanceof SimulationEditorModelException) {
-					JOptionPane.showMessageDialog(tabPane.getSelectedComponent(), e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(tabPane.getSelectedComponent(), e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(tabPane, e.getMessage(), "unexpexted error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
