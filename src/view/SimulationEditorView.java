@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.text.NumberFormat;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -80,13 +81,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private boolean inSimulation = false;
 
 	private JLabel expectedTimeJL;
-	private JLabel actualTimeJL;
+	private JLabel simulationDurationJL;
 	private JLabel pathLengthJL;
 	private JLabel pathJL;
 	private JLabel gasUsageJL;
 	
 	private JLabel expectedTimeValueJL;
-	private JLabel actualTimeValueJL;
+	private JLabel simulationDurationValueJL;
 	private JLabel pathLengthValueJL;
 	private JLabel gasUsageValueJL;
 	
@@ -243,20 +244,20 @@ public class SimulationEditorView extends JPanel implements Observer{
 		vehicleArea.add(statisticsJP);
 		
 		expectedTimeJL = new JLabel("Expected Time");
-		actualTimeJL= new JLabel("Used Time");
+		simulationDurationJL= new JLabel("Simulation Duration");
 		pathLengthJL = new JLabel("Path Length");
 		gasUsageJL = new JLabel("Gas Usage");
 		pathJL = new JLabel("Path");
 
 		expectedTimeValueJL = new JLabel("0");
-		actualTimeValueJL= new JLabel("0");
+		simulationDurationValueJL= new JLabel("0");
 		pathLengthValueJL = new JLabel("0");
 		gasUsageValueJL = new JLabel("0");
 
 		statisticsJP.add(expectedTimeJL);
 		statisticsJP.add(expectedTimeValueJL);
-		statisticsJP.add(actualTimeJL);
-		statisticsJP.add(actualTimeValueJL);
+		statisticsJP.add(simulationDurationJL);
+		statisticsJP.add(simulationDurationValueJL);
 		statisticsJP.add(pathLengthJL);
 		statisticsJP.add(pathLengthValueJL);
 		statisticsJP.add(gasUsageJL);
@@ -405,7 +406,9 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
 //		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
-		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()));
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(2); // max. 2 stellen hinter komma
+		this.simulationDurationValueJL.setText(nf.format(v.getActualTime()));
 		if(v instanceof Car){
 			
 			this.gasUsageValueJL.setText(Double.toString(((Car) v).getGasUsage()));
