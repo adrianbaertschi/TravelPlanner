@@ -10,11 +10,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.UserDisruption;
 import model.config.SimulationOption;
+import model.entity.Car;
 import model.entity.Node;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
@@ -196,7 +198,13 @@ public class SimulationEditorController implements Controller{
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTime(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTimeTemp(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setPathLength(0.0);
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setPath(new ArrayDeque<Node>());
 
+				if(simulationEditorModel.getFleetEditorModel().getVehicles().get(i) instanceof Car){
+					Car car = (Car) simulationEditorModel.getFleetEditorModel().getVehicles().get(i);
+					car.setGasUsage(0.0);
+				}
+				
 				SolverMapGraph s = new SolverMapGraph(simulationEditorModel);
 
 				simulationEditorModel.addObserver(s);

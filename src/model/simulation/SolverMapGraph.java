@@ -72,10 +72,9 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
 				
-							
+						
 				//getting the nextKnot from Dijkstra
-				vehicle.setNextKnot(pathForVehicle.poll());
-				
+				vehicle.setNextKnot(pathForVehicle.poll());								
 				
 				Street currentStreet = null;
 				
@@ -108,9 +107,15 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
 				
+				//statistics
+				vehicle.addNode(vehicle.getNextKnot());
+
 				vehicle.setCurrentKnot(vehicle.getNextKnot());
 				currentStreet.getVehicles().remove(vehicle);
 					
+			
+			
+			
 			}
 						
 			//reinitialize the currentKnot so a new simulation can be performed
@@ -127,6 +132,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		statistics = true;
 		SimulationOption simulationOption = vehicle.getSimulationOption();
+		
 		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg;
 		
 		if(vehicle.getPath().size() > 0){
@@ -329,7 +335,8 @@ public class SolverMapGraph implements Runnable, Observer{
 				break;
 
 			}
-			
+
+			//TODO: Loops not allowed / nullpointer bei strassen sperren
 			DefaultWeightedEdge edgeOne = swg.addEdge(s.getStart(), s.getEnd());
 			swg.setEdgeWeight(edgeOne, weightAB);
 			
@@ -479,7 +486,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			Thread.sleep(vehicle.getDelay()*1000);
 			
 //			start = System.currentTimeMillis();
-			vehicle.setPath(new ArrayDeque<Node>());
 			startSimulation();
 			
 		} catch (InterruptedException e) {
