@@ -91,18 +91,18 @@ public class SolverMapGraph implements Runnable, Observer{
 				currentStreet.getVehicles().add(vehicle);
 				
 				// remove unused temporary streets during simulation
-				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
-					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
-					if(street instanceof TemporaryStreet) {
-						TemporaryStreet tempStreet = (TemporaryStreet)street;
-						System.out.println(tempStreet.getVehicles());
-						if(tempStreet.getVehicles().isEmpty()) {
-							System.out.println("remove " + tempStreet);
-							simulationEditorModel.getMapEditorModel().removeStreet(tempStreet);
-						}
-					}
-					
-				}
+//				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+//					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+//					if(street instanceof TemporaryStreet) {
+//						TemporaryStreet tempStreet = (TemporaryStreet)street;
+//						System.out.println(tempStreet.getVehicles());
+//						if(tempStreet.getVehicles().isEmpty()) {
+//							System.out.println("remove " + tempStreet);
+//							simulationEditorModel.getMapEditorModel().removeStreet(tempStreet);
+//						}
+//					}
+//					
+//				}
 				
 				
 				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
@@ -126,8 +126,21 @@ public class SolverMapGraph implements Runnable, Observer{
 			vehicle.addNode(vehicle.getFinishKnot());
 			System.out.println(vehicle.getPath());
 			updateStatistics();
+			removeTemporaryStreets();
 	}
 	
+	private void removeTemporaryStreets() {
+
+		// Clear temporary Streets from model
+		for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+			if(street instanceof TemporaryStreet) {
+				simulationEditorModel.getMapEditorModel().removeStreet(street);
+			}
+		}
+
+	}
+
 	private void updateStatistics() {
 
 		statistics = true;
@@ -338,11 +351,17 @@ public class SolverMapGraph implements Runnable, Observer{
 
 			//TODO: Loops not allowed / nullpointer bei strassen sperren
 			DefaultWeightedEdge edgeOne = swg.addEdge(s.getStart(), s.getEnd());
-			swg.setEdgeWeight(edgeOne, weightAB);
+			if (edgeOne != null){
+				swg.setEdgeWeight(edgeOne, weightAB);
+			}
 			
 			if(!s.isOneWay()) {
 				DefaultWeightedEdge edgeTwo = swg.addEdge(s.getEnd(), s.getStart());
-				swg.setEdgeWeight(edgeTwo, weightBA);
+				
+				if(edgeTwo != null){
+						swg.setEdgeWeight(edgeTwo, weightBA);
+						
+				}
 			}
 
 		}
@@ -431,15 +450,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	private void recalculate() {
 		SimulationEditorModel.incRunningSimulations();
-		
-		// Clear temporary Streets from model
-		for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
-			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
-			if(street instanceof TemporaryStreet) {
-				simulationEditorModel.getMapEditorModel().removeStreet(street);
-			}
-		}
-		
+		System.out.println("vehicle in recalc " + vehicle.getVehicleTypes());		
 		this.vehicle.getThread().interrupt();
 		end = System.currentTimeMillis();
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
@@ -463,7 +474,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		simulationEditorModel.getMapEditorModel().addStreet(s2);
 		
 		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
-		
+				
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
 		smg.setVehicle(vehicle);
 		
@@ -474,7 +485,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 
 	public void update(Observable o, Object arg) {
-		if(arg instanceof UserDisruption) {
+		if(arg instanceof UserDisruption && this.vehicle.getThread().isAlive()) {
 			System.out.println("recalculate route");
 			this.simulationEditorModel = (SimulationEditorModel) o;
 			recalculate();
@@ -492,6 +503,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			// Nothinig to do here
 		} finally {
 			SimulationEditorModel.decRunningSimulations();
+			System.out.println("end fred");
 		}
 	}
 
