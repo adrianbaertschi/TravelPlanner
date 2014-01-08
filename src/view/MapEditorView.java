@@ -72,21 +72,21 @@ public class MapEditorView extends JPanel implements Observer{
 		cbxStreetType.setBounds(920, 240, 200, 30);
 		this.add(cbxStreetType);
 		
-		lblNodeHeight = new JLabel("Node height:");
-		lblNodeHeight.setBounds(920, 10, 100, 30);
+		lblNodeHeight = new JLabel("Node height (km):");
+		lblNodeHeight.setBounds(920, 10, 140, 30);
 		this.add(lblNodeHeight);
 		
 		NumberFormatter numberFormatter = new NumberFormatter(NumberFormat.getIntegerInstance(new Locale("de", "CH")));
 		numberFormatter.setMinimum(0);
-		numberFormatter.setMaximum(99999);
+		numberFormatter.setMaximum(100);
 		numberFormatter.setCommitsOnValidEdit(true);
 		
 		txfNodeHeight = new JFormattedTextField(numberFormatter);
-		txfNodeHeight.setBounds(1020, 10, 60, 30);
+		txfNodeHeight.setBounds(1050, 10, 60, 30);
 		this.add(txfNodeHeight);
 		
-		btnSetHeight = new JButton("set height");
-		btnSetHeight.setBounds(1080, 10, 100, 30);
+		btnSetHeight = new JButton("Set");
+		btnSetHeight.setBounds(1120, 10, 60, 30);
 		btnSetHeight.setEnabled(false);
 		this.add(btnSetHeight);
 		
@@ -168,7 +168,7 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private void displayNodeInfo(Node selectedNode) {
 		if(selectedNode != null) {
-			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + "/" + selectedNode.getY() + "\nheight: " + selectedNode.getHeight());
+			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + "/" + selectedNode.getY() + "\nheight: " + selectedNode.getHeight() + " m");
 			txfNodeHeight.setValue(selectedNode.getHeight());
 		} else {
 			infoField.setText("");
@@ -178,7 +178,7 @@ public class MapEditorView extends JPanel implements Observer{
 	private void displayStreetInfo(Street st) {
 		NumberFormat nf = NumberFormat.getIntegerInstance();
 		String degrees = nf.format(Math.toDegrees(st.getIncline()));
-		infoField.setText("Selected Street:\nLength: " + st.getLenth() + " \nIncline: " + degrees + "°");
+		infoField.setText("Selected Street:\nLength: " + st.getLenth() + " km \nIncline: " + degrees + "°");
 	}
 
 	public void update(Observable model, Object value) {
