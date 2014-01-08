@@ -78,11 +78,11 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		NumberFormatter numberFormatter = new NumberFormatter(NumberFormat.getIntegerInstance(new Locale("de", "CH")));
 		numberFormatter.setMinimum(0);
-		numberFormatter.setMaximum(9999);
+		numberFormatter.setMaximum(99999);
 		numberFormatter.setCommitsOnValidEdit(true);
 		
 		txfNodeHeight = new JFormattedTextField(numberFormatter);
-		txfNodeHeight.setBounds(1020, 10, 50, 30);
+		txfNodeHeight.setBounds(1020, 10, 60, 30);
 		this.add(txfNodeHeight);
 		
 		btnSetHeight = new JButton("set height");
@@ -168,7 +168,7 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private void displayNodeInfo(Node selectedNode) {
 		if(selectedNode != null) {
-			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + " / " + selectedNode.getY());
+			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + "/" + selectedNode.getY() + "\nheight: " + selectedNode.getHeight());
 			txfNodeHeight.setValue(selectedNode.getHeight());
 		} else {
 			infoField.setText("");

@@ -24,6 +24,12 @@ public class Node {
 		this.setY(y);
 	}
 	
+	/**
+	 * 
+	 * @param x coordinate (in km)
+	 * @param y coordinate (in km)
+	 * @param height in km
+	 */
 	public Node(int x, int y, int height) {
 		this.setX(x);
 		this.setY(y);
@@ -78,10 +84,18 @@ public class Node {
 		this.isEndPosition = isEndPosition;
 	}
 	
+	/**
+	 * Get the height (in km)
+	 * @return
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * set height (in km)
+	 * @param height
+	 */
 	public void setHeight(int height) {
 		this.height = height;
 	}

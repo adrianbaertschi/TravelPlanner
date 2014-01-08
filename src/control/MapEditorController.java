@@ -60,7 +60,7 @@ public class MapEditorController implements Controller {
 		if(value == null) {
 			return 0;
 		}
-		return value.intValue();
+		return value.intValue() / 1000;
 	}
 
 	class MapMouseListener implements MouseListener {

@@ -3,8 +3,6 @@ package model.entity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import model.entity.Node;
-import model.entity.Street;
 
 import org.junit.Test;
 
@@ -29,6 +27,12 @@ public class StreetTest {
 		
 		Street s3 = new Street(new Node(3, 10, 34), new Node(10, 1, 4));
 		assertEquals(32, s3.getLenth());
+		
+		Street s4 = new Street(new Node(0, 0, 0), new Node(0, 10, 10));
+		assertEquals(14, s4.getLenth());
+		
+		Street s5 = new Street(new Node(10, 0, 0), new Node(0, 10, 0));
+		assertEquals(14, s5.getLenth());
 	}
 	
 	@Test

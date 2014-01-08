@@ -88,7 +88,7 @@ public class Street {
 	/**
 	 * Calculate length of street based on start, end and heigt
 	 * 
-	 * @return Lenth of street in px
+	 * @return Lenth of street in km
 	 */
 	public int getLenth() {
 		
