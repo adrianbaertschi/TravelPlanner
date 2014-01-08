@@ -90,21 +90,6 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				currentStreet.getVehicles().add(vehicle);
 				
-				// remove unused temporary streets during simulation
-//				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
-//					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
-//					if(street instanceof TemporaryStreet) {
-//						TemporaryStreet tempStreet = (TemporaryStreet)street;
-//						System.out.println(tempStreet.getVehicles());
-//						if(tempStreet.getVehicles().isEmpty()) {
-//							System.out.println("remove " + tempStreet);
-//							simulationEditorModel.getMapEditorModel().removeStreet(tempStreet);
-//						}
-//					}
-//					
-//				}
-				
-				
 				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
 				
 				//statistics
@@ -392,21 +377,23 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());			
 		
-		if(statistics){
-			
+		if (statistics) {
+
 			switch (simulationStatistic) {
-			
-			case SHORTEST_PATH:						
-				
+
+			case SHORTEST_PATH:
+
 				vehicle.setPathLength(dsp.getPathLength());
-					
-			
+
 			case LOWEST_GAS_CONSUMPTION:
-			
+
 				Car car = (Car) vehicle;
 				car.setGasUsage(dsp.getPathLength());
-			
-			}	
+				
+			default:
+				break;
+
+			}
 		}
 		
 		Queue<Node> nodes = new ArrayDeque<Node>();
@@ -474,8 +461,6 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				s1.setOneWay(s.isOneWay());
 				s2.setOneWay(s.isOneWay());
-				
-				System.out.println(s.isOneWay());
 			}
 		}
 		
@@ -505,14 +490,12 @@ public class SolverMapGraph implements Runnable, Observer{
 		try {
 			Thread.sleep(vehicle.getDelay()*1000);
 			
-//			start = System.currentTimeMillis();
 			startSimulation();
 			
 		} catch (InterruptedException e) {
 			// Nothinig to do here
 		} finally {
 			SimulationEditorModel.decRunningSimulations();
-			System.out.println("end fred");
 		}
 	}
 
