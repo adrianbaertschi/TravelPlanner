@@ -316,23 +316,23 @@ public class SolverMapGraph implements Runnable, Observer{
 
 				switch (s.getStreetType()) {
 				
-				case QUARTIER:						
+				case DISTRICT_ROAD:
 					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
 					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
-				case INNERORTS:						
+				case IN_TOWN:
 					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
 					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
-				case AUSSERORTS:						
+				case OUT_OF_TOWN:
 					weightAB = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * getInclineFactor(s));
 					weightBA = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
-				case AUTOSTRASSE:						
+				case MOTORWAY:
 					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
 					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
-				case AUTOBAHN:						
+				case FREEWAY:
 					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
 					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
 					break;
@@ -368,6 +368,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		return swg;
 	}
 
+	// TODO move to Street
 	private double getInclineFactor(Street s) {
 		
 		double incline = s.getIncline();

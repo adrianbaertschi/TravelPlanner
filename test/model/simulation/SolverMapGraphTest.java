@@ -63,13 +63,13 @@ public class SolverMapGraphTest {
 		n4 = new Node(80, 110);
 		
 		s1 = new Street(n1, n2);
-		s1.setStreetType(StreetType.AUSSERORTS);
+		s1.setStreetType(StreetType.OUT_OF_TOWN);
 		s2 = new Street(n1, n3);
-		s2.setStreetType(StreetType.INNERORTS);
+		s2.setStreetType(StreetType.IN_TOWN);
 		s3 = new Street(n4, n2);
-		s3.setStreetType(StreetType.QUARTIER);
+		s3.setStreetType(StreetType.DISTRICT_ROAD);
 		s4 = new Street(n4, n3);
-		s4.setStreetType(StreetType.AUTOBAHN);
+		s4.setStreetType(StreetType.FREEWAY);
 		
 		car1.setCurrentKnot(n1);
 		car1.setStartKnot(n1);
