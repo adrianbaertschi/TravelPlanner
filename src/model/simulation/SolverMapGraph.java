@@ -459,7 +459,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		Node temp = vehicle.getCurrentPosition();
 		//TODO: height of temp
 		
-		TemporaryStreet s1 = new TemporaryStreet(temp, vehicle.getCurrentKnot());
+		TemporaryStreet s1 = new TemporaryStreet(vehicle.getCurrentKnot(), temp);
 		s1.setAllowedVehicle(vehicle);
 		TemporaryStreet s2 = new TemporaryStreet(temp, vehicle.getNextKnot());
 		s2.setAllowedVehicle(vehicle);
@@ -468,6 +468,14 @@ public class SolverMapGraph implements Runnable, Observer{
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
 				s1.setStreetType(s.getStreetType());
 				s2.setStreetType(s.getStreetType());
+				
+				s1.setNoPassing(s.isNoPassing());
+				s2.setNoPassing(s.isNoPassing());
+				
+				s1.setOneWay(s.isOneWay());
+				s2.setOneWay(s.isOneWay());
+				
+				System.out.println(s.isOneWay());
 			}
 		}
 		
