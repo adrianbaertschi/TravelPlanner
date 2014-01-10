@@ -211,6 +211,7 @@ public class SimulationEditorController implements Controller{
 				solver.add(s);
 				solver.get(i).setVehicle(simulationEditorModel.getFleetEditorModel().getVehicles().get(i));
 				solver.get(i).getVehicle().setThread(new Thread(solver.get(i)));
+				solver.get(i).getVehicle().setSimulationDelay(solver.get(i).getVehicle().getDelay());
 				solver.get(i).getVehicle().getThread().start();
 				SimulationEditorModel.incRunningSimulations();
 			}

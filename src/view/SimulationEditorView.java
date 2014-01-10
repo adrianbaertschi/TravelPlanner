@@ -320,7 +320,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private void draw(Graphics g) {
 		
 		this.requestFocusInWindow();
-		
+
 		Graphics2D g2d = (Graphics2D)g;
 		
 //		System.out.println(System.currentTimeMillis());
@@ -373,7 +373,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		setVehicleOptionsEnabled();
 		
 		// display cars on mapArea
-		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
+		for(Vehicle v : model.getFleetEditorModel().getVehicles()){			
 			
 			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
 			carII.setImage(carII.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
@@ -418,6 +418,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	public void update(Observable model, Object value) {
 
+		System.out.println("im update");
 		if(Constants.SIMULATION_FINISHED.equals(value)) {
 			setInSimulation(false);
 		}

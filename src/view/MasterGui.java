@@ -20,7 +20,7 @@ public class MasterGui extends JFrame {
 	
 	public MasterGui() {
 		this.setSize(1200, 900);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
 		try {

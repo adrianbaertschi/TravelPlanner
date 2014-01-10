@@ -49,6 +49,8 @@ public class Vehicle extends EntityBase {
 	@Transient
 	private Thread thread;
 	
+	@Transient
+	private int simulationDelay;
 
 	public Vehicle(){
 		
@@ -243,6 +245,20 @@ public class Vehicle extends EntityBase {
 	 */
 	public void setPathLength(double pathLength) {
 		this.pathLength = pathLength;
+	}
+
+	/**
+	 * @return the simulationDelay
+	 */
+	public int getSimulationDelay() {
+		return simulationDelay;
+	}
+
+	/**
+	 * @param simulationDelay the simulationDelay to set
+	 */
+	public void setSimulationDelay(int simulationDelay) {
+		this.simulationDelay = simulationDelay;
 	}
 
 	/**
