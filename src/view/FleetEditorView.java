@@ -160,11 +160,9 @@ public class FleetEditorView extends JPanel implements Observer {
 		fleetSelectionAreJP.add(fleetCurrentVehicleJP);
 		fleetSelectionAreJP.add(fleetNextVehicleJP);
 		
-		//TODO:Text im Hochformat
 		nextFleetVehicleJB = new JButton(new ImageIcon("images/arrow_up.png"));	
 		nextFleetVehicleJB.setBounds(265, 140, 25, 70);
 		
-		//TODO:Text im Hochformat
 		previousFleetVehicleJB = new JButton(new ImageIcon("images/arrow_down.png"));
 		previousFleetVehicleJB.setBounds(265, 590, 25, 70);
 		
