@@ -72,6 +72,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
+	private JLabel vehicleNameJL;
 
 	private ImageIcon vehicleII;
 	
@@ -154,6 +155,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 		previousVehicleJB = new JButton("<<<");
 		vehicleSelectionArea.add (previousVehicleJB, gbc);
 
+		
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.weightx = 3;
+		gbc.gridwidth = 1;
+		vehicleNameJL = new JLabel("Test");
+		vehicleSelectionArea.add (vehicleNameJL, gbc);
+
+		
 		gbc.gridx = 2;
 		gbc.gridy = 2;
 		gbc.weightx = 0;
@@ -344,7 +354,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 			vehicleII = new ImageIcon(vehicle.getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
-					
+			vehicleNameJL.setText(vehicle.getName());
+			
 			switch (model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getSimulationOption()){
 			
 			case SHORTEST_PATH:	
