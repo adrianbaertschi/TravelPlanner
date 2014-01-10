@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 
 import model.entity.Car;
 import model.entity.FleetEditorModel;
+import model.entity.Vehicle;
 import view.FleetEditorView;
 import view.MasterGui;
 import view.components.LoaderDialog;
@@ -49,6 +51,8 @@ public class FleetEditorController implements Controller {
 		fleetEditorView.getAddVehicleJB().addActionListener(new BtnAddVehicle());
 		fleetEditorView.getSaveFleetJB().addActionListener(new BtnSaveFleetActionListener());
 		fleetEditorView.getLoadFleetJB().addActionListener(new BtnLoadFleetActionListener());
+		fleetEditorView.getResetFleetJB().addActionListener(new BtnResetFleetActionListener());
+
 	}
 	
 	public Component showView() {
@@ -118,6 +122,14 @@ public class FleetEditorController implements Controller {
 			
 			fleetEditorModel.setName(name);
 			FleetEditorDao.getInstance().saveFleet(fleetEditorModel);
+		}
+	}
+	
+	class BtnResetFleetActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			fleetEditorModel.setVehicles(new ArrayList<Vehicle>());
 		}
 	}
 	

@@ -101,6 +101,9 @@ private void createVehicleSelection() {
 	 */
 	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
+		super.setChanged();
+		super.notifyObservers(this);
+
 	}
 			
 	

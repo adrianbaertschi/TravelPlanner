@@ -94,7 +94,7 @@ public class FleetEditorView extends JPanel implements Observer {
 	private JButton loadFleetJB;
 	private JButton deleteFleetJB;
 	
-	private JButton resetCurrentVehicleJB;
+	private JButton resetFleetJB;
 	private JButton deleteCurrentVehcleJB;
 
 
@@ -348,9 +348,9 @@ public class FleetEditorView extends JPanel implements Observer {
 		addVehicleArea.add(loadFleetJB);
 		
 		// Reset Button
-		resetCurrentVehicleJB = new JButton("Reset");
-		resetCurrentVehicleJB.setBounds(10, 440, 100, 30);
-		addVehicleArea.add(resetCurrentVehicleJB);
+		resetFleetJB = new JButton("Reset");
+		resetFleetJB.setBounds(10, 440, 100, 30);
+		addVehicleArea.add(resetFleetJB);
 		
 		deleteFleetJB = new JButton("Delete");
 		deleteFleetJB.setBounds(120, 440, 100, 30);
@@ -603,18 +603,19 @@ public class FleetEditorView extends JPanel implements Observer {
 		this.deleteFleetJB = deleteFleetJB;
 	}
 
+
 	/**
-	 * @return the resetCurrentVehicleJB
+	 * @return the resetFleetJB
 	 */
-	public JButton getResetCurrentVehicleJB() {
-		return resetCurrentVehicleJB;
+	public JButton getResetFleetJB() {
+		return resetFleetJB;
 	}
 
 	/**
-	 * @param resetCurrentVehicleJB the resetCurrentVehicleJB to set
+	 * @param resetFleetJB the resetFleetJB to set
 	 */
-	public void setResetCurrentVehicleJB(JButton resetCurrentVehicleJB) {
-		this.resetCurrentVehicleJB = resetCurrentVehicleJB;
+	public void setResetFleetJB(JButton resetFleetJB) {
+		this.resetFleetJB = resetFleetJB;
 	}
 
 	/**
