@@ -168,7 +168,7 @@ public class MapEditorView extends JPanel implements Observer{
 	
 	private void displayNodeInfo(Node selectedNode) {
 		if(selectedNode != null) {
-			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + "/" + selectedNode.getY() + "\nheight: " + selectedNode.getHeight() + " m");
+			infoField.setText("Selected Node:\nPosition: " + selectedNode.getX() + "/" + selectedNode.getY() + "\nheight: " + selectedNode.getHeight() + " km");
 			txfNodeHeight.setValue(selectedNode.getHeight());
 		} else {
 			infoField.setText("");
