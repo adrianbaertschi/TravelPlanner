@@ -49,30 +49,19 @@ public class FleetEditorModel extends EntityBase {
 private void createVehicleSelection() {
 
 	//green Car
-	Car cg = new Car();
-	cg.setVehicleTypes(VehicleType.GREENCAR);
-	vehicleSelection.add(cg);
+	vehicleSelection.add(new Car(VehicleType.GREENCAR));
 	
 	//blue Car
-	Car cb = new Car();
-	cb.setVehicleTypes(VehicleType.BLUECAR);
-	vehicleSelection.add(cb);
+	vehicleSelection.add(new Car(VehicleType.BLUECAR));
 	
 	//red Car
-	Car cr = new Car();
-	cr.setVehicleTypes(VehicleType.REDCAR);
-	vehicleSelection.add(cr);
+	vehicleSelection.add(new Car(VehicleType.REDCAR));
 
 	//yellow Car
-	Car cy = new Car();
-	cy.setVehicleTypes(VehicleType.YELLOWCAR);
-	vehicleSelection.add(cy);
+	vehicleSelection.add(new Car(VehicleType.YELLOWCAR));
 	
-
 	//mountain bike
-	Bicycle bm = new Bicycle();
-	bm.setVehicleTypes(VehicleType.MOUNTAINBIKE);
-	vehicleSelection.add(bm);
+	vehicleSelection.add(new Bicycle(VehicleType.MOUNTAINBIKE));
 
 	}
 

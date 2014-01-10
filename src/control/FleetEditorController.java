@@ -13,6 +13,8 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import model.config.VehicleType;
+import model.entity.Bicycle;
 import model.entity.Car;
 import model.entity.FleetEditorModel;
 import model.entity.Vehicle;
@@ -107,7 +109,28 @@ public class FleetEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			fleetEditorModel.addVehicle(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()));
+			Vehicle vehicle = fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos());
+			
+				
+			switch (vehicle.getVehicleTypes()){
+								
+				case BLUECAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.BLUECAR));
+					break;
+				case GREENCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.GREENCAR));
+					break;
+				case REDCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.REDCAR));
+					break;
+				case YELLOWCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.YELLOWCAR));
+					break;
+				case MOUNTAINBIKE:
+					fleetEditorModel.addVehicle(new Bicycle(VehicleType.MOUNTAINBIKE));
+					break;
+			}
+			
 		}
 	}
 	

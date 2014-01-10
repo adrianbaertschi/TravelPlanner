@@ -9,6 +9,7 @@ import java.util.Queue;
 
 import model.config.SimulationOption;
 import model.config.StreetType;
+import model.config.VehicleType;
 import model.entity.Car;
 import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
@@ -41,11 +42,11 @@ public class SolverMapGraphTest {
 		// Fleet
 		FleetEditorModel fleetEditorModel = new FleetEditorModel();
 		
-		Car car1 = new Car();
+		Car car1 = new Car(VehicleType.BLUECAR);
 		car1.setSimulationOption(SimulationOption.SHORTEST_PATH);
 		
 		
-		Car car2 = new Car();
+		Car car2 = new Car(VehicleType.GREENCAR);
 		car2.setSimulationOption(SimulationOption.FASTEST_PATH);
 		
 		List<Vehicle> cars = new ArrayList<Vehicle>();
