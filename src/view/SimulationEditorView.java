@@ -407,7 +407,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
 //		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
 		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(2); // max. 2 stellen hinter komma
+		nf.setMaximumFractionDigits(2);
 		this.simulationDurationValueJL.setText(nf.format(v.getActualTime()));
 		if(v instanceof Car){
 			

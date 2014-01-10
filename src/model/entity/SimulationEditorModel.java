@@ -75,6 +75,14 @@ public class SimulationEditorModel extends Observable {
 		if(o instanceof Vehicle || o instanceof UserDisruption) {
 			super.notifyObservers(o);
 		} else if(Constants.SIMULATION_FINISHED.equals(o)) {
+			
+			//reset CurrentPosition if neccessary
+			for(Vehicle v : this.getFleetEditorModel().getVehicles()){
+				
+				v.setCurrentKnot(v.getStartKnot());
+				v.setNextKnot(null);
+				v.setCurrentPosition(null);
+			}
 			super.notifyObservers(o);
 		} else {
 			super.notifyObservers(this);
