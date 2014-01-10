@@ -92,7 +92,6 @@ public class FleetEditorView extends JPanel implements Observer {
 
 	private JButton saveFleetJB;
 	private JButton loadFleetJB;
-	private JButton deleteFleetJB;
 	
 	private JButton resetCurrentVehicleJB;
 	private JButton deleteCurrentVehcleJB;
@@ -352,11 +351,6 @@ public class FleetEditorView extends JPanel implements Observer {
 		resetCurrentVehicleJB.setBounds(10, 440, 100, 30);
 		addVehicleArea.add(resetCurrentVehicleJB);
 		
-		deleteFleetJB = new JButton("Delete");
-		deleteFleetJB.setBounds(120, 440, 100, 30);
-		deleteFleetJB.setEnabled(false);
-		addVehicleArea.add(deleteFleetJB);
-
 	}
 
 	private void draw(Graphics g) {
@@ -587,20 +581,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	 */
 	public void setSaveFleetJB(JButton saveFleetJB) {
 		this.saveFleetJB = saveFleetJB;
-	}
-
-	/**
-	 * @return the deleteFleetJB
-	 */
-	public JButton getDeleteFleetJB() {
-		return deleteFleetJB;
-	}
-
-	/**
-	 * @param deleteFleetJB the deleteFleetJB to set
-	 */
-	public void setDeleteFleetJB(JButton deleteFleetJB) {
-		this.deleteFleetJB = deleteFleetJB;
 	}
 
 	/**
