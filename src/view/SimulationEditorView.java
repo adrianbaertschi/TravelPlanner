@@ -29,6 +29,7 @@ import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
+
 import common.Constants;
 
 /**
@@ -331,7 +332,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		DrawingUtil.drawMap(g2d, model.getMapEditorModel());
 
 		for(Street street : model.getMapEditorModel().getStreets()) {
-			if(street.isClosed()) {
+			if(street != model.getMapEditorModel().getSelectedStreet() && street.isClosed()) {
 				g2d.setColor(new Color(204, 204, 204));
 				g2d.draw(DrawingUtil.convertStreetToLine(street));
 			}

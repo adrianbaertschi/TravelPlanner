@@ -92,6 +92,8 @@ public class MapEditorModel extends Observable {
 	public void closeStreet(Street street) {
 		street.setClosed(true);
 		
+		selectedStreet = null;
+		
 		super.setChanged();
 		super.notifyObservers(new UserDisruption());
 	}
@@ -150,6 +152,11 @@ public class MapEditorModel extends Observable {
 		
 		super.setChanged();
 		super.notifyObservers();
+	}
+
+	public void reOpenStreet(Street street) {
+		street.setClosed(false);
+		selectedStreet = null;
 	}
 	
 //	/**

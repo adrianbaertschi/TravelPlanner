@@ -106,6 +106,13 @@ public class SimulationEditorController implements Controller{
 				simulationEditorModel.getMapEditorModel().setSelectedStreet(null);
 			} else {
 				Street selectedStreet = clickedOnStreet(knot);
+				
+				if(selectedStreet != null && selectedStreet.isClosed()) {
+					simulationEditorView.getCloseStreetJB().setText("Open street");
+				} else {
+					simulationEditorView.getCloseStreetJB().setText("Close street");
+				}
+				
 				simulationEditorModel.getMapEditorModel().setSelectedStreet(selectedStreet);
 			}
 			
@@ -241,6 +248,14 @@ public class SimulationEditorController implements Controller{
 		public void actionPerformed(ActionEvent e) {
 			
 			Street selectedStreet = simulationEditorModel.getMapEditorModel().getSelectedStreet();
+			
+			if(selectedStreet.isClosed()) {
+				System.out.println("repoen");
+				simulationEditorModel.getMapEditorModel().reOpenStreet(selectedStreet);
+				simulationEditorModel.changed(new UserDisruption());
+				return;
+			}
+			
 			boolean isVehicleOnStreet = false;
 			
 			for(Vehicle vehicle : simulationEditorModel.getFleetEditorModel().getVehicles()) {
