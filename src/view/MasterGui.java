@@ -1,9 +1,5 @@
 package view;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.ImageIcon;
@@ -30,6 +26,7 @@ public class MasterGui extends JFrame {
 		this.setIconImage(ii.getImage());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setTitle("Travel Planner");
 		
 		String lookandFeelerror = "Error initializing system Look and Feel. Fall back to standard.";
 		
@@ -70,7 +67,7 @@ public class MasterGui extends JFrame {
 				if(e instanceof SimulationEditorModelException) {
 					JOptionPane.showMessageDialog(tabPane.getSelectedComponent(), e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(tabPane, e.getMessage(), "unexpexted error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(tabPane, e.getMessage(), "Unexpexted error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				}
 			}
