@@ -24,7 +24,7 @@ public interface Constants {
 	
 	public static final String SIMULATION_FINISHED = "SIMULATION_FINISHED";
 	
-	public static final double TIME_RATIO = 1800.0;
+	public static final double TIME_RATIO = 1.955;
 	
 	public static final String MSG_NO_PATH = "No path exists for car %s, please change Start/Finish positions"; 
 

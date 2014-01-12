@@ -83,12 +83,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private boolean inSimulation = false;
 
 	private JLabel expectedTimeJL;
+	private JLabel actualTimeJL;
 	private JLabel simulationDurationJL;
 	private JLabel pathLengthJL;
-	private JLabel pathJL;
 	private JLabel gasUsageJL;
 	
 	private JLabel expectedTimeValueJL;
+	private JLabel actualTimeValueJL;
 	private JLabel simulationDurationValueJL;
 	private JLabel pathLengthValueJL;
 	private JLabel gasUsageValueJL;
@@ -249,24 +250,27 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		statisticsJP = new JPanel();
 		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
-		statisticsJP.setLayout(new GridLayout(4, 2));
+		statisticsJP.setLayout(new GridLayout(5, 2));
 		statisticsJP.setBounds(5, 430, vehicleArea.getWidth()-10,280);
 		statisticsJP.setVisible(true);
 		vehicleArea.add(statisticsJP);
 		
-		expectedTimeJL = new JLabel("Expected Time");
-		simulationDurationJL= new JLabel("Simulation Duration");
-		pathLengthJL = new JLabel("Path Length");
-		gasUsageJL = new JLabel("Gas Usage");
-		pathJL = new JLabel("Path");
+		expectedTimeJL = new JLabel("Expected Time (h)");
+		actualTimeJL = new JLabel("Actual Time\u2245 (h)");
+		simulationDurationJL= new JLabel("Simulation (s)");
+		pathLengthJL = new JLabel("Path Length (km)");
+		gasUsageJL = new JLabel("Gas Usage (l)");
 
-		expectedTimeValueJL = new JLabel("0");
-		simulationDurationValueJL= new JLabel("0");
-		pathLengthValueJL = new JLabel("0");
-		gasUsageValueJL = new JLabel("0");
+		expectedTimeValueJL = new JLabel("0.0");
+		actualTimeValueJL = new JLabel("0.0");
+		simulationDurationValueJL= new JLabel("0.0");
+		pathLengthValueJL = new JLabel("0.0");
+		gasUsageValueJL = new JLabel("0.0");
 
 		statisticsJP.add(expectedTimeJL);
 		statisticsJP.add(expectedTimeValueJL);
+		statisticsJP.add(actualTimeJL);
+		statisticsJP.add(actualTimeValueJL);
 		statisticsJP.add(simulationDurationJL);
 		statisticsJP.add(simulationDurationValueJL);
 		statisticsJP.add(pathLengthJL);
@@ -293,7 +297,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		buttonsJP = new JPanel();
 		buttonsJP.setLayout(null);
 		//TODO: set title
-		buttonsJP.setBorder(BorderFactory.createTitledBorder("Titel"));
+		buttonsJP.setBorder(BorderFactory.createTitledBorder(""));
 		buttonsJP.setBounds(5, 715, vehicleArea.getWidth()-10, vehicleArea.getHeight() - 715-5);
 		buttonsJP.setVisible(true);
 
@@ -416,14 +420,16 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private void updateStatistics(Vehicle v) {
 
-		this.pathLengthValueJL.setText(Double.toString(v.getPathLength()));
-//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(2);
+		this.expectedTimeValueJL.setText(nf.format(v.getExpectedTime()));
+		this.actualTimeValueJL.setText(nf.format(v.getActualTime()/Constants.TIME_RATIO));
+		this.pathLengthValueJL.setText(nf.format(v.getPathLength()));
+//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
 		this.simulationDurationValueJL.setText(nf.format(v.getActualTime()));
 		if(v instanceof Car){
 			
-			this.gasUsageValueJL.setText(Double.toString(((Car) v).getGasUsage()));
+			this.gasUsageValueJL.setText(nf.format(((Car) v).getGasUsage()));
 
 		}
 	}

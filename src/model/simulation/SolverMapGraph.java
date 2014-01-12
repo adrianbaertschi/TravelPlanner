@@ -130,12 +130,16 @@ public class SolverMapGraph implements Runnable, Observer{
 		SimulationOption simulationOption = vehicle.getSimulationOption();
 		
 		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg;
-		
+		//TODO: falls möglich anders behandeln
 		if(vehicle.getPath().size() > 0){
 			
 			vehicle.setSimulationOption(SimulationOption.SHORTEST_PATH);
 			swg = createMapGraph();
 			getPathForVehicle(vehicle, swg, SimulationOption.SHORTEST_PATH);
+			
+			vehicle.setSimulationOption(SimulationOption.FASTEST_PATH);
+			swg = createMapGraph();
+			getPathForVehicle(vehicle, swg, SimulationOption.FASTEST_PATH);
 			
 			if(vehicle instanceof Car){
 				
@@ -271,24 +275,24 @@ public class SolverMapGraph implements Runnable, Observer{
 			swg.addVertex(s.getEnd());
 
 			// add edges to create linking structure
-			int weightAB = 0;
-			int weightBA = 0;
+			double weightAB = 0.0;
+			double weightBA = 0.0;
 			switch (vehicle.getSimulationOption()) {
 
 			case FASTEST_PATH:
 
 				if(vehicle.getMaxSpeed() < s.getStreetType().getSpeedLimit()){
-					weightAB = s.getLenth() / vehicle.getMaxSpeed();
+					weightAB = s.getLenth() * 60.0 / vehicle.getMaxSpeed();
 					weightBA = weightAB;
 				} else {
-					weightAB =  s.getLenth() / s.getStreetType().getSpeedLimit();
+					weightAB =  s.getLenth() *60.0 / s.getStreetType().getSpeedLimit();
 					weightBA = weightAB;
 				}
 
 				break;
 				
 			case IGNORE_SPEEDLIMIT:
-				weightAB = s.getLenth();
+				weightAB = s.getLenth()*1.0;
 				weightBA = weightAB;
 				break;
 				
@@ -300,30 +304,30 @@ public class SolverMapGraph implements Runnable, Observer{
 				switch (s.getStreetType()) {
 				
 				case DISTRICT_ROAD:
-					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
-					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
+					weightAB = car.getGasConsumptionLow()/100.0 *s.getLenth() * getInclineFactor(s);
+					weightBA = car.getGasConsumptionLow()/100.0 *s.getLenth() * (1/getInclineFactor(s));
 					break;
 				case IN_TOWN:
-					weightAB = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s));
-					weightBA = (int) (car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s)));
+					weightAB = car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s);
+					weightBA = car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s));
 					break;
 				case OUT_OF_TOWN:
-					weightAB = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * getInclineFactor(s));
-					weightBA = (int) (car.getGasConsumptionMedium()/100 *s.getLenth() * (1/getInclineFactor(s)));
+					weightAB = car.getGasConsumptionMedium()/100 *s.getLenth() * getInclineFactor(s);
+					weightBA = car.getGasConsumptionMedium()/100 *s.getLenth() * (1/getInclineFactor(s));
 					break;
 				case MOTORWAY:
-					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
-					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
+					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s);
+					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s));
 					break;
 				case FREEWAY:
-					weightAB = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s));
-					weightBA = (int) (car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s)));
+					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s);
+					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s));
 					break;
 				}
 				
 				break;
 			case SHORTEST_PATH:
-				weightAB = s.getLenth();
+				weightAB = s.getLenth()*1.0;
 				weightBA = weightAB;
 				break;
 				
@@ -382,6 +386,10 @@ public class SolverMapGraph implements Runnable, Observer{
 			case SHORTEST_PATH:
 
 				vehicle.setPathLength(dsp.getPathLength());
+			
+			case FASTEST_PATH:
+
+				vehicle.setExpectedTime(dsp.getPathLength()/60.0);
 
 			case LOWEST_GAS_CONSUMPTION:
 

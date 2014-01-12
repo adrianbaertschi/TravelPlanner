@@ -202,6 +202,7 @@ public class SimulationEditorController implements Controller{
 			for(int i = 0; i< simulationEditorModel.getFleetEditorModel().getVehicles().size(); i++){
 
 				//initialize statistics
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setExpectedTime(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTime(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setActualTimeTemp(0.0);
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(i).setPathLength(0.0);
