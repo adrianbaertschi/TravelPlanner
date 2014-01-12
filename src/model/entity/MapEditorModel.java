@@ -140,15 +140,6 @@ public class MapEditorModel extends Observable {
 		this.saveDate = saveDate;
 	}
 
-	public void reset() {
-		this.streets = new ArrayList<Street>();
-		this.selectedStreet = null;
-		this.name = null;
-		
-		super.setChanged();
-		super.notifyObservers();
-	}
-	
 	public void loadModel(MapEditorModel model) {
 		this.streets = model.streets;
 		this.name = model.name;
@@ -161,6 +152,11 @@ public class MapEditorModel extends Observable {
 	public void reOpenStreet(Street street) {
 		street.setClosed(false);
 		selectedStreet = null;
+	}
+	
+	public void change() {
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 }

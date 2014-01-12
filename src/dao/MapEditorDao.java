@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 
 public class MapEditorDao extends BaseDao<MapEditorModel> {

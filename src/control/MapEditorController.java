@@ -269,7 +269,12 @@ public class MapEditorController implements Controller {
 	class BtnResetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			model.reset();
+			
+			MapEditorModel mem = new MapEditorModel();
+			mem.addObserver(view);
+			mem.change();
+			model = mem;
+			
 		}
 	}
 	
