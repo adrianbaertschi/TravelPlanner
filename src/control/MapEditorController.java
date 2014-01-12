@@ -88,7 +88,7 @@ public class MapEditorController implements Controller {
 
 			// deselect everything
 			if(e.isControlDown()) {
-				model.setSelectedKnot(null);
+				model.setSelectedNode(null);
 				model.setSelectedStreet(null);
 				currentStreet = null;
 				return;
@@ -101,7 +101,7 @@ public class MapEditorController implements Controller {
 			if(selectedKnot != null) {
 				model.setSelectedStreet(null);
 			}
-			model.setSelectedKnot(selectedKnot);
+			model.setSelectedNode(selectedKnot);
 
 			// CASE 1: New Street
 			if(selectedKnot == null) {
@@ -116,7 +116,7 @@ public class MapEditorController implements Controller {
 					if(selectedStreet != null) {
 						currentStreet = null;
 					} else {
-						model.setSelectedKnot(point);
+						model.setSelectedNode(point);
 					}
 					
 					
@@ -163,7 +163,7 @@ public class MapEditorController implements Controller {
 					} catch(MapEditorModelException ex) {
 						JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					model.setSelectedKnot(null);
+					model.setSelectedNode(null);
 					
 					// reset Street
 					currentStreet = null;
@@ -188,8 +188,8 @@ public class MapEditorController implements Controller {
 				}
 			}
 
-			if(isOnNode(model.getSelectedKnot(), k)) {
-				return model.getSelectedKnot();
+			if(isOnNode(model.getSelectedNode(), k)) {
+				return model.getSelectedNode();
 			}
 
 			return null;
@@ -283,7 +283,7 @@ public class MapEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			int height = getInputNodeHeightValue();
-			model.getSelectedKnot().setHeight(height);
+			model.getSelectedNode().setHeight(height);
 		}
 	}
 	

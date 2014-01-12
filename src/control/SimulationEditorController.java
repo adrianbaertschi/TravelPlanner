@@ -116,7 +116,7 @@ public class SimulationEditorController implements Controller{
 				simulationEditorModel.getMapEditorModel().setSelectedStreet(selectedStreet);
 			}
 			
-			simulationEditorModel.getMapEditorModel().setSelectedKnot(selectedKnot);
+			simulationEditorModel.getMapEditorModel().setSelectedNode(selectedKnot);
 			simulationEditorModel.changed(null);
 			
 			
@@ -333,20 +333,20 @@ public class SimulationEditorController implements Controller{
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
 			
-			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
-				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 				
 			}						
 			
-			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
-				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 
 			}						
@@ -358,18 +358,18 @@ public class SimulationEditorController implements Controller{
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()){
 			
-			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
-				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 				
 			}						
 			
-			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedKnot())){
+			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
 				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
-				simulationEditorModel.getMapEditorModel().setSelectedKnot(null);
+				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 
 			}						

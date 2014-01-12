@@ -19,6 +19,10 @@ import javax.persistence.Transient;
 import model.MapEditorModelException;
 import model.UserDisruption;
 
+/**
+ * Contains all Items from the map
+ *
+ */
 @Entity
 public class MapEditorModel extends Observable {
 	
@@ -40,7 +44,7 @@ public class MapEditorModel extends Observable {
 	private Street selectedStreet;
 	
 	@Transient
-	private Node selectedKnot;
+	private Node selectedNode;
 		
 	@Column(nullable=false)
 
@@ -117,15 +121,15 @@ public class MapEditorModel extends Observable {
 		this.name = name;
 	}
 	
-	public Node getSelectedKnot() {
-		return selectedKnot;
+	public Node getSelectedNode() {
+		return selectedNode;
 	}
 
-	public void setSelectedKnot(Node selectedKnot) {
-		this.selectedKnot = selectedKnot;
+	public void setSelectedNode(Node selectedNode) {
+		this.selectedNode = selectedNode;
 		
 		super.setChanged();
-		super.notifyObservers(selectedKnot);
+		super.notifyObservers(selectedNode);
 	}
 	
 	public Calendar getSaveDate() {
@@ -158,23 +162,5 @@ public class MapEditorModel extends Observable {
 		street.setClosed(false);
 		selectedStreet = null;
 	}
-	
-//	/**
-//	 * Check if there is a Street from n1 to n2 or from n2 to n1
-//	 * @param n1
-//	 * @param n2
-//	 * @return true if there is already a treet, otherwise false;
-//	 */
-//	public boolean existsStreet(Node n1, Node n2) {
-//		for(Street street : streets) {
-//			if(street.getStart().equals(n1) && street.getEnd().equals(n2)) {
-//				return true;
-//			}
-//			if(street.getStart().equals(n2) && street.getEnd().equals(n1)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 	
 }

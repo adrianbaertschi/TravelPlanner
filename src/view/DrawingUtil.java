@@ -61,9 +61,9 @@ public class DrawingUtil {
 			g2d.fill(convertNodeToEllipse(street.getEnd()));
 		}
 		
-		if(model.getSelectedKnot() != null) {
+		if(model.getSelectedNode() != null) {
 			g2d.setColor(SELECTED_COLOR);
-			g2d.fill(convertNodeToEllipse(model.getSelectedKnot()));
+			g2d.fill(convertNodeToEllipse(model.getSelectedNode()));
 		}
 		
 		}	
