@@ -1,6 +1,5 @@
 package model.config;
 
-import java.awt.Color;
 
 /**
  * @author dimitri.haemmerli
@@ -14,7 +13,6 @@ public enum VehicleType {
     YELLOWCAR("YellowCar", 			"images/car_yellow.png", 			"images/car_yellow_finish.jpg"),
     MOUNTAINBIKE("MountainBike", 	"images/bicycle_mountainBike.jpg", 	"images/bicycle_mountainBike_finish.jpg");
 
-	// TODO color attribut?
     private String defaultName;
     private String urlVehicle;
     private String urlFinish;
