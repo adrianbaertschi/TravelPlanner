@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 
 public class MapEditorDao extends BaseDao<MapEditorModel> {
@@ -50,5 +51,17 @@ public class MapEditorDao extends BaseDao<MapEditorModel> {
 
 		return map;
 	}
+
+	@Override
+	public void deleteModelById(long id) {
+
+		MapEditorModel map = em.find(MapEditorModel.class, id);
+		em.getTransaction().begin();
+		em.remove(map);
+		em.getTransaction().commit();
+
+	
+	}
+	
 
 }

@@ -48,7 +48,7 @@ public class LoaderDialog extends JDialog {
 		table.setFillsViewportHeight(true);
 		JScrollPane scp = new JScrollPane(table);
 		
-		final JButton btnLoad = new JButton("OK");
+		final JButton btnLoad = new JButton("Load");
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			public void valueChanged(ListSelectionEvent event) {

@@ -23,4 +23,11 @@ public abstract class BaseDao<T> {
 	 */
 	public abstract T getModelById(long id);
 	
+	/**
+	 * Get model instance by primary key
+	 * 
+	 * @param id ID
+	 */
+	public abstract void deleteModelById(long id);
+
 }

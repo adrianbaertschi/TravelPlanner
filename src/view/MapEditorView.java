@@ -43,6 +43,7 @@ public class MapEditorView extends JPanel implements Observer{
 	private JButton btnSaveMap;
 	private JButton btnLoadMap;
 	private JButton btnReset;
+	private JButton deleteMapJB;
 
 	public MapEditorView() {
 		
@@ -118,6 +119,11 @@ public class MapEditorView extends JPanel implements Observer{
 		btnReset = new JButton("Reset Map");
 		btnReset.setBounds(920, 780, 130, 30);
 		this.add(btnReset);
+		
+		deleteMapJB = new JButton("Delete");
+		deleteMapJB.setBounds(1055, 780, 130, 30);
+		this.add(deleteMapJB);
+
 	}
 	
 	public JPanel getMapArea() {
@@ -140,6 +146,20 @@ public class MapEditorView extends JPanel implements Observer{
 		return btnDelete;
 	}
 	
+	/**
+	 * @return the deleteMapJB
+	 */
+	public JButton getDeleteMapJB() {
+		return deleteMapJB;
+	}
+
+	/**
+	 * @param deleteMapJB the deleteMapJB to set
+	 */
+	public void setDeleteMapJB(JButton deleteMapJB) {
+		this.deleteMapJB = deleteMapJB;
+	}
+
 	public JComboBox<StreetType> getCbxStreetType() {
 		return this.cbxStreetType;
 	}

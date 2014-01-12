@@ -73,6 +73,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	
 	private JButton nextVehicleJB;
 	private JButton previousVehicleJB;
+	private JLabel vehicleNameJL;
 
 	private ImageIcon vehicleII;
 	
@@ -155,6 +156,15 @@ public class SimulationEditorView extends JPanel implements Observer{
 		previousVehicleJB = new JButton("<<<");
 		vehicleSelectionArea.add (previousVehicleJB, gbc);
 
+		
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.weightx = 3;
+		gbc.gridwidth = 1;
+		vehicleNameJL = new JLabel("Test");
+		vehicleSelectionArea.add (vehicleNameJL, gbc);
+
+		
 		gbc.gridx = 2;
 		gbc.gridy = 2;
 		gbc.weightx = 0;
@@ -321,7 +331,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 	private void draw(Graphics g) {
 		
 		this.requestFocusInWindow();
-		
+
 		Graphics2D g2d = (Graphics2D)g;
 		
 //		System.out.println(System.currentTimeMillis());
@@ -345,7 +355,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 			vehicleII = new ImageIcon(vehicle.getVehicleTypes().getUrlVehicle());	
 			vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200,Image.SCALE_DEFAULT));
 			vehicleJL.setIcon(vehicleII);
-					
+			vehicleNameJL.setText(vehicle.getName());
+			
 			switch (model.getFleetEditorModel().getVehicles().get(model.getFleetEditorModel().getVehiclePos()).getSimulationOption()){
 			
 			case SHORTEST_PATH:	
@@ -374,7 +385,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		setVehicleOptionsEnabled();
 		
 		// display cars on mapArea
-		for(Vehicle v : model.getFleetEditorModel().getVehicles()){
+		for(Vehicle v : model.getFleetEditorModel().getVehicles()){			
 			
 			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
 			carII.setImage(carII.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
@@ -419,6 +430,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	public void update(Observable model, Object value) {
 
+		System.out.println("im update");
 		if(Constants.SIMULATION_FINISHED.equals(value)) {
 			setInSimulation(false);
 		}

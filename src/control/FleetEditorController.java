@@ -13,11 +13,14 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import model.config.VehicleType;
+import model.entity.Bicycle;
 import model.entity.Car;
 import model.entity.FleetEditorModel;
 import model.entity.Vehicle;
 import view.FleetEditorView;
 import view.MasterGui;
+import view.components.DeleteDialog;
 import view.components.LoaderDialog;
 import dao.FleetEditorDao;
 
@@ -52,6 +55,7 @@ public class FleetEditorController implements Controller {
 		fleetEditorView.getSaveFleetJB().addActionListener(new BtnSaveFleetActionListener());
 		fleetEditorView.getLoadFleetJB().addActionListener(new BtnLoadFleetActionListener());
 		fleetEditorView.getResetFleetJB().addActionListener(new BtnResetFleetActionListener());
+		fleetEditorView.getDeleteFleetJB().addActionListener(new BtnDeleteFleetActionListener());
 
 	}
 	
@@ -107,7 +111,28 @@ public class FleetEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			fleetEditorModel.addVehicle(fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos()));
+			Vehicle vehicle = fleetEditorModel.getVehicleSelection().get(fleetEditorModel.getVehicleSelectionPos());
+			
+				
+			switch (vehicle.getVehicleTypes()){
+								
+				case BLUECAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.BLUECAR));
+					break;
+				case GREENCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.GREENCAR));
+					break;
+				case REDCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.REDCAR));
+					break;
+				case YELLOWCAR:
+					fleetEditorModel.addVehicle(new Car(VehicleType.YELLOWCAR));
+					break;
+				case MOUNTAINBIKE:
+					fleetEditorModel.addVehicle(new Bicycle(VehicleType.MOUNTAINBIKE));
+					break;
+			}
+			
 		}
 	}
 	
@@ -195,6 +220,29 @@ public class FleetEditorController implements Controller {
 		
 	}
 
+	class BtnDeleteFleetActionListener implements ActionListener {
 
-	
+		public void actionPerformed(ActionEvent e) {
+			
+			String[] columns = new String[]{"ID",  "Name", "Vehicles", "Save Date"};
+			
+			List<FleetEditorModel> fleets = FleetEditorDao.getInstance().getFleets();
+			
+			Object[][] rowData = new Object[fleets.size()][columns.length];
+			for(int i = 0; i < fleets.size(); i++) {
+				rowData[i][0] = fleets.get(i).getId();
+				rowData[i][1] = fleets.get(i).getName();
+				rowData[i][2] = fleets.get(i).getVehicles().size();
+
+				//TODO format util?
+				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+				rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
+			}
+			
+			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), rowData, columns);
+			d.setVisible(true);
+		}
+		
+	}
+
 }

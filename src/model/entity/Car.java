@@ -6,6 +6,8 @@ package model.entity;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import model.config.VehicleType;
+
 
 /**
  * @author dimitri.haemmerli
@@ -25,11 +27,19 @@ public class Car extends Vehicle {
 	
 	public Car(){
 		
+	}
+	
+	public Car(VehicleType vehicleType){
+		
+		
+		super.setVehicleTypes(vehicleType);
+		
 		//DefaultValues
 		this.setMaxSpeed(120);
 		this.gasConsumptionLow = 7.2f;
 		this.gasConsumptionMedium = 5.3f;
 		this.gasConsumptionHigh = 4.8f;
+		super.setName(super.getVehicleTypes().getDefaultName());
 		
 		//init value
 		this.gasUsage = 0.0;

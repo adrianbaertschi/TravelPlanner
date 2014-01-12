@@ -440,6 +440,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		SimulationEditorModel.incRunningSimulations();
 		System.out.println("vehicle in recalc " + vehicle.getVehicleTypes());		
 		this.vehicle.getThread().interrupt();
+		this.vehicle.setSimulationDelay(0);
 		end = System.currentTimeMillis();
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
 		
@@ -453,7 +454,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
-				s1.setStreetType(s.getStreetType());
+
 				s2.setStreetType(s.getStreetType());
 				
 				s1.setNoPassing(s.isNoPassing());
@@ -488,7 +489,7 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	public void run() {
 		try {
-			Thread.sleep(vehicle.getDelay()*1000);
+			Thread.sleep(vehicle.getSimulationDelay()*1000);
 			
 			startSimulation();
 			

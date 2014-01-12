@@ -49,6 +49,8 @@ public class Vehicle extends EntityBase {
 	@Transient
 	private Thread thread;
 	
+	@Transient
+	private int simulationDelay;
 
 	public Vehicle(){
 		
@@ -246,6 +248,20 @@ public class Vehicle extends EntityBase {
 	}
 
 	/**
+	 * @return the simulationDelay
+	 */
+	public int getSimulationDelay() {
+		return simulationDelay;
+	}
+
+	/**
+	 * @param simulationDelay the simulationDelay to set
+	 */
+	public void setSimulationDelay(int simulationDelay) {
+		this.simulationDelay = simulationDelay;
+	}
+
+	/**
 	 * @return the path
 	 */
 	public Queue<Node> getPath() {
@@ -315,7 +331,7 @@ public class Vehicle extends EntityBase {
 		int a = currentPosition.getX() - nextKnot.getX();
 		int b = currentPosition.getY() - nextKnot.getY();
 		
-		int c = nextKnot.getHeight() - currentPosition.getHeight();
+		double c = nextKnot.getHeight() - currentPosition.getHeight();
 		
 		return (int) Math.sqrt(a*a + b*b + c*c);
 		
