@@ -430,7 +430,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	public void update(Observable model, Object value) {
 
-		System.out.println("im update");
 		if(Constants.SIMULATION_FINISHED.equals(value)) {
 			setInSimulation(false);
 		}

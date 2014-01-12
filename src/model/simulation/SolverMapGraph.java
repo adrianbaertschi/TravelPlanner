@@ -455,6 +455,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
 
+				s1.setStreetType(s.getStreetType());
 				s2.setStreetType(s.getStreetType());
 				
 				s1.setNoPassing(s.isNoPassing());
@@ -462,6 +463,8 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				s1.setOneWay(s.isOneWay());
 				s2.setOneWay(s.isOneWay());
+				
+				break;
 			}
 		}
 		

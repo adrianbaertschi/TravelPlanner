@@ -250,8 +250,11 @@ public class SimulationEditorController implements Controller{
 			
 			Street selectedStreet = simulationEditorModel.getMapEditorModel().getSelectedStreet();
 			
+			if(selectedStreet == null) {
+				return;
+			}
+			
 			if(selectedStreet.isClosed()) {
-				System.out.println("repoen");
 				simulationEditorModel.getMapEditorModel().reOpenStreet(selectedStreet);
 				simulationEditorModel.changed(new UserDisruption());
 				return;
