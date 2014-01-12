@@ -1,7 +1,12 @@
 package view;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.lang.Thread.UncaughtExceptionHandler;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -9,6 +14,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import model.SimulationEditorModelException;
+import model.config.VehicleType;
 import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
@@ -20,6 +26,8 @@ public class MasterGui extends JFrame {
 	
 	public MasterGui() {
 		this.setSize(1200, 900);
+		ImageIcon ii = new ImageIcon(VehicleType.YELLOWCAR.getUrlVehicle());
+		this.setIconImage(ii.getImage());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		

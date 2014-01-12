@@ -221,6 +221,7 @@ public class MapEditorController implements Controller {
 		}
 	}
 	
+	//TODO: Reduce duplicate code
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -264,6 +265,8 @@ public class MapEditorController implements Controller {
 		}
 		
 	}
+	
+	public 
 
 	class BtnResetActionListener implements ActionListener {
 

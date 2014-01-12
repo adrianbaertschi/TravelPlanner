@@ -73,9 +73,6 @@ public class FleetEditorController implements Controller {
 		public void actionPerformed(ActionEvent e) {
 
 			fleetEditorModel.increaseVehiclePos();
-			//TODO:
-			//fahrzeug updaten
-//			fleetEditorModel.updateVehicleAttributes();
 		
 		}
 	}
@@ -195,6 +192,7 @@ public class FleetEditorController implements Controller {
 		}
 		
 	}
+	//TODO: Reduce duplicate code
 	class BtnLoadFleetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
