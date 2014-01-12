@@ -23,26 +23,20 @@ public class MasterGui extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
+		String lookandFeelerror = "Error initializing system Look and Feel. Fall back to standard.";
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(lookandFeelerror);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(lookandFeelerror);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(lookandFeelerror);
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(lookandFeelerror);
 		}
 		
-
-		
-		
-		final JTabbedPane tabPane = new JTabbedPane();
 		
 		MapEditorModel mapEditorModel = new MapEditorModel();
 		MapEditorController mapEditorController = new MapEditorController(new MapEditorView(), mapEditorModel);
@@ -56,7 +50,8 @@ public class MasterGui extends JFrame {
 		simulationEditorModel.setFleetEditorModel(fleetEditorModel);
 		SimulationEditorController simulationEditorController = new SimulationEditorController(new SimulationEditorView(), simulationEditorModel);
 		
-		
+		final JTabbedPane tabPane = new JTabbedPane();
+
 		tabPane.addTab("Map Editor", mapEditorController.showView());
 		tabPane.addTab("Fleet Editor", fleetEditorController.showView());
 		tabPane.addTab("Simulation Editor", simulationEditorController.showView());
