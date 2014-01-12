@@ -40,5 +40,21 @@ public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 		TypedQuery<FleetEditorModel> query = em.createQuery("select f from FleetEditorModel f", FleetEditorModel.class);
 		return query.getResultList();
 	}
+	
+//	public void deleteFleet(FleetEditorModel fleet){
+//		
+//		em.remove(fleet);
+//		
+//	}
+
+	@Override
+	public void deleteModelById(long id) {
+
+		FleetEditorModel fleet = em.find(FleetEditorModel.class, id);
+		em.getTransaction().begin();
+		em.remove(fleet);
+		em.getTransaction().commit();
+
+	}
 
 }

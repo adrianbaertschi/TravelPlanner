@@ -352,7 +352,7 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		deleteFleetJB = new JButton("Delete");
 		deleteFleetJB.setBounds(120, 440, 100, 30);
-		deleteFleetJB.setEnabled(false);
+		deleteFleetJB.setEnabled(true);
 		addVehicleArea.add(deleteFleetJB);
 
 	}

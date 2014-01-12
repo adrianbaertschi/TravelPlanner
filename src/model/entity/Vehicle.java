@@ -331,7 +331,7 @@ public class Vehicle extends EntityBase {
 		int a = currentPosition.getX() - nextKnot.getX();
 		int b = currentPosition.getY() - nextKnot.getY();
 		
-		int c = nextKnot.getHeight() - currentPosition.getHeight();
+		double c = nextKnot.getHeight() - currentPosition.getHeight();
 		
 		return (int) Math.sqrt(a*a + b*b + c*c);
 		

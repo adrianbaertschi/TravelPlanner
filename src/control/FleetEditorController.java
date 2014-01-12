@@ -20,6 +20,7 @@ import model.entity.FleetEditorModel;
 import model.entity.Vehicle;
 import view.FleetEditorView;
 import view.MasterGui;
+import view.components.DeleteDialog;
 import view.components.LoaderDialog;
 import dao.FleetEditorDao;
 
@@ -54,6 +55,7 @@ public class FleetEditorController implements Controller {
 		fleetEditorView.getSaveFleetJB().addActionListener(new BtnSaveFleetActionListener());
 		fleetEditorView.getLoadFleetJB().addActionListener(new BtnLoadFleetActionListener());
 		fleetEditorView.getResetFleetJB().addActionListener(new BtnResetFleetActionListener());
+		fleetEditorView.getDeleteFleetJB().addActionListener(new BtnDeleteFleetActionListener());
 
 	}
 	
@@ -218,6 +220,29 @@ public class FleetEditorController implements Controller {
 		
 	}
 
+	class BtnDeleteFleetActionListener implements ActionListener {
 
-	
+		public void actionPerformed(ActionEvent e) {
+			
+			String[] columns = new String[]{"ID",  "Name", "Vehicles", "Save Date"};
+			
+			List<FleetEditorModel> fleets = FleetEditorDao.getInstance().getFleets();
+			
+			Object[][] rowData = new Object[fleets.size()][columns.length];
+			for(int i = 0; i < fleets.size(); i++) {
+				rowData[i][0] = fleets.get(i).getId();
+				rowData[i][1] = fleets.get(i).getName();
+				rowData[i][2] = fleets.get(i).getVehicles().size();
+
+				//TODO format util?
+				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+				rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
+			}
+			
+			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), rowData, columns);
+			d.setVisible(true);
+		}
+		
+	}
+
 }

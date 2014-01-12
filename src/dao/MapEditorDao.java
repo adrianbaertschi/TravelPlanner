@@ -51,4 +51,12 @@ public class MapEditorDao extends BaseDao<MapEditorModel> {
 		return map;
 	}
 
+	@Override
+	public void deleteModelById(long id) {
+
+		
+	
+	}
+	
+
 }

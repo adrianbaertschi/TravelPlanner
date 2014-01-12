@@ -260,5 +260,4 @@ public class MapEditorController implements Controller {
 			model.getSelectedKnot().setHeight(height);
 		}
 	}
-
 }
