@@ -72,9 +72,9 @@ public class SolverMapGraphTest {
 		s4 = new Street(n4, n3);
 		s4.setStreetType(StreetType.FREEWAY);
 		
-		car1.setCurrentKnot(n1);
-		car1.setStartKnot(n1);
-		car1.setFinishKnot(n4);
+		car1.setCurrentNode(n1);
+		car1.setStartNode(n1);
+		car1.setFinishNode(n4);
 		
 		
 		MapEditorModel mapEditorModel = new MapEditorModel();

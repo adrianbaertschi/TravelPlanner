@@ -22,11 +22,11 @@ public class Vehicle extends EntityBase {
 	
 	private VehicleType vehicleTypes;
 	private int maxSpeed;
-	private Node startKnot;
-	private Node currentKnot;
+	private Node startNode;
+	private Node currentNode;
 	private Node currentPosition;
-	private Node nextKnot;
-	private Node finishKnot;
+	private Node nextNode;
+	private Node finishNode;
 	private Boolean isSelected;
 	private Boolean isVisible;
 	private SimulationOption simulationOption;
@@ -79,60 +79,60 @@ public class Vehicle extends EntityBase {
 	}
 
 	/**
-	 * @return the startKnot
+	 * @return the startNode
 	 */
-	public Node getStartKnot() {
-		return startKnot;
+	public Node getStartNode() {
+		return startNode;
 	}
 
 	/**
-	 * @param startKnot the startKnot to set
+	 * @param startNode the startNode to set
 	 */
-	public void setStartKnot(Node startKnot) {
-		this.startKnot = startKnot;
+	public void setStartNode(Node startNode) {
+		this.startNode = startNode;
 	}
 
 	/**
-	 * @return the currentKnot
+	 * @return the currentNode
 	 */
-	public Node getCurrentKnot() {
-		return currentKnot;
+	public Node getCurrentNode() {
+		return currentNode;
 	}
 
 	/**
-	 * @param currentKnot the currentKnot to set
+	 * @param currentNode the currentNode to set
 	 */
-	public void setCurrentKnot(Node currentKnot) {
-		this.currentKnot = currentKnot;
+	public void setCurrentNode(Node currentNode) {
+		this.currentNode = currentNode;
 	}
 
 	/**
-	 * @return the finishKnot
+	 * @return the finishNode
 	 */
-	public Node getFinishKnot() {
-		return finishKnot;
+	public Node getFinishNode() {
+		return finishNode;
 	}
 
 	/**
-	 * @param finishKnot the finishKnot to set
+	 * @param finishNode the finishNode to set
 	 */
-	public void setFinishKnot(Node finishKnot) {
-		this.finishKnot = finishKnot;
+	public void setFinishNode(Node finishNode) {
+		this.finishNode = finishNode;
 	}
 
 
 	/**
-	 * @return the nextKnot
+	 * @return the nextNode
 	 */
-	public Node getNextKnot() {
-		return nextKnot;
+	public Node getNextNode() {
+		return nextNode;
 	}
 
 	/**
-	 * @param nextKnot the nextKnot to set
+	 * @param nextNode the nextNode to set
 	 */
-	public void setNextKnot(Node nextKnot) {
-		this.nextKnot = nextKnot;
+	public void setNextNode(Node nextNode) {
+		this.nextNode = nextNode;
 	}
 
 	/**
@@ -328,10 +328,10 @@ public class Vehicle extends EntityBase {
 		if(currentPosition == null) {
 			return -1;
 		}
-		int a = currentPosition.getX() - nextKnot.getX();
-		int b = currentPosition.getY() - nextKnot.getY();
+		int a = currentPosition.getX() - nextNode.getX();
+		int b = currentPosition.getY() - nextNode.getY();
 		
-		double c = nextKnot.getHeight() - currentPosition.getHeight();
+		double c = nextNode.getHeight() - currentPosition.getHeight();
 		
 		return (int) Math.sqrt(a*a + b*b + c*c);
 		

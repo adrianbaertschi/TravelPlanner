@@ -3,17 +3,17 @@ package common;
 public interface Constants {
 	
 	/**
-	 * Höhe eines Knoten in px
+	 * Höhe eines Nodes in px
 	 */
 	public static final int NODE_HEIGHT = 	10;
 	
 	/**
-	 * Breite eines Knoten in px
+	 * Breite eines Nodes in px
 	 */
 	public static final int NODE_WIDTH = 	NODE_HEIGHT;
 	
 	/**
-	 * Knotenradius in px
+	 * Noderadius in px
 	 */
 	public static final int NODE_RADIUS = 	NODE_HEIGHT / 2;
 	

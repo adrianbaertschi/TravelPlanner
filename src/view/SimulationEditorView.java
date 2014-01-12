@@ -29,6 +29,7 @@ import model.entity.MapEditorModel;
 import model.entity.SimulationEditorModel;
 import model.entity.Street;
 import model.entity.Vehicle;
+
 import common.Constants;
 
 /**
@@ -345,7 +346,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		DrawingUtil.drawMap(g2d, model.getMapEditorModel());
 
 		for(Street street : model.getMapEditorModel().getStreets()) {
-			if(street.isClosed()) {
+			if(street != model.getMapEditorModel().getSelectedStreet() && street.isClosed()) {
 				g2d.setColor(new Color(204, 204, 204));
 				g2d.draw(DrawingUtil.convertStreetToLine(street));
 			}
@@ -393,20 +394,20 @@ public class SimulationEditorView extends JPanel implements Observer{
 			carII = new ImageIcon(v.getVehicleTypes().getUrlVehicle());
 			carII.setImage(carII.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT));
 			
-			if(v.getStartKnot() != null){
+			if(v.getStartNode() != null){
 				
-				carII.paintIcon(this, g2d, v.getStartKnot().getX() - carII.getIconWidth()/2, v.getStartKnot().getY() - carII.getIconHeight()/2);
+				carII.paintIcon(this, g2d, v.getStartNode().getX() - carII.getIconWidth()/2, v.getStartNode().getY() - carII.getIconHeight()/2);
 			}
-			if(v.getFinishKnot() != null){
+			if(v.getFinishNode() != null){
 				carFinishII = new ImageIcon(v.getVehicleTypes().getUrlFinish());
 				carFinishII.setImage(carFinishII.getImage().getScaledInstance(35, 25,Image.SCALE_DEFAULT));
 
-				carFinishII.paintIcon(this, g2d, v.getFinishKnot().getX() - carFinishII.getIconWidth()/2, v.getFinishKnot().getY() - carFinishII.getIconHeight()/2);
+				carFinishII.paintIcon(this, g2d, v.getFinishNode().getX() - carFinishII.getIconWidth()/2, v.getFinishNode().getY() - carFinishII.getIconHeight()/2);
 			
 			}
 
 			
-			if(v.getCurrentPosition()!= null && ! v.getNextKnot().equals(v.getCurrentPosition())){
+			if(v.getCurrentPosition()!= null && ! v.getNextNode().equals(v.getCurrentPosition())){
 				
 				carII.setImage(carII.getImage().getScaledInstance(15, 15,Image.SCALE_DEFAULT));
 				carII.paintIcon(this, g2d, v.getCurrentPosition().getX() - carII.getIconWidth()/2, v.getCurrentPosition().getY() - carII.getIconHeight()/2);			
@@ -435,7 +436,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 	public void update(Observable model, Object value) {
 
-		System.out.println("im update");
 		if(Constants.SIMULATION_FINISHED.equals(value)) {
 			setInSimulation(false);
 		}

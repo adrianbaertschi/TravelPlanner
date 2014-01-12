@@ -14,7 +14,6 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 
 import model.MapEditorModelException;
-import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
@@ -22,7 +21,6 @@ import view.MapEditorView;
 import view.MasterGui;
 import view.components.DeleteDialog;
 import view.components.LoaderDialog;
-import dao.FleetEditorDao;
 import dao.MapEditorDao;
 
 public class MapEditorController implements Controller {
@@ -88,7 +86,7 @@ public class MapEditorController implements Controller {
 
 			// deselect everything
 			if(e.isControlDown()) {
-				model.setSelectedKnot(null);
+				model.setSelectedNode(null);
 				model.setSelectedStreet(null);
 				currentStreet = null;
 				return;
@@ -96,15 +94,15 @@ public class MapEditorController implements Controller {
 			
 			Node point = new Node(e.getX(), e.getY(), getInputNodeHeightValue());
 
-			Node selectedKnot = clickedOnNode(point);
+			Node selectedNode = clickedOnNode(point);
 			
-			if(selectedKnot != null) {
+			if(selectedNode != null) {
 				model.setSelectedStreet(null);
 			}
-			model.setSelectedKnot(selectedKnot);
+			model.setSelectedNode(selectedNode);
 
 			// CASE 1: New Street
-			if(selectedKnot == null) {
+			if(selectedNode == null) {
 				// First click
 				if(currentStreet == null) {
 					currentStreet = new Street(point);
@@ -116,7 +114,7 @@ public class MapEditorController implements Controller {
 					if(selectedStreet != null) {
 						currentStreet = null;
 					} else {
-						model.setSelectedKnot(point);
+						model.setSelectedNode(point);
 					}
 					
 					
@@ -147,13 +145,13 @@ public class MapEditorController implements Controller {
 				
 				// CASE 2: append to existing
 				if(currentStreet == null) {
-					currentStreet = new Street(selectedKnot);
+					currentStreet = new Street(selectedNode);
 				} else {
 					// CASE 3: connect two existing
-					if(currentStreet.getStart().equals(selectedKnot)) {
+					if(currentStreet.getStart().equals(selectedNode)) {
 						return;
 					}
-					currentStreet.setEnd(selectedKnot);
+					currentStreet.setEnd(selectedNode);
 					currentStreet.setStreetType(view.getSelectedStreetType());
 					currentStreet.setOneWay(view.getChxOneWay().isSelected());
 					currentStreet.setNoPassing(view.getChxNoPassing().isSelected());
@@ -163,7 +161,7 @@ public class MapEditorController implements Controller {
 					} catch(MapEditorModelException ex) {
 						JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					model.setSelectedKnot(null);
+					model.setSelectedNode(null);
 					
 					// reset Street
 					currentStreet = null;
@@ -177,7 +175,7 @@ public class MapEditorController implements Controller {
 
 			for(Street street : model.getStreets()) {
 
-				// On Start Knoten?
+				// On Start Node?
 				if(isOnNode(street.getStart(), k)) {
 					return street.getStart();
 				}
@@ -188,8 +186,8 @@ public class MapEditorController implements Controller {
 				}
 			}
 
-			if(isOnNode(model.getSelectedKnot(), k)) {
-				return model.getSelectedKnot();
+			if(isOnNode(model.getSelectedNode(), k)) {
+				return model.getSelectedNode();
 			}
 
 			return null;
@@ -286,7 +284,7 @@ public class MapEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			int height = getInputNodeHeightValue();
-			model.getSelectedKnot().setHeight(height);
+			model.getSelectedNode().setHeight(height);
 		}
 	}
 	

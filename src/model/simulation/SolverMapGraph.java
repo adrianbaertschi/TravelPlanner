@@ -70,18 +70,16 @@ public class SolverMapGraph implements Runnable, Observer{
 			//statistics
 			start = System.currentTimeMillis();
 			
-			while(!vehicle.getCurrentKnot().equals(vehicle.getFinishKnot())){
+			while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
 				
-						
-				//getting the nextKnot from Dijkstra
-				vehicle.setNextKnot(pathForVehicle.poll());								
+				vehicle.setNextNode(pathForVehicle.poll());								
 				
 				Street currentStreet = null;
 				
 				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
 					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
-					if(street.getStart().equals(vehicle.getCurrentKnot()) && street.getEnd().equals(vehicle.getNextKnot()) ||
-							   street.getStart().equals(vehicle.getNextKnot()) && street.getEnd().equals(vehicle.getCurrentKnot())){
+					if(street.getStart().equals(vehicle.getCurrentNode()) && street.getEnd().equals(vehicle.getNextNode()) ||
+							   street.getStart().equals(vehicle.getNextNode()) && street.getEnd().equals(vehicle.getCurrentNode())){
 								currentStreet = street;
 								break;
 							}
@@ -90,12 +88,12 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				currentStreet.getVehicles().add(vehicle);
 				
-				driveFromTo(vehicle.getCurrentKnot(), vehicle.getNextKnot(), currentStreet);
+				driveFromTo(vehicle.getCurrentNode(), vehicle.getNextNode(), currentStreet);
 				
 				//statistics
-				vehicle.addNode(vehicle.getNextKnot());
+				vehicle.addNode(vehicle.getNextNode());
 
-				vehicle.setCurrentKnot(vehicle.getNextKnot());
+				vehicle.setCurrentNode(vehicle.getNextNode());
 				currentStreet.getVehicles().remove(vehicle);
 					
 			
@@ -103,12 +101,12 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			}
 						
-			//reinitialize the currentKnot so a new simulation can be performed
-			vehicle.setCurrentKnot(vehicle.getStartKnot());
+			//reinitialize the current Node so a new simulation can be performed
+			vehicle.setCurrentNode(vehicle.getStartNode());
 			
 			
 			//statistics
-			vehicle.addNode(vehicle.getFinishKnot());
+			vehicle.addNode(vehicle.getFinishNode());
 			System.out.println(vehicle.getPath());
 			updateStatistics();
 			removeTemporaryStreets();
@@ -375,11 +373,11 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg, SimulationOption simulationStatistic) {
 		
-		if(!swg.containsVertex(vehicle.getCurrentKnot()) || !swg.containsVertex(vehicle.getFinishKnot())) {
+		if(!swg.containsVertex(vehicle.getCurrentNode()) || !swg.containsVertex(vehicle.getFinishNode())) {
 			throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
 		}
 		
-		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentKnot(), vehicle.getFinishKnot());			
+		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentNode(), vehicle.getFinishNode());			
 		
 		if (statistics) {
 
@@ -411,7 +409,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			return nodes;
 		}
 		
-		nodes.add(vehicle.getCurrentKnot());
+		nodes.add(vehicle.getCurrentNode());
 		
 		for(DefaultWeightedEdge egde : dsp.getPathEdgeList()) {
 
@@ -455,14 +453,15 @@ public class SolverMapGraph implements Runnable, Observer{
 		Node temp = vehicle.getCurrentPosition();
 		//TODO: height of temp
 		
-		TemporaryStreet s1 = new TemporaryStreet(vehicle.getCurrentKnot(), temp);
+		TemporaryStreet s1 = new TemporaryStreet(vehicle.getCurrentNode(), temp);
 		s1.setAllowedVehicle(vehicle);
-		TemporaryStreet s2 = new TemporaryStreet(temp, vehicle.getNextKnot());
+		TemporaryStreet s2 = new TemporaryStreet(temp, vehicle.getNextNode());
 		s2.setAllowedVehicle(vehicle);
 		
 		for(Street s : simulationEditorModel.getMapEditorModel().getStreets()) {
 			if(s.isPointOnStreet(temp.getX(), temp.getY())) {
 
+				s1.setStreetType(s.getStreetType());
 				s2.setStreetType(s.getStreetType());
 				
 				s1.setNoPassing(s.isNoPassing());
@@ -470,13 +469,15 @@ public class SolverMapGraph implements Runnable, Observer{
 				
 				s1.setOneWay(s.isOneWay());
 				s2.setOneWay(s.isOneWay());
+				
+				break;
 			}
 		}
 		
 		simulationEditorModel.getMapEditorModel().addStreet(s1);
 		simulationEditorModel.getMapEditorModel().addStreet(s2);
 		
-		this.vehicle.setCurrentKnot(this.vehicle.getCurrentPosition());
+		this.vehicle.setCurrentNode(this.vehicle.getCurrentPosition());
 				
 		SolverMapGraph smg = new SolverMapGraph(simulationEditorModel);
 		smg.setVehicle(vehicle);

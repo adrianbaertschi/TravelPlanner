@@ -101,7 +101,7 @@ public class Node {
 	}
 
 	/**
-	 * Knots are equal if x and y are equal
+	 * Nodes are equal if x and y are equal
 	 */
 	public boolean equals(Object o) {
 		if(o instanceof Node) {

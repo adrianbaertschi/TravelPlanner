@@ -222,7 +222,7 @@ public class MapEditorView extends JPanel implements Observer{
 			btnDelete.setEnabled(false);
 		}
 		
-		btnSetHeight.setEnabled(this.model.getSelectedKnot() != null);
+		btnSetHeight.setEnabled(this.model.getSelectedNode() != null);
 	}
 	
 	public StreetType getSelectedStreetType() {
