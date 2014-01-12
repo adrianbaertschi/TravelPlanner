@@ -72,8 +72,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
 				
-						
-				//getting the nextKnot from Dijkstra
 				vehicle.setNextNode(pathForVehicle.poll());								
 				
 				Street currentStreet = null;
@@ -103,7 +101,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			}
 						
-			//reinitialize the currentKnot so a new simulation can be performed
+			//reinitialize the current Node so a new simulation can be performed
 			vehicle.setCurrentNode(vehicle.getStartNode());
 			
 			

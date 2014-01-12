@@ -98,14 +98,14 @@ public class SimulationEditorController implements Controller{
 
 		public void mouseClicked(MouseEvent e) {
 			
-			Node knot = new Node(e.getX(), e.getY());
+			Node node = new Node(e.getX(), e.getY());
 			
-			Node selectedKnot = clickedOnNode(knot);
+			Node selectedNode = clickedOnNode(node);
 			
-			if(selectedKnot != null) {
+			if(selectedNode != null) {
 				simulationEditorModel.getMapEditorModel().setSelectedStreet(null);
 			} else {
-				Street selectedStreet = clickedOnStreet(knot);
+				Street selectedStreet = clickedOnStreet(node);
 				
 				if(selectedStreet != null && selectedStreet.isClosed()) {
 					simulationEditorView.getCloseStreetJB().setText("Open street");
@@ -116,7 +116,7 @@ public class SimulationEditorController implements Controller{
 				simulationEditorModel.getMapEditorModel().setSelectedStreet(selectedStreet);
 			}
 			
-			simulationEditorModel.getMapEditorModel().setSelectedNode(selectedKnot);
+			simulationEditorModel.getMapEditorModel().setSelectedNode(selectedNode);
 			simulationEditorModel.changed(null);
 			
 			
@@ -128,17 +128,17 @@ public class SimulationEditorController implements Controller{
 			int y = k.getY();
 			int toleranz = 5;
 			
-			Node returnKnot = null;
+			Node returnNode = null;
 
 			for(Street street : simulationEditorModel.getMapEditorModel().getStreets()) {
 				
 				
-				// On Start Knoten?
+				// On Start Node?
 				int xdiff = Math.abs(street.getStart().getX() - x);
 				int ydiff = Math.abs(street.getStart().getY() - y);
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
-					returnKnot = street.getStart();
+					returnNode = street.getStart();
 				}
 				
 				// On End?
@@ -146,11 +146,11 @@ public class SimulationEditorController implements Controller{
 				ydiff = Math.abs(street.getEnd().getY() - y);
 				
 				if(xdiff <= toleranz && ydiff <= toleranz) {
-					returnKnot = street.getEnd();
+					returnNode = street.getEnd();
 				}
 			}
 			
-			return returnKnot;
+			return returnNode;
 		}
 		
 		private Street clickedOnStreet(Node point) {

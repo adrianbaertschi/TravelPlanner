@@ -55,7 +55,7 @@ public class DrawingUtil {
 			}
 			
 			
-			// Knoten
+			// Nodes
 			g2d.setColor(NODE_COLOR);
 			g2d.fill(convertNodeToEllipse(street.getStart()));
 			g2d.fill(convertNodeToEllipse(street.getEnd()));
