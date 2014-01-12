@@ -265,8 +265,8 @@ public class SimulationEditorController implements Controller{
 			for(Vehicle vehicle : simulationEditorModel.getFleetEditorModel().getVehicles()) {
 				
 				
-				if(selectedStreet.getStart().equals(vehicle.getCurrentKnot()) && selectedStreet.getEnd().equals(vehicle.getNextKnot()) ||
-						selectedStreet.getStart().equals(vehicle.getNextKnot()) && selectedStreet.getEnd().equals(vehicle.getCurrentKnot()))
+				if(selectedStreet.getStart().equals(vehicle.getCurrentNode()) && selectedStreet.getEnd().equals(vehicle.getNextNode()) ||
+						selectedStreet.getStart().equals(vehicle.getNextNode()) && selectedStreet.getEnd().equals(vehicle.getCurrentNode()))
 					
 					isVehicleOnStreet = true;
 			}
@@ -335,8 +335,8 @@ public class SimulationEditorController implements Controller{
 			
 			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getStart());
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getStart());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartNode(s.getStart());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentNode(s.getStart());
 				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 				
@@ -344,8 +344,8 @@ public class SimulationEditorController implements Controller{
 			
 			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartKnot(s.getEnd());
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentKnot(s.getEnd());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setStartNode(s.getEnd());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setCurrentNode(s.getEnd());
 				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 
@@ -360,7 +360,7 @@ public class SimulationEditorController implements Controller{
 			
 			if(s.getStart().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getStart());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishNode(s.getStart());
 				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 				
@@ -368,7 +368,7 @@ public class SimulationEditorController implements Controller{
 			
 			if(s.getEnd().equals(simulationEditorModel.getMapEditorModel().getSelectedNode())){
 				
-				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishKnot(s.getEnd());
+				simulationEditorModel.getFleetEditorModel().getVehicles().get(simulationEditorModel.getFleetEditorModel().getVehiclePos()).setFinishNode(s.getEnd());
 				simulationEditorModel.getMapEditorModel().setSelectedNode(null);
 				simulationEditorModel.changed(null);
 
