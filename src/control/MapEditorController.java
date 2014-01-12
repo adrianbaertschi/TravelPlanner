@@ -14,12 +14,15 @@ import java.util.Locale;
 import javax.swing.JOptionPane;
 
 import model.MapEditorModelException;
+import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
 import view.MapEditorView;
 import view.MasterGui;
+import view.components.DeleteDialog;
 import view.components.LoaderDialog;
+import dao.FleetEditorDao;
 import dao.MapEditorDao;
 
 public class MapEditorController implements Controller {
@@ -42,6 +45,7 @@ public class MapEditorController implements Controller {
 		view.getBtnReset().addActionListener(new BtnResetActionListener());
 		view.getBtnDelete().addActionListener(new BtnDeleteActionListener());
 		view.getBtnSetHeight().addActionListener(new BtnSetHeightActionListener());
+		view.getDeleteMapJB().addActionListener(new BtnDeleteMapActionListener());
 	}
 
 	@Override
@@ -238,7 +242,29 @@ public class MapEditorController implements Controller {
 			d.setVisible(true);
 		}
 	}
-	
+	class BtnDeleteMapActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+			List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
+
+			String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
+			Object[][] rowData = new Object[maps.size()][columns.length];
+			for(int i = 0; i < maps.size(); i++) {
+				rowData[i][0] = maps.get(i).getId();
+				rowData[i][1] = maps.get(i).getName();
+				rowData[i][2] = maps.get(i).getStreets().size();
+				
+				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
+			}
+			
+			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], MapEditorController.this, MapEditorDao.getInstance(), rowData, columns);
+			d.setVisible(true);
+		}
+		
+	}
+
 	class BtnResetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -260,4 +286,6 @@ public class MapEditorController implements Controller {
 			model.getSelectedKnot().setHeight(height);
 		}
 	}
+	
+	
 }
