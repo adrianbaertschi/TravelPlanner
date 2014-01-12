@@ -56,6 +56,9 @@ public class MapEditorController implements Controller {
 		this.model.loadModel((MapEditorModel) model);
 	}
 	
+	/**
+	 * @return node hight
+	 */
 	private int getInputNodeHeightValue() {
 		Integer value = (Integer) view.getTxfNodeHeight().getValue();
 		

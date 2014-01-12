@@ -79,7 +79,7 @@ public class MapEditorView extends JPanel implements Observer{
 		
 		NumberFormatter numberFormatter = new NumberFormatter(NumberFormat.getIntegerInstance(new Locale("de", "CH")));
 		numberFormatter.setMinimum(0);
-		numberFormatter.setMaximum(100);
+		numberFormatter.setMaximum(10);
 		numberFormatter.setCommitsOnValidEdit(true);
 		
 		txfNodeHeight = new JFormattedTextField(numberFormatter);

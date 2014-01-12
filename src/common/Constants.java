@@ -22,10 +22,19 @@ public interface Constants {
 	 */
 	public static final int DISTANCE_NO_PASSING = 20;
 	
+	/**
+	 * 
+	 */
 	public static final String SIMULATION_FINISHED = "SIMULATION_FINISHED";
 	
+	/**
+	 * Ratio to calculate simulation time into realtime
+	 */
 	public static final double TIME_RATIO = 1.955;
 	
+	/**
+	 * Errormessage if no path is found
+	 */
 	public static final String MSG_NO_PATH = "No path exists for car %s, please change Start/Finish positions"; 
 
 }
