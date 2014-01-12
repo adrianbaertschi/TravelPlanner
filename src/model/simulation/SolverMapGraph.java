@@ -66,10 +66,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			}
 						
 			System.out.println("path for Vehicle " + pathForVehicle);
-			
-			//statistics
-			start = System.currentTimeMillis();
-			
+						
 			while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
 				
 				vehicle.setNextNode(pathForVehicle.poll());								
@@ -99,8 +96,8 @@ public class SolverMapGraph implements Runnable, Observer{
 			
 			
 			
-			}
-						
+			}			
+
 			//reinitialize the current Node so a new simulation can be performed
 			vehicle.setCurrentNode(vehicle.getStartNode());
 			
@@ -197,7 +194,9 @@ public class SolverMapGraph implements Runnable, Observer{
 		
 		float ticks = new Street(from, to).getLenth();
 		
-		
+		//statistics
+		start = System.currentTimeMillis();
+
 		for(int i=1; i<=ticks; i++) {
 
 			Node currentPosition = new Node();
@@ -207,16 +206,17 @@ public class SolverMapGraph implements Runnable, Observer{
 			// TODO current position height
 			vehicle.setCurrentPosition(currentPosition);
 
-			//statistics
-			end = System.currentTimeMillis();
-			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
-			
 			int speedLimit = calculateSpeed(currentStreet);
 
 			Thread.sleep((2000/speedLimit));
 
 			simulationEditorModel.changed(vehicle);
 		}
+		
+		//statistics
+		end = System.currentTimeMillis();
+		vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
+
 	}
 	
 	

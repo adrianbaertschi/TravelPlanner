@@ -322,8 +322,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 
 		vehicleArea.add(buttonsJP);
-
-
 		
 	}
 
@@ -337,9 +335,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.requestFocusInWindow();
 
 		Graphics2D g2d = (Graphics2D)g;
-		
-//		System.out.println(System.currentTimeMillis());
-		
+				
 		// antialiasing ON
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -425,7 +421,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		this.expectedTimeValueJL.setText(nf.format(v.getExpectedTime()));
 		this.actualTimeValueJL.setText(nf.format(v.getActualTime()/Constants.TIME_RATIO));
 		this.pathLengthValueJL.setText(nf.format(v.getPathLength()));
-//		this.actualTimeValueJL.setText(Double.toString(v.getActualTime()*Constants.TIME_RATIO/3600));
 		this.simulationDurationValueJL.setText(nf.format(v.getActualTime()));
 		if(v instanceof Car){
 			
@@ -442,10 +437,7 @@ public class SimulationEditorView extends JPanel implements Observer{
 		if (model instanceof SimulationEditorModel) {
 			
 			this.model = (SimulationEditorModel) model; 
-//			System.out.println("repaint:");
 			repaint();
-//			vehicleArea.repaint();
-//			mapArea.paintImmediately(0, 0, mapArea.getWidth(), mapArea.getHeight());
 		}
 		
 	}

@@ -28,8 +28,9 @@ import dao.BaseDao;
  * and a Button to confirm the selection.
  *
  */
-public class DeleteDialog extends JDialog {
+public class DeleteDialog extends GenericDialog {
 
+	public final static JButton btnDelete = new JButton("Delete");
 	/**
 	 * 
 	 * @param frame Root frame
@@ -39,53 +40,13 @@ public class DeleteDialog extends JDialog {
 	 * @param columns Header captions, first item (ID) is not visible
 	 */
 	public DeleteDialog(Frame frame, final Controller controller, final BaseDao<?> dao, Object[][] rowData, String[] columns) {
+		
 		super(frame);
-		this.setLayout(null);
-		this.setSize(350, 350);
-		this.setModal(true);
-		this.setLocationRelativeTo(frame);
 		
-		final JTable table = new JTable(rowData, columns) {
-			@Override
-			public boolean isCellEditable(int rowIndex, int colIndex) {
-				return false;
-			};
-		};
-		table.removeColumn(table.getColumn(columns[0]));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setFillsViewportHeight(true);
-		JScrollPane scp = new JScrollPane(table);
-		
-		final JButton btnDelete = new JButton("Delete");
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
-			public void valueChanged(ListSelectionEvent event) {
-				if(event.getValueIsAdjusting()) {
-					return;
-				}
-				btnDelete.setEnabled(table.getSelectedRow() >= 0);
-				
-			}
-		});
-		scp.setBounds(5, 5, 340, 265);
-		
-		this.add(scp);
-		
-		btnDelete.setBounds(5, 275, 100, 30);
-		btnDelete.setEnabled(false);
-		this.add(btnDelete);
-		
-		btnDelete.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				int selectedRow = table.getSelectedRow();
-				long id = (long)table.getModel().getValueAt(selectedRow, 0);
-				
-				dao.deleteModelById(id);
-				DeleteDialog.this.dispose();
-				
-			}
-		});
+		super.setActionJB(btnDelete);
+
+		super.createDialog(controller, dao, rowData, columns);
+						
 	}
 
 }
