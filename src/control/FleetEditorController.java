@@ -242,5 +242,5 @@ public class FleetEditorController implements Controller {
 		}
 		
 	}
-
+	
 }
