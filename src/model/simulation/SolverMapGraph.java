@@ -53,6 +53,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg, null);
 			
 			if(pathForVehicle.isEmpty()) {
+				removeTemporaryStreets();
 				throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
 			}
 			
@@ -112,11 +113,17 @@ public class SolverMapGraph implements Runnable, Observer{
 	private void removeTemporaryStreets() {
 
 		// Clear temporary Streets from model
+		List<Street> removeTemsStreets = new ArrayList<>();
 		for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
 			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
 			if(street instanceof TemporaryStreet) {
-				simulationEditorModel.getMapEditorModel().removeStreet(street);
+				removeTemsStreets.add(street);
+				System.out.println("tempstreet " +street);
 			}
+		}
+		for(Street s: removeTemsStreets){
+			
+			simulationEditorModel.getMapEditorModel().removeStreet(s);
 		}
 
 	}
@@ -374,6 +381,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg, SimulationOption simulationStatistic) {
 		
 		if(!swg.containsVertex(vehicle.getCurrentNode()) || !swg.containsVertex(vehicle.getFinishNode())) {
+			this.removeTemporaryStreets();
 			throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
 		}
 		
