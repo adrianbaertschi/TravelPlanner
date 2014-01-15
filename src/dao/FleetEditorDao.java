@@ -3,9 +3,6 @@ package dao;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import model.entity.FleetEditorModel;
@@ -35,6 +32,7 @@ public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 	@Override
 	public FleetEditorModel getModelById(long id) {
 		FleetEditorModel fleet = em.find(FleetEditorModel.class, id);
+		em.clear();
 		return fleet;
 		
 	}
@@ -58,7 +56,7 @@ public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 		em.getTransaction().begin();
 		em.remove(fleet);
 		em.getTransaction().commit();
-
+		em.clear();
 	}
 
 }

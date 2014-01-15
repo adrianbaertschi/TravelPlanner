@@ -3,9 +3,6 @@ package dao;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import model.entity.MapEditorModel;
@@ -61,6 +58,7 @@ public class MapEditorDao extends BaseDao<MapEditorModel> {
 		em.getTransaction().begin();
 		em.remove(map);
 		em.getTransaction().commit();
+		em.clear();
 
 	
 	}
