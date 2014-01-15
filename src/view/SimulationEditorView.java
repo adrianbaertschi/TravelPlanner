@@ -126,29 +126,21 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		this.add(streetInfo);
 		
-		//TODO: layout mit konstanten
-		// Vehicle Area
 		vehicleArea = new JPanel();
 		vehicleArea.setBounds(920, 10, 250, 800);
-//		vehicleArea.setBackground(Color.WHITE);
 		vehicleArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		vehicleArea.setLayout(null);
 
 		
-		// VehicleSelectionArea
 		vehicleSelectionArea = new JPanel();
 		vehicleSelectionArea.setBorder(BorderFactory.createTitledBorder("Your Vehicles"));
 		vehicleSelectionArea.setPreferredSize(new Dimension(vehicleArea.getWidth()-10, 250));
 		vehicleSelectionArea.setBounds(5, 5, vehicleArea.getWidth()-10, 255);
 
-//		vehicleSelectionArea.setBackground(Color.BLACK);
-//		vehicleSelectionArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		
 		vehicleSelectionArea.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();		
 		gbc.insets = new Insets( 5, 5, 5, 5 );	
 		gbc.anchor = GridBagConstraints.WEST;	
-//		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -182,7 +174,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		gbc.gridwidth = 3;
 		gbc.anchor = GridBagConstraints.CENTER;
 
-		//TODO: if else weghauen
 		if(model.getFleetEditorModel().getVehicles().size() > 0){
 				vehicleII = new ImageIcon(model.getFleetEditorModel().getVehicles().get(0).getVehicleTypes().getUrlVehicle());
 				vehicleII.setImage(vehicleII.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
@@ -197,8 +188,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		this.add(vehicleArea);
 		
-		
-		//vehicel options area
 		
 		vehicleOptionsArea = new JPanel();
 		vehicleOptionsArea.setLayout(null);
@@ -246,8 +235,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 				
 		setVehicleOptionsEnabled();
 
-		//statistics jpanel
-		
 		statisticsJP = new JPanel();
 		statisticsJP.setBorder(BorderFactory.createTitledBorder("Statistic"));
 		statisticsJP.setLayout(new GridLayout(5, 2));
@@ -280,7 +267,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		
 		//user disruption
-		
 		userDisruptionJP = new JPanel();
 		userDisruptionJP.setLayout(null);
 		userDisruptionJP.setBorder(BorderFactory.createTitledBorder("User Disruption"));
@@ -296,8 +282,8 @@ public class SimulationEditorView extends JPanel implements Observer{
 		
 		buttonsJP = new JPanel();
 		buttonsJP.setLayout(null);
-		//TODO: set title
-		buttonsJP.setBorder(BorderFactory.createTitledBorder(""));
+
+		buttonsJP.setBorder(BorderFactory.createTitledBorder("Simulation"));
 		buttonsJP.setBounds(5, 715, vehicleArea.getWidth()-10, vehicleArea.getHeight() - 715-5);
 		buttonsJP.setVisible(true);
 

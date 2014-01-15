@@ -157,6 +157,25 @@ public class Street {
 		return middle;
 	}
 	
+	/**
+	 * Calculate for Solver, avoid negative weights on Graph
+	 * inline -0.2 -> 1/1.2
+	 * 		   0.2 -> 1.2
+	 * @return
+	 */
+	public double getInclineFactor() {
+		
+		double incline = this.getIncline();
+		
+		if(incline < 0){
+			incline = 1 / (-1 * incline +1);
+		}else {
+			incline += 1;
+		}
+		
+		return incline;
+	}
+	
 	public boolean isOneWay() {
 		return isOneWay;
 	}

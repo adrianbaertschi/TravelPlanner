@@ -81,9 +81,6 @@ public class FleetEditorController implements Controller {
 		public void actionPerformed(ActionEvent e) {
 
 			fleetEditorModel.decreaseVehiclePos();
-			//TODO:
-			//fahrzeug updaten
-//			fleetEditorModel.updateVehicleAttributes();
 
 		}
 	}
