@@ -17,6 +17,8 @@ public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 		return instance;
 	}
 	
+	private FleetEditorDao() {};
+	
 	public FleetEditorModel saveFleet(FleetEditorModel fleet) {
 		
 		fleet.setSaveDate(Calendar.getInstance());
