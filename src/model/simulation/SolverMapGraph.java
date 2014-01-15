@@ -68,8 +68,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		}
 
-		System.out.println("path for Vehicle " + pathForVehicle);
-
 		while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
 
 			vehicle.setNextNode(pathForVehicle.poll());								
@@ -107,7 +105,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		//statistics
 		vehicle.addNode(vehicle.getFinishNode());
-		System.out.println(vehicle.getPath());
 		updateStatistics();
 		removeTemporaryStreets();
 	}
@@ -120,7 +117,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
 			if(street instanceof TemporaryStreet) {
 				removeTemsStreets.add(street);
-				System.out.println("tempstreet " +street);
 			}
 		}
 		for(Street s: removeTemsStreets){
@@ -198,8 +194,6 @@ public class SolverMapGraph implements Runnable, Observer{
 	
 	private void driveFromTo(Node from, Node to, Street currentStreet) throws InterruptedException {
 		
-		
-		System.out.println("Drive from " + from + " to " + to);
 		
 		float ticks = new Street(from, to).getLenth();
 		
@@ -304,7 +298,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			case LOWEST_GAS_CONSUMPTION:
 				
 				Car car = (Car)vehicle;
-				System.out.println(car.getVehicleTypes().getUrlVehicle() +" incline " + s.getIncline());
 
 				switch (s.getStreetType()) {
 				
@@ -434,7 +427,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	private void recalculate() {
 		SimulationEditorModel.incRunningSimulations();
-		System.out.println("vehicle in recalc " + vehicle.getVehicleTypes());		
 		this.vehicle.getThread().interrupt();
 		this.vehicle.setSimulationDelay(0);
 		end = System.currentTimeMillis();
@@ -479,7 +471,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	public void update(Observable o, Object arg) {
 		if(arg instanceof UserDisruption && this.vehicle.getThread().isAlive()) {
-			System.out.println("recalculate route");
 			this.simulationEditorModel = (SimulationEditorModel) o;
 			recalculate();
 		}

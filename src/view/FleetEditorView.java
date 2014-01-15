@@ -486,7 +486,6 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		if (model instanceof FleetEditorModel) {
 			
-			System.out.println("im update");
 			this.fleetEditorModel = (FleetEditorModel) model; 
 			
 		}
