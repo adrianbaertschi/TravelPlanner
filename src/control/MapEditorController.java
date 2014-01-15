@@ -226,49 +226,44 @@ public class MapEditorController implements Controller {
 	class BtnLoadMapActioListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			
-			List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
 
-			String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
-			Object[][] rowData = new Object[maps.size()][columns.length];
-			for(int i = 0; i < maps.size(); i++) {
-				rowData[i][0] = maps.get(i).getId();
-				rowData[i][1] = maps.get(i).getName();
-				rowData[i][2] = maps.get(i).getStreets().size();
-				
-				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
-				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
-			}
-			
-			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], MapEditorController.this,  MapEditorDao.getInstance(), rowData, columns);
+			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], MapEditorController.this,  MapEditorDao.getInstance(), getRowData(getColumns()), getColumns());
 			d.setVisible(true);
 		}
 	}
 	class BtnDeleteMapActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			
-			List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
-
-			String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
-			Object[][] rowData = new Object[maps.size()][columns.length];
-			for(int i = 0; i < maps.size(); i++) {
-				rowData[i][0] = maps.get(i).getId();
-				rowData[i][1] = maps.get(i).getName();
-				rowData[i][2] = maps.get(i).getStreets().size();
-				
-				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
-				rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
-			}
-			
-			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], MapEditorController.this, MapEditorDao.getInstance(), rowData, columns);
+					
+			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], MapEditorController.this, MapEditorDao.getInstance(), getRowData(getColumns()), getColumns());
 			d.setVisible(true);
 		}
 		
 	}
 	
-	public 
+	public String[] getColumns(){
+		
+		String[] columns = new String[]{"ID",  "Name", "Streets", "Save Date"};
+		return columns;
+	}
 
+	public Object[][] getRowData(String[] columns){
+	
+		List<MapEditorModel> maps = MapEditorDao.getInstance().getMaps();
+
+		Object[][] rowData = new Object[maps.size()][columns.length];
+		for(int i = 0; i < maps.size(); i++) {
+			rowData[i][0] = maps.get(i).getId();
+			rowData[i][1] = maps.get(i).getName();
+			rowData[i][2] = maps.get(i).getStreets().size();
+			
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+			rowData[i][3] = df.format(maps.get(i).getSaveDate().getTime());
+		}
+		return rowData;
+	}
+			
+			
 	class BtnResetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
