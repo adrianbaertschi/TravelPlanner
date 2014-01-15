@@ -3,6 +3,9 @@ package dao;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import model.entity.FleetEditorModel;
@@ -20,11 +23,12 @@ public class FleetEditorDao extends BaseDao<FleetEditorModel> {
 	public FleetEditorModel saveFleet(FleetEditorModel fleet) {
 		
 		fleet.setSaveDate(Calendar.getInstance());
-		
+
 		em.getTransaction().begin();
 		em.persist(fleet);
 		em.getTransaction().commit();
 		
+		em.clear();
 		return fleet;
 	}
 
