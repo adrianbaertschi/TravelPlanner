@@ -120,7 +120,6 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		fleetAreaJP.setLayout(null);
 		fleetAreaJP.setBounds(10, 10, 900, 800);
-//		fleetAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
 		this.add(fleetAreaJP);
 
@@ -281,13 +280,9 @@ public class FleetEditorView extends JPanel implements Observer {
 
 		addVehicleArea.add(addVehicleTitleJP);
 		
-		// vehicleSelectionAreaJP
 		vehicleSelectionAreaJP = new JPanel();
 		vehicleSelectionAreaJP.setPreferredSize(new Dimension(addVehicleArea.getWidth(), 250));
 		vehicleSelectionAreaJP.setBounds(10, 100, addVehicleArea.getWidth()-20, 250);
-//		vehicleSelectionAreaJP.setBackground(Color.BLACK);
-//		vehicleSelectionAreaJP.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		
 		
 		vehicleSelectionAreaJP.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();		
@@ -491,7 +486,6 @@ public class FleetEditorView extends JPanel implements Observer {
 		
 		if (model instanceof FleetEditorModel) {
 			
-			System.out.println("im update");
 			this.fleetEditorModel = (FleetEditorModel) model; 
 			
 		}

@@ -46,68 +46,67 @@ public class SolverMapGraph implements Runnable, Observer{
 	}
 	
 	private void startSimulation() throws InterruptedException {
-			
-		
-			SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
-			
-			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg, null);
-			
-			if(pathForVehicle.isEmpty()) {
-				removeTemporaryStreets();
-				throw new NoPathFoundExceptionException(vehicle.getName());
-			}
-			
-			Node n = pathForVehicle.poll();
-			
-			//statistics
-			if(n!=null){
-				
-				vehicle.addNode(n);
 
-			}
-						
-			System.out.println("path for Vehicle " + pathForVehicle);
-						
-			while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
-				
-				vehicle.setNextNode(pathForVehicle.poll());								
-				
-				Street currentStreet = null;
-				
-				for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
-					Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
-					if(street.getStart().equals(vehicle.getCurrentNode()) && street.getEnd().equals(vehicle.getNextNode()) ||
-							   street.getStart().equals(vehicle.getNextNode()) && street.getEnd().equals(vehicle.getCurrentNode())){
-								currentStreet = street;
-								break;
-							}
-					
-				}
-				
-				currentStreet.getVehicles().add(vehicle);
-				
-				driveFromTo(vehicle.getCurrentNode(), vehicle.getNextNode(), currentStreet);
-				
-				//statistics
-				vehicle.addNode(vehicle.getNextNode());
+		start = System.currentTimeMillis();
 
-				vehicle.setCurrentNode(vehicle.getNextNode());
-				currentStreet.getVehicles().remove(vehicle);
-					
-			
-			
-			
-			}			
 
-			//reinitialize the current Node so a new simulation can be performed
-			vehicle.setCurrentNode(vehicle.getStartNode());
-			
-			
-			//statistics
-			vehicle.addNode(vehicle.getFinishNode());
-			System.out.println(vehicle.getPath());
-			updateStatistics();
+		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg = createMapGraph();
+
+		Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg, null);
+
+		if(pathForVehicle.isEmpty()) {
 			removeTemporaryStreets();
+			throw new NoPathFoundExceptionException(vehicle.getName());
+		}
+
+		Node n = pathForVehicle.poll();
+
+		//statistics
+		if(n!=null){
+
+			vehicle.addNode(n);
+
+		}
+
+		while(!vehicle.getCurrentNode().equals(vehicle.getFinishNode())){
+
+			vehicle.setNextNode(pathForVehicle.poll());								
+
+			Street currentStreet = null;
+
+			for(int i = 0; i<simulationEditorModel.getMapEditorModel().getStreets().size(); i++) {
+				Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
+				if(street.getStart().equals(vehicle.getCurrentNode()) && street.getEnd().equals(vehicle.getNextNode()) ||
+						street.getStart().equals(vehicle.getNextNode()) && street.getEnd().equals(vehicle.getCurrentNode())){
+					currentStreet = street;
+					break;
+				}
+
+			}
+
+			currentStreet.getVehicles().add(vehicle);
+
+			driveFromTo(vehicle.getCurrentNode(), vehicle.getNextNode(), currentStreet);
+
+			//statistics
+			vehicle.addNode(vehicle.getNextNode());
+
+			vehicle.setCurrentNode(vehicle.getNextNode());
+			currentStreet.getVehicles().remove(vehicle);
+
+
+
+
+		}			
+
+		//reinitialize the current Node so a new simulation can be performed
+		vehicle.setCurrentNode(vehicle.getStartNode());
+
+
+		//statistics
+		vehicle.addNode(vehicle.getFinishNode());
+		updateStatistics();
+		removeTemporaryStreets();
 	}
 	
 	private void removeTemporaryStreets() {
@@ -118,7 +117,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			Street street = simulationEditorModel.getMapEditorModel().getStreets().get(i);
 			if(street instanceof TemporaryStreet) {
 				removeTemsStreets.add(street);
-				System.out.println("tempstreet " +street);
 			}
 		}
 		for(Street s: removeTemsStreets){
@@ -197,13 +195,8 @@ public class SolverMapGraph implements Runnable, Observer{
 	private void driveFromTo(Node from, Node to, Street currentStreet) throws InterruptedException {
 		
 		
-		System.out.println("Drive from " + from + " to " + to);
-		
 		float ticks = new Street(from, to).getLenth();
 		
-		//statistics
-		start = System.currentTimeMillis();
-
 		for(int i=1; i<=ticks; i++) {
 
 			Node currentPosition = new Node();
@@ -217,11 +210,11 @@ public class SolverMapGraph implements Runnable, Observer{
 			Thread.sleep((2000/speedLimit));
 
 			simulationEditorModel.changed(vehicle);
+			//statistics
+			end = System.currentTimeMillis();
+			vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
 		}
 		
-		//statistics
-		end = System.currentTimeMillis();
-		vehicle.setActualTime(vehicle.getActualTimeTemp() + (end-start)/1000.0);
 
 	}
 	
@@ -305,29 +298,28 @@ public class SolverMapGraph implements Runnable, Observer{
 			case LOWEST_GAS_CONSUMPTION:
 				
 				Car car = (Car)vehicle;
-				System.out.println(car.getVehicleTypes().getUrlVehicle() +" incline " + s.getIncline());
 
 				switch (s.getStreetType()) {
 				
 				case DISTRICT_ROAD:
-					weightAB = car.getGasConsumptionLow()/100.0 *s.getLenth() * getInclineFactor(s);
-					weightBA = car.getGasConsumptionLow()/100.0 *s.getLenth() * (1/getInclineFactor(s));
+					weightAB = car.getGasConsumptionLow()/100.0 *s.getLenth() * s.getInclineFactor();
+					weightBA = car.getGasConsumptionLow()/100.0 *s.getLenth() * (1/s.getInclineFactor());
 					break;
 				case IN_TOWN:
-					weightAB = car.getGasConsumptionLow()/100 *s.getLenth() * getInclineFactor(s);
-					weightBA = car.getGasConsumptionLow()/100 *s.getLenth() * (1/getInclineFactor(s));
+					weightAB = car.getGasConsumptionLow()/100 *s.getLenth() * s.getInclineFactor();
+					weightBA = car.getGasConsumptionLow()/100 *s.getLenth() * (1/s.getInclineFactor());
 					break;
 				case OUT_OF_TOWN:
-					weightAB = car.getGasConsumptionMedium()/100 *s.getLenth() * getInclineFactor(s);
-					weightBA = car.getGasConsumptionMedium()/100 *s.getLenth() * (1/getInclineFactor(s));
+					weightAB = car.getGasConsumptionMedium()/100 *s.getLenth() * s.getInclineFactor();
+					weightBA = car.getGasConsumptionMedium()/100 *s.getLenth() * (1/s.getInclineFactor());
 					break;
 				case MOTORWAY:
-					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s);
-					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s));
+					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * s.getInclineFactor();
+					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/s.getInclineFactor());
 					break;
 				case FREEWAY:
-					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * getInclineFactor(s);
-					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/getInclineFactor(s));
+					weightAB = car.getGasConsumptionHigh()/100 *s.getLenth() * s.getInclineFactor();
+					weightBA = car.getGasConsumptionHigh()/100 *s.getLenth() * (1/s.getInclineFactor());
 					break;
 				}
 				
@@ -359,22 +351,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 		}
 		return swg;
-	}
-
-	// TODO move to Street
-	private double getInclineFactor(Street s) {
-		
-		double incline = s.getIncline();
-		
-		if(incline < 0){
-			incline = 1/(-1 * incline +1);
-		}else {
-			incline+=1;
-		}
-		
-		System.out.println("incline " +incline);
-
-		return incline;
 	}
 
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg, SimulationOption simulationStatistic) {
@@ -451,7 +427,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	private void recalculate() {
 		SimulationEditorModel.incRunningSimulations();
-		System.out.println("vehicle in recalc " + vehicle.getVehicleTypes());		
 		this.vehicle.getThread().interrupt();
 		this.vehicle.setSimulationDelay(0);
 		end = System.currentTimeMillis();
@@ -496,7 +471,6 @@ public class SolverMapGraph implements Runnable, Observer{
 
 	public void update(Observable o, Object arg) {
 		if(arg instanceof UserDisruption && this.vehicle.getThread().isAlive()) {
-			System.out.println("recalculate route");
 			this.simulationEditorModel = (SimulationEditorModel) o;
 			recalculate();
 		}
