@@ -31,5 +31,10 @@ public interface Constants {
 	 * Ratio to calculate simulation time into realtime
 	 */
 	public static final double TIME_RATIO = 1.955;
+	
+	/**
+	 * Distance in px to check if user clicked on street
+	 */
+	public static final int CLICK_TOLERANCE_STREET = 8;
 
 }

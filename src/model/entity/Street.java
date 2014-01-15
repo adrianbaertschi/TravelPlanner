@@ -17,6 +17,8 @@ import javax.persistence.Transient;
 
 import model.config.StreetType;
 
+import common.Constants;
+
 @Entity
 public class Street {
 	
@@ -110,8 +112,7 @@ public class Street {
 		double distance = Line2D.ptSegDist(start.getX(), start.getY(), end.getX(), end.getY(), x, y);
 		distance = Math.abs(distance);
 		
-		int toleance = 8; //TODO: define constants somewhere
-		return distance <= toleance;
+		return distance <= Constants.CLICK_TOLERANCE_STREET;
 		
 	}
 	
