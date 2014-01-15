@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import model.MapEditorModelException;
+import model.DuplicateStreetException;
 import model.UserDisruption;
 
 /**
@@ -68,13 +68,12 @@ public class MapEditorModel extends Observable {
 	}
 	
 	public void addStreet(Street street) {
-		String message = "Double streets not allowed!";
 		for(Street s : streets) {
 			if(s.getStart().equals(street.getStart()) && s.getEnd().equals(street.getEnd())) {
-				throw new MapEditorModelException(message);
+				throw new DuplicateStreetException();
 			}
 			if(s.getStart().equals(street.getEnd()) && s.getEnd().equals(street.getStart())) {
-				throw new MapEditorModelException(message);
+				throw new DuplicateStreetException();
 			}
 		}
 		

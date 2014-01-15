@@ -1,7 +1,7 @@
 package model.entity;
 
 import static org.junit.Assert.assertTrue;
-import model.MapEditorModelException;
+import model.DuplicateStreetException;
 import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
@@ -21,7 +21,7 @@ public class MapEditorModelTest {
 		boolean exception = false;
 		try {
 			model.addStreet(new Street(new Node(30, 40), new Node(10, 20)));
-		} catch (MapEditorModelException e) {
+		} catch (DuplicateStreetException e) {
 			exception = true;
 		}
 		

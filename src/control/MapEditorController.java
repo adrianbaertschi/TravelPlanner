@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import model.MapEditorModelException;
+import model.DuplicateStreetException;
 import model.entity.MapEditorModel;
 import model.entity.Node;
 import model.entity.Street;
@@ -132,7 +132,7 @@ public class MapEditorController implements Controller {
 						try {
 							model.addStreet(currentStreet);
 							
-						} catch (MapEditorModelException ex) {
+						} catch (DuplicateStreetException ex) {
 							JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						}
 						
@@ -161,7 +161,7 @@ public class MapEditorController implements Controller {
 					try {
 						model.addStreet(currentStreet);
 						
-					} catch(MapEditorModelException ex) {
+					} catch(DuplicateStreetException ex) {
 						JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					model.setSelectedNode(null);
