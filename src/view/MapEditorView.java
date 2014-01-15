@@ -198,7 +198,10 @@ public class MapEditorView extends JPanel implements Observer{
 	private void displayStreetInfo(Street st) {
 		NumberFormat nf = NumberFormat.getIntegerInstance();
 		String degrees = nf.format(Math.toDegrees(st.getIncline()));
-		infoField.setText("Selected Street:\nLength: " + st.getLenth() + " km \nIncline: " + degrees + "°");
+		
+		String streetInfo = "Selected Street:\nLength: " + st.getLenth() + " km \nIncline: " + degrees + "°";
+		streetInfo += "\nSpeed limit: " + st.getStreetType().getSpeedLimit() + " km/h";
+		infoField.setText(streetInfo);
 	}
 
 	public void update(Observable model, Object value) {
