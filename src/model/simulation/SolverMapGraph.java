@@ -210,7 +210,6 @@ public class SolverMapGraph implements Runnable, Observer{
 			currentPosition.setX((int) (from.getX() + (to.getX() - from.getX())*(i*(1/ticks))));
 			currentPosition.setY((int) (from.getY() + (to.getY() - from.getY())*(i*(1/ticks))));
 			
-			// TODO current position height
 			vehicle.setCurrentPosition(currentPosition);
 
 			int speedLimit = calculateSpeed(currentStreet);
@@ -459,7 +458,6 @@ public class SolverMapGraph implements Runnable, Observer{
 		vehicle.setActualTimeTemp(vehicle.getActualTimeTemp() + ((end-start)/1000.0));
 		
 		Node temp = vehicle.getCurrentPosition();
-		//TODO: height of temp
 		
 		TemporaryStreet s1 = new TemporaryStreet(vehicle.getCurrentNode(), temp);
 		s1.setAllowedVehicle(vehicle);
