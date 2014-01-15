@@ -31,10 +31,5 @@ public interface Constants {
 	 * Ratio to calculate simulation time into realtime
 	 */
 	public static final double TIME_RATIO = 1.955;
-	
-	/**
-	 * Errormessage if no path is found
-	 */
-	public static final String MSG_NO_PATH = "No path exists for car %s, please change Start/Finish positions"; 
 
 }
