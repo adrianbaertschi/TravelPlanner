@@ -120,7 +120,7 @@ public class MapEditorView extends JPanel implements Observer{
 		btnReset.setBounds(920, 780, 130, 30);
 		this.add(btnReset);
 		
-		deleteMapJB = new JButton("Delete");
+		deleteMapJB = new JButton("Delete Map");
 		deleteMapJB.setBounds(1055, 780, 130, 30);
 		this.add(deleteMapJB);
 

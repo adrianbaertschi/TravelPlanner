@@ -304,13 +304,13 @@ public class SimulationEditorView extends JPanel implements Observer{
 
 		// Start Button
 		
-		startJB = new JButton("start");
+		startJB = new JButton("Set Start");
 		startJB.setBounds(5, 15, 110, 30);
 
 		buttonsJP.add(startJB);		
 		
 		// Finish JButton
-		finishJB = new JButton("finish");
+		finishJB = new JButton("Set Finish");
 		finishJB.setBounds(125, 15, 110, 30);
 
 		buttonsJP.add(finishJB);
