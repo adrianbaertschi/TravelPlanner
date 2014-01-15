@@ -4,6 +4,8 @@
 package view.components;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
@@ -22,7 +24,6 @@ import dao.BaseDao;
  */
 public class DeleteDialog extends GenericDialog {
 
-	public final static JButton btnDelete = new JButton("Delete");
 	/**
 	 * 
 	 * @param frame Root frame
@@ -35,9 +36,25 @@ public class DeleteDialog extends GenericDialog {
 		
 		super(frame);
 		
+		JButton btnDelete = new JButton("Delete");
 		super.setActionJB(btnDelete);
+		
+		btnDelete.setBounds(5, 275, 100, 30);
+		btnDelete.setEnabled(false);
+		this.add(btnDelete);
 
 		super.createDialog(controller, dao, rowData, columns);
+		
+		btnDelete.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				int selectedRow = tableJT.getSelectedRow();
+				long id = (long)tableJT.getModel().getValueAt(selectedRow, 0);
+				dao.deleteModelById(id);
+				
+				DeleteDialog.this.dispose();
+			}
+		});
 						
 	}
 

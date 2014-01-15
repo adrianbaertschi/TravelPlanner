@@ -4,8 +4,6 @@
 package view.components;
 
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -30,7 +28,8 @@ import dao.BaseDao;
  */
 public class GenericDialog extends JDialog {
 	
-	public JButton actionJB = new JButton();
+	public JButton actionJB;
+	JTable tableJT;
 	/**
 	 * 
 	 * @param frame Root frame
@@ -54,7 +53,7 @@ public class GenericDialog extends JDialog {
 	public void createDialog(final Controller controller, final BaseDao<?> dao, Object[][] rowData, String[] columns){
 		
 		
-		final JTable tableJT = new JTable(rowData, columns) {
+		tableJT = new JTable(rowData, columns) {
 			@Override
 			public boolean isCellEditable(int rowIndex, int colIndex) {
 				return false;
@@ -79,37 +78,7 @@ public class GenericDialog extends JDialog {
 		
 		this.add(scp);
 
-		actionJB.setBounds(5, 275, 100, 30);
-		actionJB.setEnabled(false);
-		this.add(actionJB);
-
-		actionJB.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				int selectedRow = tableJT.getSelectedRow();
-				long id = (long)tableJT.getModel().getValueAt(selectedRow, 0);
-				
-				if(actionJB.getText().equals("Delete")){
-					
-					dao.deleteModelById(id);
-					
-				}else if(actionJB.getText().equals("Load")){
-					
-					controller.setModel(dao.getModelById(id));
-
-				}
-				
-				GenericDialog.this.dispose();
-
-			}
-		});
 		
-	}
-	/**
-	 * @return the actionJB
-	 */
-	public JButton getActionJB() {
-		return actionJB;
 	}
 	/**
 	 * @param actionJB the actionJB to set

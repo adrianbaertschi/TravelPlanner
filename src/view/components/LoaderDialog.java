@@ -1,6 +1,8 @@
 package view.components;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
@@ -31,9 +33,26 @@ public class LoaderDialog extends GenericDialog {
 		
 		super(frame);
 		
-		super.setActionJB(btnLoad);
 
-		super.createDialog(controller, dao, rowData, columns);	
+		super.createDialog(controller, dao, rowData, columns);
+		
+		JButton btnLoad = new JButton("Load");
+		super.setActionJB(btnLoad);
+		
+		btnLoad.setBounds(5, 275, 100, 30);
+		btnLoad.setEnabled(false);
+		this.add(btnLoad);
+		
+		btnLoad.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = tableJT.getSelectedRow();
+				long id = (long)tableJT.getModel().getValueAt(selectedRow, 0);
+				controller.setModel(dao.getModelById(id));
+				
+				LoaderDialog.this.dispose();
+			}
+		});
 		
 	}
 }
