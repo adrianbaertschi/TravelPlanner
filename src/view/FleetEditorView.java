@@ -346,8 +346,8 @@ public class FleetEditorView extends JPanel implements Observer {
 		addVehicleArea.add(loadFleetJB);
 		
 		// Reset Button
-		setResetFleetJB(new JButton("Reset Fleet"));
-		getResetFleetJB().setBounds(10, 440, 100, 30);
+		resetFleetJB = new JButton("Reset Fleet");
+		resetFleetJB.setBounds(10, 440, 100, 30);
 		addVehicleArea.add(getResetFleetJB());
 		
 		deleteFleetJB = new JButton("Delete Fleet");
@@ -506,24 +506,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param nextFleetVehicleJB the nextFleetVehicleJB to set
-	 */
-	public void setNextFleetVehicleJB(JButton nextFleetVehicleJB) {
-		this.nextFleetVehicleJB = nextFleetVehicleJB;
-	}
-
-	/**
 	 * @return the previousFleetVehicleJB
 	 */
 	public JButton getPreviousFleetVehicleJB() {
 		return previousFleetVehicleJB;
-	}
-
-	/**
-	 * @param previousFleetVehicleJB the previousFleetVehicleJB to set
-	 */
-	public void setPreviousFleetVehicleJB(JButton previousFleetVehicleJB) {
-		this.previousFleetVehicleJB = previousFleetVehicleJB;
 	}
 
 	/**
@@ -534,13 +520,6 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param nextVehicleJB the nextVehicleJB to set
-	 */
-	public void setNextVehicleJB(JButton nextVehicleJB) {
-		this.nextVehicleJB = nextVehicleJB;
-	}
-
-	/**
 	 * @return the previousVehicleJB
 	 */
 	public JButton getPreviousVehicleJB() {
@@ -548,24 +527,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param previousVehicleJB the previousVehicleJB to set
-	 */
-	public void setPreviousVehicleJB(JButton previousVehicleJB) {
-		this.previousVehicleJB = previousVehicleJB;
-	}
-
-	/**
 	 * @return the addVehicleJB
 	 */
 	public JButton getAddVehicleJB() {
 		return addVehicleJB;
-	}
-
-	/**
-	 * @param addVehicleJB the addVehicleJB to set
-	 */
-	public void setAddVehicleJB(JButton addVehicleJB) {
-		this.addVehicleJB = addVehicleJB;
 	}
 
 	/**
@@ -580,24 +545,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param saveFleetJB the saveFleetJB to set
-	 */
-	public void setSaveFleetJB(JButton saveFleetJB) {
-		this.saveFleetJB = saveFleetJB;
-	}
-
-	/**
 	 * @return the deleteFleetJB
 	 */
 	public JButton getDeleteFleetJB() {
 		return deleteFleetJB;
-	}
-
-	/**
-	 * @param deleteFleetJB the deleteFleetJB to set
-	 */
-	public void setDeleteFleetJB(JButton deleteFleetJB) {
-		this.deleteFleetJB = deleteFleetJB;
 	}
 
 	/**
@@ -622,38 +573,18 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param saveVehicleJB the saveVehicleJB to set
-	 */
-	public void setSaveVehicleJB(JButton saveVehicleJB) {
-		this.saveVehicleJB = saveVehicleJB;
-	}
-
-	/**
 	 * @return the vehicleNameJTF
 	 */
 	public JTextField getVehicleNameJTF() {
 		return vehicleNameJTF;
 	}
 
-	/**
-	 * @param vehicleNameJTF the vehicleNameJTF to set
-	 */
-	public void setVehicleNameJTF(JTextField vehicleNameJTF) {
-		this.vehicleNameJTF = vehicleNameJTF;
-	}
 
 	/**
 	 * @return the vehicleSpeedJCB
 	 */
 	public JComboBox<Integer> getVehicleSpeedJCB() {
 		return vehicleSpeedJCB;
-	}
-
-	/**
-	 * @param vehicleSpeedJCB the vehicleSpeedJCB to set
-	 */
-	public void setVehicleSpeedJCB(JComboBox<Integer> vehicleSpeedJCB) {
-		this.vehicleSpeedJCB = vehicleSpeedJCB;
 	}
 
 	/**
@@ -664,25 +595,10 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param vehicleGasUsageLowJCB the vehicleGasUsageLowJCB to set
-	 */
-	public void setVehicleGasUsageLowJCB(JComboBox<Float> vehicleGasUsageLowJCB) {
-		this.vehicleGasUsageLowJCB = vehicleGasUsageLowJCB;
-	}
-
-	/**
 	 * @return the vehicleGasUsageMediumJCB
 	 */
 	public JComboBox<Float> getVehicleGasUsageMediumJCB() {
 		return vehicleGasUsageMediumJCB;
-	}
-
-	/**
-	 * @param vehicleGasUsageMediumJCB the vehicleGasUsageMediumJCB to set
-	 */
-	public void setVehicleGasUsageMediumJCB(
-			JComboBox<Float> vehicleGasUsageMediumJCB) {
-		this.vehicleGasUsageMediumJCB = vehicleGasUsageMediumJCB;
 	}
 
 	/**
@@ -693,34 +609,14 @@ public class FleetEditorView extends JPanel implements Observer {
 	}
 
 	/**
-	 * @param vehicleGasUsageHighJCB the vehicleGasUsageHighJCB to set
-	 */
-	public void setVehicleGasUsageHighJCB(JComboBox<Float> vehicleGasUsageHighJCB) {
-		this.vehicleGasUsageHighJCB = vehicleGasUsageHighJCB;
-	}
-
-	/**
 	 * @return the deleteVehicleJB
 	 */
 	public JButton getDeleteVehicleJB() {
 		return deleteVehicleJB;
 	}
 
-	/**
-	 * @param deleteVehicleJB the deleteVehicleJB to set
-	 */
-	public void setDeleteVehicleJB(JButton deleteVehicleJB) {
-		this.deleteVehicleJB = deleteVehicleJB;
-	}
-
 	public JButton getResetFleetJB() {
 		return resetFleetJB;
 	}
-
-	public void setResetFleetJB(JButton resetFleetJB) {
-		this.resetFleetJB = resetFleetJB;
-	}
-
-
 	
 }

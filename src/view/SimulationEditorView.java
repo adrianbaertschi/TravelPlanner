@@ -545,24 +545,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @param fastestPathJRB the fastestPathJRB to set
-	 */
-	public void setFastestPathJRB(JRadioButton fastestPathJRB) {
-		this.fastestPathJRB = fastestPathJRB;
-	}
-
-	/**
 	 * @return the shortestPathJRB
 	 */
 	public JRadioButton getShortestPathJRB() {
 		return shortestPathJRB;
-	}
-
-	/**
-	 * @param shortestPathJRB the shortestPathJRB to set
-	 */
-	public void setShortestPathJRB(JRadioButton shortestPathJRB) {
-		this.shortestPathJRB = shortestPathJRB;
 	}
 
 	/**
@@ -573,13 +559,6 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @param lowestGasConsumptionJRB the lowestGasConsumptionJRB to set
-	 */
-	public void setLowestGasConsumptionJRB(JRadioButton lowestGasConsumptionJRB) {
-		this.lowestGasConsumptionJRB = lowestGasConsumptionJRB;
-	}
-
-	/**
 	 * @return the ignoreSpeedLimitJRB
 	 */
 	public JRadioButton getIgnoreSpeedLimitJRB() {
@@ -587,24 +566,10 @@ public class SimulationEditorView extends JPanel implements Observer{
 	}
 
 	/**
-	 * @param ignoreSpeedLimitJRB the ignoreSpeedLimitJRB to set
-	 */
-	public void setIgnoreSpeedLimitJRB(JRadioButton ignoreSpeedLimitJRB) {
-		this.ignoreSpeedLimitJRB = ignoreSpeedLimitJRB;
-	}
-
-	/**
 	 * @return the delayJCB
 	 */
 	public JComboBox<Integer> getDelayJCB() {
 		return delayJCB;
-	}
-
-	/**
-	 * @param delayJCB the delayJCB to set
-	 */
-	public void setDelayJCB(JComboBox<Integer> delayJCB) {
-		this.delayJCB = delayJCB;
 	}
 
 	
