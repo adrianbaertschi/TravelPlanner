@@ -11,7 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
-import model.SimulationEditorModelException;
+import model.NoPathFoundExceptionException;
 import model.UserDisruption;
 import model.config.SimulationOption;
 import model.entity.Car;
@@ -53,7 +53,7 @@ public class SolverMapGraph implements Runnable, Observer{
 			Queue<Node> pathForVehicle = getPathForVehicle(vehicle, swg, null);
 			
 			if(pathForVehicle.isEmpty()) {
-				throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
+				throw new NoPathFoundExceptionException(vehicle.getName());
 			}
 			
 			Node n = pathForVehicle.poll();
@@ -127,7 +127,7 @@ public class SolverMapGraph implements Runnable, Observer{
 		SimulationOption simulationOption = vehicle.getSimulationOption();
 		
 		SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg;
-		//TODO: falls möglich anders behandeln
+		//TODO: falls mï¿½glich anders behandeln
 		if(vehicle.getPath().size() > 0){
 			
 			vehicle.setSimulationOption(SimulationOption.SHORTEST_PATH);
@@ -374,7 +374,7 @@ public class SolverMapGraph implements Runnable, Observer{
 	protected Queue<Node> getPathForVehicle(Vehicle vehicle, SimpleDirectedWeightedGraph<Node, DefaultWeightedEdge> swg, SimulationOption simulationStatistic) {
 		
 		if(!swg.containsVertex(vehicle.getCurrentNode()) || !swg.containsVertex(vehicle.getFinishNode())) {
-			throw new SimulationEditorModelException(String.format(Constants.MSG_NO_PATH, vehicle.getName()));
+			throw new NoPathFoundExceptionException(vehicle.getName());
 		}
 		
 		DijkstraShortestPath<Node, DefaultWeightedEdge> dsp = new DijkstraShortestPath<Node, DefaultWeightedEdge>(swg, vehicle.getCurrentNode(), vehicle.getFinishNode());			

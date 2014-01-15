@@ -9,7 +9,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.SimulationEditorModelException;
+import model.NoPathFoundExceptionException;
 import model.config.VehicleType;
 import model.entity.FleetEditorModel;
 import model.entity.MapEditorModel;
@@ -64,7 +64,7 @@ public class MasterGui extends JFrame {
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
 			public void uncaughtException(Thread t, Throwable e) {
-				if(e instanceof SimulationEditorModelException) {
+				if(e instanceof NoPathFoundExceptionException) {
 					JOptionPane.showMessageDialog(tabPane.getSelectedComponent(), e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(tabPane, e.getMessage(), "Unexpexted error", JOptionPane.ERROR_MESSAGE);
