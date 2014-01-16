@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -273,10 +274,9 @@ public class MapEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			MapEditorModel mem = new MapEditorModel();
-			mem.addObserver(view);
-			mem.change();
-			model = mem;
+			model.setSelectedStreet(null);
+			model.setSelectedNode(null);
+			model.setStreets(new ArrayList<Street>());
 			
 		}
 	}
