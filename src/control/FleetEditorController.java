@@ -189,26 +189,11 @@ public class FleetEditorController implements Controller {
 		}
 		
 	}
-	//TODO: Reduce duplicate code
 	class BtnLoadFleetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			String[] columns = new String[]{"ID",  "Name", "Vehicles", "Save Date"};
-			
-			List<FleetEditorModel> fleets = FleetEditorDao.getInstance().getFleets();
-			
-			Object[][] rowData = new Object[fleets.size()][columns.length];
-			for(int i = 0; i < fleets.size(); i++) {
-				rowData[i][0] = fleets.get(i).getId();
-				rowData[i][1] = fleets.get(i).getName();
-				rowData[i][2] = fleets.get(i).getVehicles().size();
-
-				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
-				rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
-			}
-			
-			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), rowData, columns);
+			LoaderDialog d = new LoaderDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), getRowData(getColumns()), getColumns());
 			d.setVisible(true);
 		}
 		
@@ -218,24 +203,34 @@ public class FleetEditorController implements Controller {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			String[] columns = new String[]{"ID",  "Name", "Vehicles", "Save Date"};
-			
-			List<FleetEditorModel> fleets = FleetEditorDao.getInstance().getFleets();
-			
-			Object[][] rowData = new Object[fleets.size()][columns.length];
-			for(int i = 0; i < fleets.size(); i++) {
-				rowData[i][0] = fleets.get(i).getId();
-				rowData[i][1] = fleets.get(i).getName();
-				rowData[i][2] = fleets.get(i).getVehicles().size();
-
-				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
-				rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
-			}
-			
-			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), rowData, columns);
+			DeleteDialog d = new DeleteDialog(MasterGui.getFrames()[0], FleetEditorController.this, FleetEditorDao.getInstance(), getRowData(getColumns()), getColumns());
 			d.setVisible(true);
 		}
 		
 	}
+	public String[] getColumns(){
+		
+		String[] columns = new String[]{"ID",  "Name", "Vehicles", "Save Date"};
+		return columns;
+	}
+
+	public Object[][] getRowData(String[] columns){
+	
+		List<FleetEditorModel> fleets = FleetEditorDao.getInstance().getFleets();
+		
+		Object[][] rowData = new Object[fleets.size()][columns.length];
+		for(int i = 0; i < fleets.size(); i++) {
+			rowData[i][0] = fleets.get(i).getId();
+			rowData[i][1] = fleets.get(i).getName();
+			rowData[i][2] = fleets.get(i).getVehicles().size();
+
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.GERMAN);
+			rowData[i][3] = df.format(fleets.get(i).getSaveDate().getTime());
+
+	
+		}
+		return rowData;
+
+	}		
 	
 }
