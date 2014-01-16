@@ -189,7 +189,6 @@ public class FleetEditorController implements Controller {
 		}
 		
 	}
-	//TODO: Reduce duplicate code
 	class BtnLoadFleetActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
